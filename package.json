@@ -1,6 +1,7 @@
 {
   "name": "brouha",
   "main": "expo-router/entry",
+  "scheme": "brouha",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
