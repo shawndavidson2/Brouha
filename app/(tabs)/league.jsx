@@ -14,7 +14,7 @@ const League = () => {
     };
 
     return (
-        <SafeAreaView className="bg-green-100 h-full">
+        <SafeAreaView className="bg-red-100 h-full">
             <FlatList
                 ListHeaderComponent={() => (
                     <View className="w-full flex justify-center items-center mt-6 mb-12 px-8">
