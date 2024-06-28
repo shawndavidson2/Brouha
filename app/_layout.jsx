@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { Slot, Stack } from 'expo-router'
 
-const index = () => {
+const RootLayout = () => {
     return (
-        <View className="flex-1 items-center justify-center bg-red-100">
-            <Text className="text-3xl">Brouha!!</Text>
-        </View>
+        <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+        </Stack>
     )
 }
 
-export default index
+export default RootLayout
 
