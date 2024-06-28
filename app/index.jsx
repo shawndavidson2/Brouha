@@ -12,7 +12,7 @@ const index = () => {
                 <View className="w-full justify-center items-center min-h-[85vh] px-14">
                     <CustomButton
                         title="GO"
-                        handlePress={() => { router.push('./sign-in') }}
+                        handlePress={() => { router.push('./league') }}
                         containerStyles={"w-full mt-7 justify-center"}
                     />
                 </View>
