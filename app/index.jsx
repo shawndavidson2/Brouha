@@ -3,19 +3,11 @@ import React from 'react'
 
 const index = () => {
     return (
-        <View style={styles.container}>
-            <Text>Brouha!!</Text>
+        <View className="flex-1 items-center justify-center bg-orange">
+            <Text className="text-3xl">Brouha!!</Text>
         </View>
     )
 }
 
 export default index
 
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-})
