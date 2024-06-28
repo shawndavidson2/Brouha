@@ -25,7 +25,7 @@ const SignUp = () => {
         setIsSubmitting(true);
         try {
             const result = await createUser(form.email, form.password, form.username);
-            router.replace("./league")
+            router.replace("../league")
         } catch (error) {
             Alert.alert('Error', error.message);
         } finally {

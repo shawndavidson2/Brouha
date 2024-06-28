@@ -22,7 +22,7 @@ const SignIn = () => {
         setIsSubmitting(true);
         try {
             await signIn(form.email, form.password);
-            router.replace('./league')
+            router.replace('../league')
         } catch (error) {
             Alert.alert('Error', error.message);
         } finally {
