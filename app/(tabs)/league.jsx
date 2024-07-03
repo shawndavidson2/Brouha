@@ -10,7 +10,7 @@ import JoinLeagueButton from '../../components/league_components/JoinLeagueButto
 import { getCurrentUser, appwriteConfig, databases } from '../../lib/appwrite';
 
 const League = () => {
-    const [leagueTitle, setLeagueTitle] = useState('');
+    const [league, setLeague] = useState();
     const [loading, setLoading] = useState(true);
     const [sortedContributors, setSortedContributors] = useState([]);
     const [sortedParticipants, setSortedParticipants] = useState([]);
@@ -20,7 +20,7 @@ const League = () => {
             try {
                 const currentUser = await getCurrentUser();
                 console.log(currentUser.league.name)
-                setLeagueTitle(currentUser.league.name);
+                setLeague(currentUser.league);
             } catch (error) {
                 console.error(error);
                 setLeagueTitle('Error fetching league');
@@ -53,8 +53,8 @@ const League = () => {
             <FlatList
                 ListHeaderComponent={() => (
                     <>
-                        <LeagueTitleAndProfile profile={profile} leagueTitle={leagueTitle} />
-                        <LeagueStats />
+                        <LeagueTitleAndProfile profile={profile} leagueTitle={league.name} />
+                        <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} />
                         <LeagueParticipants sortedContributors={sortedContributors} sortedParticipants={sortedParticipants} />
                     </>
                 )}
