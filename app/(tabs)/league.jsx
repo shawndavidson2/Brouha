@@ -13,7 +13,7 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 const League = () => {
     const [loading, setLoading] = useState(true);
 
-    const { user, league, setLeague } = useGlobalContext();
+    const { user, league, setLeague, weekNum } = useGlobalContext();
 
     const joinLeague = () => {
         router.push("../join-league");
@@ -37,8 +37,8 @@ const League = () => {
                 <FlatList
                     ListHeaderComponent={() => (
                         <>
-                            <LeagueTitleAndProfile currentUser={user} leagueTitle={league.name} />
-                            <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} />
+                            <LeagueTitleAndProfile currentUser={user} leagueTitle={league.name} weekNum={weekNum} />
+                            <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} weekNum={weekNum} />
                             <LeagueParticipants leagueMembers={league.users} />
                         </>
 
@@ -55,7 +55,7 @@ const League = () => {
                 <FlatList
                     ListHeaderComponent={() => (
                         <>
-                            <LeagueTitleAndProfile currentUser={user} leagueTitle={"NO LEAGUE YET"} />
+                            <LeagueTitleAndProfile currentUser={user} leagueTitle={"NO LEAGUE YET"} weekNum={weekNum} />
                         </>
                     )}
                 />

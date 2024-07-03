@@ -3,7 +3,7 @@ import React from 'react';
 import { icons } from '../../constants';
 import { router } from 'expo-router';
 
-const LeagueTitleAndProfile = ({ currentUser, leagueTitle }) => {
+const LeagueTitleAndProfile = ({ currentUser, leagueTitle, weekNum }) => {
     const profile = () => {
         router.push({ pathname: "../../profile" });
     };
@@ -21,7 +21,7 @@ const LeagueTitleAndProfile = ({ currentUser, leagueTitle }) => {
                 </TouchableOpacity>
             </View>
             <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{leagueTitle}</Text>
-            <Text className="mt-2" style={{ fontSize: 16, fontWeight: 'medium' }}>Week 4</Text>
+            <Text className="mt-2" style={{ fontSize: 16, fontWeight: 'medium' }}>Week {weekNum}</Text>
         </View>
     );
 };

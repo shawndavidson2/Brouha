@@ -5,6 +5,7 @@ const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
 
 const GlobalProvider = ({ children }) => {
+    const [weekNum, setWeekNum] = useState(0);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
     const [league, setLeague] = useState(null);
@@ -52,7 +53,8 @@ const GlobalProvider = ({ children }) => {
                 setUser,
                 league,
                 setLeague,
-                isLoading
+                isLoading,
+                weekNum
             }}
         >
             {children}
