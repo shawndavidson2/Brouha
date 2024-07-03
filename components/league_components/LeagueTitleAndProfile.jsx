@@ -5,7 +5,7 @@ import { router } from 'expo-router';
 
 const LeagueTitleAndProfile = ({ currentUser, leagueTitle }) => {
     const profile = () => {
-        router.push({ pathname: "../../profile", params: currentUser });
+        router.push({ pathname: "../../profile" });
     };
 
     return (

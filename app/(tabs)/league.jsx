@@ -8,55 +8,29 @@ import LeagueStats from '../../components/league_components/LeagueStats';
 import LeagueTitleAndProfile from '../../components/league_components/LeagueTitleAndProfile';
 import JoinLeagueButton from '../../components/league_components/JoinLeagueButton';
 import { getCurrentUser, appwriteConfig, databases } from '../../lib/appwrite';
+import { useGlobalContext } from '../../context/GlobalProvider';
 
 const League = () => {
-    const [league, setLeague] = useState();
-    const [currentUser, setCurrentUser] = useState();
-    const [leagueMembers, setLeagueMembers] = useState([]);
     const [sortedParticipants, setSortedParticipants] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchUserLeague = async () => {
-            try {
-                const currentUser = await getCurrentUser();
-                setCurrentUser(currentUser);
-                if (currentUser.league) {
-                    setLeague(currentUser.league);
-                    setLeagueMembers(currentUser.league.users)
-                }
-            } catch (error) {
-                console.error(error);
-                setLeagueTitle('Error fetching league');
-            } finally {
-                setLoading(false);
-            }
-        };
+    const { user } = useGlobalContext();
 
-        fetchUserLeague();
-    }, []);
 
     const joinLeague = () => {
         router.push("../join-league");
     };
 
-    if (loading) {
-        return (
-            <SafeAreaView className="bg-red-100 h-full justify-center items-center">
-                <ActivityIndicator size="large" color="#0000ff" />
-            </SafeAreaView>
-        );
-    }
 
-    if (league) {
+    if (user.league) {
         return (
             <SafeAreaView className="bg-red-100 h-full">
                 <FlatList
                     ListHeaderComponent={() => (
                         <>
-                            <LeagueTitleAndProfile currentUser={currentUser} leagueTitle={league.name} />
-                            <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} />
-                            <LeagueParticipants sortedContributors={leagueMembers} sortedParticipants={sortedParticipants} />
+                            <LeagueTitleAndProfile currentUser={user} leagueTitle={user.league.name} />
+                            <LeagueStats rank={user.league.rank} weekPoints={user.league["weekly-total-points"]} totalPoints={user.league["cumulative-total-points"]} />
+                            <LeagueParticipants sortedContributors={user.league.users} sortedParticipants={sortedParticipants} />
                         </>
                     )}
                 />
@@ -70,7 +44,7 @@ const League = () => {
                 <FlatList
                     ListHeaderComponent={() => (
                         <>
-                            <LeagueTitleAndProfile currentUser={currentUser} leagueTitle={"NO LEAGUE YET"} />
+                            <LeagueTitleAndProfile currentUser={user} leagueTitle={"NO LEAGUE YET"} />
                         </>
                     )}
                 />
