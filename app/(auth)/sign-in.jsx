@@ -7,6 +7,7 @@ import CustomButton from '../../components/CustomButton'
 import { Link, router } from 'expo-router'
 import { getCurrentUser, signIn } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/GlobalProvider'
+import { StatusBar } from 'expo-status-bar'
 
 const SignIn = () => {
     const { setUser, setIsLoggedIn } = useGlobalContext();
@@ -27,6 +28,7 @@ const SignIn = () => {
 
             const result = await getCurrentUser();
             setUser(result);
+            setLeague(result.league);
             setIsLoggedIn(true);
 
             router.replace('../league')
@@ -81,7 +83,9 @@ const SignIn = () => {
                     </View>
                 </View>
             </ScrollView>
+            <StatusBar style='dark' />
         </SafeAreaView>
+
     )
 }
 

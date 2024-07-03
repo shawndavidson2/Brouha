@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getCurrentUser } from "../lib/appwrite";
+import { getCurrentUser, getCurrentLeague } from "../lib/appwrite";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -7,6 +7,7 @@ export const useGlobalContext = () => useContext(GlobalContext);
 const GlobalProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
+    const [league, setLeague] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -26,6 +27,20 @@ const GlobalProvider = ({ children }) => {
             .finally(() => {
                 setIsLoading(false);
             })
+        getCurrentLeague()
+            .then((res) => {
+                if (res) {
+                    setLeague(res);
+                } else {
+                    setLeague(null);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
     }, [])
 
     return (
@@ -35,6 +50,8 @@ const GlobalProvider = ({ children }) => {
                 setIsLoggedIn,
                 user,
                 setUser,
+                league,
+                setLeague,
                 isLoading
             }}
         >

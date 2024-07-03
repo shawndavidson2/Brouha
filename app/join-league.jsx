@@ -2,8 +2,10 @@ import { View, Text, Alert, TextInput, Button, FlatList, TouchableOpacity } from
 import React, { useState } from 'react';
 import { createAndJoinLeague, searchLeagues, joinLeague } from '../lib/appwrite';
 import { router } from 'expo-router';
+import { useGlobalContext } from '../context/GlobalProvider';
 
 const JoinLeague = () => {
+    const { setUser, league, setLeague, setIsLoggedIn, getCurrentUser } = useGlobalContext();
     const [leagueName, setLeagueName] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [selectedLeague, setSelectedLeague] = useState(null);
@@ -13,12 +15,14 @@ const JoinLeague = () => {
             Alert.alert('Error', 'Please enter a league name.');
             return;
         }
-
         try {
             const { newLeague, updatedUser } = await createAndJoinLeague(leagueName);
             Alert.alert('Success', `League '${newLeague.name}' created and joined!`);
             // Navigate to the league details or home screen if needed
             //fetchUserLeague();
+            setUser(updatedUser);
+            setIsLoggedIn(true);
+            setLeague(newLeague);
             router.replace('./league')
         } catch (error) {
             Alert.alert('Error', error.message);
@@ -40,6 +44,9 @@ const JoinLeague = () => {
             Alert.alert('Success', `Joined league '${updatedLeague.name}' successfully!`);
             // Navigate to the league details or home screen if needed
             //fetchUserLeague();
+            setUser(updatedUser);
+            setIsLoggedIn(true);
+            setLeague(updatedLeague);
             router.replace('./league')
         } catch (error) {
             Alert.alert('Error', error.message);

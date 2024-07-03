@@ -11,13 +11,13 @@ import { useState, useEffect } from 'react'
 import { router } from 'expo-router'
 
 const Profile = () => {
-    const { user, setUser, setIsLoggedIn } = useGlobalContext();
+    const { user, setUser, setIsLoggedIn, league } = useGlobalContext();
 
     const [leagueName, setLeagueName] = useState("No League Yet");
 
     useEffect(() => {
-        if (user && user.league) {
-            setLeagueName(user.league.name);
+        if (user && league) {
+            setLeagueName(league.name);
         }
     }, [user]);
 
