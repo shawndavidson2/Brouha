@@ -7,8 +7,10 @@ import CustomButton from '../../components/CustomButton'
 import { Link, router } from 'expo-router'
 import Checkbox from 'expo-checkbox';
 import { createUser } from '../../lib/appwrite'
+import { useGlobalContext } from '../../context/GlobalProvider'
 
 const SignUp = () => {
+    const { setUser, setIsLoggedIn } = useGlobalContext();
     const [form, setForm] = useState({
         username: '',
         email: '',
@@ -25,6 +27,10 @@ const SignUp = () => {
         setIsSubmitting(true);
         try {
             const result = await createUser(form.email, form.password, form.username);
+
+            setUser(result);
+            setIsLoggedIn(true);
+
             router.replace("../league")
         } catch (error) {
             Alert.alert('Error', error.message);

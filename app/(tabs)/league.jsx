@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Image, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -16,13 +16,23 @@ const League = () => {
 
     const { user } = useGlobalContext();
 
-
     const joinLeague = () => {
         router.push("../join-league");
     };
 
+    useEffect(() => {
+    }, [user]);
 
-    if (user.league) {
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = async () => {
+        setRefreshing(true);
+        //await refetch();
+        setRefreshing(false);
+    };
+
+
+    if (user?.league) {
         return (
             <SafeAreaView className="bg-red-100 h-full">
                 <FlatList
@@ -32,7 +42,9 @@ const League = () => {
                             <LeagueStats rank={user.league.rank} weekPoints={user.league["weekly-total-points"]} totalPoints={user.league["cumulative-total-points"]} />
                             <LeagueParticipants sortedContributors={user.league.users} sortedParticipants={sortedParticipants} />
                         </>
+
                     )}
+
                 />
 
                 <JoinLeagueButton joinLeague={joinLeague} />
