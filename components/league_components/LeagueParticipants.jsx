@@ -22,13 +22,13 @@ const LeagueParticipants = ({ sortedContributors, sortedParticipants }) => {
                 <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Points</Text>
                 {sortedContributors.map((contributor, index) => (
                     <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                        <Text style={{ fontSize: 16 }}>{contributor.points}</Text>
+                        <Text style={{ fontSize: 16 }}>{contributor.weekPoints}</Text>
                     </View>
                 ))}
                 <View className="mt-14">
                     {sortedParticipants.map((participant, index) => (
                         <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                            <Text style={{ fontSize: 16 }}>{participant.points}</Text>
+                            <Text style={{ fontSize: 16 }}>{participant.weekPoints}</Text>
                         </View>
                     ))}
                 </View>

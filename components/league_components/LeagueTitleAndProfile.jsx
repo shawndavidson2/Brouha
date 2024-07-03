@@ -1,8 +1,13 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
 import { icons } from '../../constants';
+import { router } from 'expo-router';
 
-const LeagueTitleAndProfile = ({ profile, leagueTitle }) => {
+const LeagueTitleAndProfile = ({ currentUser, leagueTitle }) => {
+    const profile = () => {
+        router.push({ pathname: "../../profile", params: currentUser });
+    };
+
     return (
         <View style={{ width: '100%', paddingVertical: 20, alignItems: 'center' }}>
             <View style={{ position: 'absolute', top: 10, right: 40, alignItems: 'center' }}>
