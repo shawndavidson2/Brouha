@@ -3,7 +3,7 @@ import React from 'react';
 
 const LeagueStats = () => {
     return (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginTop: 50 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginTop: 25 }}>
             <View style={{ alignItems: 'center' }}>
                 <Text style={{ fontSize: 16, fontWeight: 'bold' }}>League Rank</Text>
                 <Text style={{ fontSize: 26, marginTop: 5 }}>5</Text>

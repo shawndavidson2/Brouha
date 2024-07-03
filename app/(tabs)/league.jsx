@@ -36,7 +36,7 @@ const League = () => {
             <FlatList
                 ListHeaderComponent={() => (
                     <>
-                        <LeagueTitleAndProfile profile={profile} />
+                        <LeagueTitleAndProfile profile={profile} leagueTitle={"League Title"} />
                         <LeagueStats />
                         <LeagueParticipants sortedContributors={sortedContributors} sortedParticipants={sortedParticipants} />
                     </>
