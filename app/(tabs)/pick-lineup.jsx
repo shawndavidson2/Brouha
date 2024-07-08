@@ -1,82 +1,18 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 import { SafeAreaView } from 'react-native-safe-area-context';
-import UpdatePoints from '../../components/updatePoints';
-import { useGlobalContext } from '../../context/GlobalProvider';
-import { createWeeklyLineup, getUserWeeklyLineup, updatePickAttributes } from '../../lib/appwrite';
+import usePickLineup from '../../components/pickLineup_components/usePickLineup';
+import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 
 const PickLineup = () => {
-    const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
-    const [cycleWeekNum, setCycleWeekNum] = useState(weekNum);
-    const [picks, setPicks] = useState([]);
-    const [lineupCache, setLineupCache] = useState({}); // Cache to store lineups
-
-    useEffect(() => {
-        if (lineupCache[cycleWeekNum]) {
-            setPicks(lineupCache[cycleWeekNum]);
-        } else {
-            getUserWeeklyLineup(cycleWeekNum)
-                .then((lineup) => {
-                    setPicks(lineup.picks);
-                    setLineupCache((prevCache) => ({
-                        ...prevCache,
-                        [cycleWeekNum]: lineup.picks,
-                    }));
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
-    }, [cycleWeekNum, lineupCache]);
-
-    const totalPointsEarned = useMemo(() => {
-        return picks.reduce((total, pick) => {
-            if (pick.status === 'won') {
-                return total + pick["potential-points"];
-            }
-            return total;
-        }, 0);
-    }, [picks]);
-
-    useEffect(() => {
-        let pointsWon = 0;
-        let hasStatusChangedToWon = false;
-
-        picks.forEach((pick) => {
-            if (cycleWeekNum === weekNum && !pick.processed && pick.status === 'won') {
-                hasStatusChangedToWon = true;
-                pointsWon += pick["potential-points"];
-                pick.processed = true;
-                updatePickAttributes(pick.$id, { processed: true });
-            }
-        });
-
-        if (hasStatusChangedToWon) {
-            UpdatePoints(pointsWon, user, setUser, league, setLeague);
-        }
-    }, [picks, user, setUser, league, setLeague]);
-
-    const renderStatusIcon = (status) => {
-        if (status === 'won') {
-            return <FontAwesome name="check-circle" size={24} color="green" />;
-        } else if (status === 'lost') {
-            return <FontAwesome name="times-circle" size={24} color="red" />;
-        } else {
-            return <FontAwesome name="circle-o" size={24} color="black" />;
-        }
-    };
-
-    const goToPreviousWeek = () => {
-        setCycleWeekNum(prevWeek => Math.max(prevWeek - 1, 0));
-    };
-
-    const goToNextWeek = () => {
-        setCycleWeekNum(prevWeek => {
-            const maxWeeks = user["weekly-lineup"] ? user["weekly-lineup"].length - 1 : 0;
-            return Math.min(prevWeek + 1, maxWeeks);
-        });
-    };
+    const {
+        cycleWeekNum,
+        picks,
+        totalPointsEarned,
+        renderStatusIcon,
+        goToPreviousWeek,
+        goToNextWeek,
+    } = usePickLineup();
 
     return (
         <SafeAreaView className="bg-red-100 h-full" style={{ height: '100%' }}>
