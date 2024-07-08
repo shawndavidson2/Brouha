@@ -1,35 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 import { SafeAreaView } from 'react-native-safe-area-context';
 import usePickLineup from '../../components/pickLineup_components/usePickLineup';
 
 const ProfileLineup = ({ user }) => {
-    const {
-        cycleWeekNum,
-        picks,
-        totalPointsEarned,
-        renderStatusIcon,
-        goToPreviousWeek,
-        goToNextWeek,
-        fetchLineup,
-    } = usePickLineup();
     const [expandedWeek, setExpandedWeek] = useState(null);
+
+    const userWeeks = user["weekly-lineup"] ? user["weekly-lineup"].length : 0;
+    const weeks = Array.from({ length: userWeeks }, (_, i) => i);
 
     const toggleWeek = (week) => {
         if (expandedWeek === week) {
             setExpandedWeek(null);
         } else {
             setExpandedWeek(week);
-            fetchLineup(week);
         }
     };
 
-    const userWeeks = user["weekly-lineup"] ? user["weekly-lineup"].length : 0;
-    const weeks = Array.from({ length: userWeeks }, (_, i) => i);
-
     return (
-        <SafeAreaView className="bg-red-100 h-full">
+        <SafeAreaView className="bg-red-100 h-full" style={styles.safeArea}>
             <View style={styles.container}>
                 {weeks.map((week) => (
                     <View key={week}>
@@ -38,30 +28,38 @@ const ProfileLineup = ({ user }) => {
                             <FontAwesome name={expandedWeek === week ? "angle-up" : "angle-down"} size={24} />
                         </TouchableOpacity>
                         {expandedWeek === week && (
-                            <View style={styles.weekDetails}>
-                                <ScrollView style={styles.scrollView}>
-                                    {picks.map((pick) => (
-                                        <View key={pick.$id} style={styles.pickItem}>
-                                            <Text style={styles.pickText}>{pick["pick-title"]}</Text>
-                                            <Text style={styles.pointsText}>{pick["potential-points"]} pts</Text>
-                                            <View style={styles.statusIcon}>{renderStatusIcon(pick.status)}</View>
-                                        </View>
-                                    ))}
-                                </ScrollView>
-                                <View style={styles.totalContainer}>
-                                    <Text style={styles.totalText}>Total Potential Points</Text>
-                                    <Text style={styles.totalPointsText}>{picks.reduce((total, pick) => total + pick["potential-points"], 0)} pts</Text>
-                                </View>
-                                <View style={styles.totalContainer}>
-                                    <Text style={styles.totalText}>Total Points Earned</Text>
-                                    <Text style={styles.earnedPointsText}>{totalPointsEarned} pts</Text>
-                                </View>
-                            </View>
+                            <WeekDetails week={week} />
                         )}
                     </View>
                 ))}
             </View>
         </SafeAreaView>
+    );
+};
+
+const WeekDetails = ({ week }) => {
+    const { picks, totalPointsEarned, renderStatusIcon } = usePickLineup(week);
+
+    return (
+        <View style={styles.weekDetails}>
+            <ScrollView style={styles.scrollView}>
+                {picks.map((pick) => (
+                    <View key={pick.$id} style={styles.pickItem}>
+                        <Text style={styles.pickText}>{pick["pick-title"]}</Text>
+                        <Text style={styles.pointsText}>{pick["potential-points"]} pts</Text>
+                        <View style={styles.statusIcon}>{renderStatusIcon(pick.status)}</View>
+                    </View>
+                ))}
+            </ScrollView>
+            <View style={styles.totalContainer}>
+                <Text style={styles.totalText}>Total Potential Points</Text>
+                <Text style={styles.totalPointsText}>{picks.reduce((total, pick) => total + pick["potential-points"], 0)} pts</Text>
+            </View>
+            <View style={styles.totalContainer}>
+                <Text style={styles.totalText}>Total Points Earned</Text>
+                <Text style={styles.earnedPointsText}>{totalPointsEarned} pts</Text>
+            </View>
+        </View>
     );
 };
 

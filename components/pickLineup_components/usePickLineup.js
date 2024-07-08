@@ -1,35 +1,16 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useGlobalContext } from '../../context/GlobalProvider';
-import { getUserWeeklyLineup, updatePickAttributes } from '../../lib/appwrite';
+import { updatePickAttributes } from '../../lib/appwrite';
 import UpdatePoints from '../../components/updatePoints';
 import { FontAwesome } from '@expo/vector-icons';
+import { useLineupCache } from '../../context/lineupContext';
 
-const usePickLineup = () => {
+const usePickLineup = (initialWeekNum = 0) => {
     const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
     const [cycleWeekNum, setCycleWeekNum] = useState(weekNum);
-    const [picks, setPicks] = useState([]);
-    const [lineupCache, setLineupCache] = useState({}); // Cache to store lineups
+    const lineupCache = useLineupCache();
 
-    const fetchLineup = async (week) => {
-        if (!lineupCache[week]) {
-            try {
-                const lineup = await getUserWeeklyLineup(week);
-                setLineupCache((prevCache) => ({
-                    ...prevCache,
-                    [week]: lineup.picks,
-                }));
-                setPicks(lineup.picks);
-            } catch (error) {
-                console.error(error);
-            }
-        } else {
-            setPicks(lineupCache[week]);
-        }
-    };
-
-    useEffect(() => {
-        fetchLineup(cycleWeekNum);
-    }, [cycleWeekNum]);
+    const picks = lineupCache[cycleWeekNum] || [];
 
     const totalPointsEarned = useMemo(() => {
         return picks.reduce((total, pick) => {
@@ -45,7 +26,7 @@ const usePickLineup = () => {
         let hasStatusChangedToWon = false;
 
         picks.forEach((pick) => {
-            if (cycleWeekNum === weekNum && !pick.processed && pick.status === 'won') {
+            if (!pick.processed && pick.status === 'won') {
                 hasStatusChangedToWon = true;
                 pointsWon += pick["potential-points"];
                 pick.processed = true;
@@ -56,7 +37,7 @@ const usePickLineup = () => {
         if (hasStatusChangedToWon) {
             UpdatePoints(pointsWon, user, setUser, league, setLeague);
         }
-    }, [picks, user, setUser, league, setLeague, cycleWeekNum]);
+    }, [picks, user, setUser, league, setLeague]);
 
     const renderStatusIcon = (status) => {
         if (status === 'won') {
@@ -86,7 +67,6 @@ const usePickLineup = () => {
         renderStatusIcon,
         goToPreviousWeek,
         goToNextWeek,
-        fetchLineup, // Ensure fetchLineup is returned
     };
 };
 

@@ -15,7 +15,7 @@ const PickLineup = () => {
     } = usePickLineup();
 
     return (
-        <SafeAreaView className="bg-red-100 h-full" style={{ height: '100%' }}>
+        <SafeAreaView className="bg-red-100 h-full" style={styles.safeArea}>
             <View style={styles.container}>
                 <Text style={styles.header}>My Pick - Lineup</Text>
                 <View style={styles.weekNavigation}>
@@ -50,6 +50,10 @@ const PickLineup = () => {
 };
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#f0f0f0',
+    },
     container: {
         flex: 1,
         padding: 20,
@@ -85,10 +89,6 @@ const styles = StyleSheet.create({
     pickText: {
         fontSize: 16,
         flex: 1,
-    },
-    pointsContainer: {
-        flex: 1,
-        alignItems: 'center',
     },
     pointsText: {
         fontSize: 16,
