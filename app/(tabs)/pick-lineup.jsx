@@ -9,6 +9,7 @@ const PickLineup = () => {
         cycleWeekNum,
         picks,
         totalPointsEarned,
+        totalPotentialPoints,
         renderStatusIcon,
         goToPreviousWeek,
         goToNextWeek,
@@ -38,7 +39,7 @@ const PickLineup = () => {
                 </ScrollView>
                 <View style={styles.totalContainer}>
                     <Text style={styles.totalText}>Total Potential Points</Text>
-                    <Text style={styles.totalPointsText}>{picks.reduce((total, pick) => total + pick["potential-points"], 0)} pts</Text>
+                    <Text style={styles.totalPointsText}>{totalPotentialPoints} pts</Text>
                 </View>
                 <View style={styles.totalContainer}>
                     <Text style={styles.totalText}>Total Points Earned</Text>

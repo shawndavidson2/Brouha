@@ -18,7 +18,6 @@ const Leaderboards = () => {
                 const leagues = await getAllLeagues();
                 const sortedLeagues = leagues.sort((a, b) => b['cumulative-total-points'] - a['cumulative-total-points']);
                 sortedLeagues.forEach((league, index) => {
-                    console.log(league.name + " " + index);
                     updateLeagueAttributes(league, { rank: index + 1 })
                 });
                 setLeagueLeaders(sortedLeagues);

@@ -9,6 +9,7 @@ const usePickLineup = (initialWeekNum = 0) => {
     const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
     const [cycleWeekNum, setCycleWeekNum] = useState(initialWeekNum);
     const lineupCache = useLineupCache();
+    const [totalPotentialPoints, setTotalPotentialPoints] = useState(0);
 
     const picks = lineupCache[cycleWeekNum] || [];
 
@@ -22,8 +23,11 @@ const usePickLineup = (initialWeekNum = 0) => {
     }, [picks]);
 
     useEffect(() => {
+        setTotalPotentialPoints(picks.reduce((total, pick) => total + pick["potential-points"], 0));
+
         let pointsWon = 0;
         let hasStatusChangedToWon = false;
+
 
         picks.forEach((pick) => {
             if (cycleWeekNum === weekNum && !pick.processed && pick.status === 'won') {
@@ -37,7 +41,8 @@ const usePickLineup = (initialWeekNum = 0) => {
         if (hasStatusChangedToWon) {
             UpdatePoints(pointsWon, user, setUser, league, setLeague);
         }
-    }, [picks, user, setUser, league, setLeague]);
+        //UpdateWeeklyLineup(totalPointsEarned, totalPotentialPoints, cycleWeekNum)
+    }, [picks]);
 
     const renderStatusIcon = (status) => {
         if (status === 'won') {
@@ -64,6 +69,7 @@ const usePickLineup = (initialWeekNum = 0) => {
         cycleWeekNum,
         picks,
         totalPointsEarned,
+        totalPotentialPoints,
         renderStatusIcon,
         goToPreviousWeek,
         goToNextWeek,

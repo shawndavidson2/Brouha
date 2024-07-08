@@ -38,7 +38,7 @@ const ProfileLineup = ({ user }) => {
 };
 
 const WeekDetails = ({ week }) => {
-    const { picks, totalPointsEarned, renderStatusIcon } = usePickLineup(week);
+    const { picks, totalPointsEarned, totalPotentialPoints, renderStatusIcon } = usePickLineup(week);
 
     return (
         <View style={styles.weekDetails}>
@@ -53,7 +53,7 @@ const WeekDetails = ({ week }) => {
             </ScrollView>
             <View style={styles.totalContainer}>
                 <Text style={styles.totalText}>Total Potential Points</Text>
-                <Text style={styles.totalPointsText}>{picks.reduce((total, pick) => total + pick["potential-points"], 0)} pts</Text>
+                <Text style={styles.totalPointsText}>{totalPotentialPoints} pts</Text>
             </View>
             <View style={styles.totalContainer}>
                 <Text style={styles.totalText}>Total Points Earned</Text>
