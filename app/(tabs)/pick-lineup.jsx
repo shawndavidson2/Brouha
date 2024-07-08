@@ -4,6 +4,7 @@ import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UpdatePoints from '../../components/updatePoints';
 import { useGlobalContext } from '../../context/GlobalProvider';
+import { createWeeklyLineup, getUserWeeklyLineup } from '../../lib/appwrite';
 
 const PickLineup = () => {
     const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
@@ -14,6 +15,15 @@ const PickLineup = () => {
     { id: 4, team: 'Chris Olave 100+ Rec. Yards', points: 2150, status: 'pending' }]);
 
     useEffect(() => {
+        //console.log(createWeeklyLineup(0, 10, 20, 30));
+        getUserWeeklyLineup(0)
+            .then((lineup) => {
+                console.log(lineup.picks[3]);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
         setPicks([
             { id: 1, team: 'Houston Texans to Win', points: 820, status: 'won' },
             { id: 2, team: 'Stefon Diggs TD', points: 1450, status: 'won' },
@@ -21,6 +31,8 @@ const PickLineup = () => {
             { id: 4, team: 'Chris Olave 100+ Rec. Yards', points: 2150, status: 'won' },
         ]);
     }, []);
+
+
 
     const previousPicksRef = useRef(picks);
 
