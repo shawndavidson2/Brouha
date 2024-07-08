@@ -7,7 +7,7 @@ import { useLineupCache } from '../../context/lineupContext';
 
 const usePickLineup = (initialWeekNum = 0) => {
     const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
-    const [cycleWeekNum, setCycleWeekNum] = useState(weekNum);
+    const [cycleWeekNum, setCycleWeekNum] = useState(initialWeekNum);
     const lineupCache = useLineupCache();
 
     const picks = lineupCache[cycleWeekNum] || [];
@@ -26,7 +26,7 @@ const usePickLineup = (initialWeekNum = 0) => {
         let hasStatusChangedToWon = false;
 
         picks.forEach((pick) => {
-            if (!pick.processed && pick.status === 'won') {
+            if (cycleWeekNum === weekNum && !pick.processed && pick.status === 'won') {
                 hasStatusChangedToWon = true;
                 pointsWon += pick["potential-points"];
                 pick.processed = true;
