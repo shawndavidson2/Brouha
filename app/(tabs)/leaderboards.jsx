@@ -9,23 +9,24 @@ const Leaderboards = () => {
     const [leagueLeaders, setLeagueLeaders] = useState([]);
 
     useEffect(() => {
-        console.log("helloLeaders");
         const fetchData = async () => {
             if (selectedTab === 'users') {
                 const users = await getAllUsers();
-                setUserLeaders(users);
+                const sortedUsers = users.sort((a, b) => b.totalPoints - a.totalPoints);
+                setUserLeaders(sortedUsers);
             } else {
                 const leagues = await getAllLeagues();
-                setLeagueLeaders(leagues);
+                const sortedLeagues = leagues.sort((a, b) => b['cumulative-total-points'] - a['cumulative-total-points']);
+                setLeagueLeaders(sortedLeagues);
             }
         };
 
         fetchData();
     }, [selectedTab]);
 
-    const renderLeaderboardItem = (item) => (
+    const renderLeaderboardItem = (item, index) => (
         <View key={item.$id} style={styles.leaderboardItem}>
-            <Text style={styles.rank}>{item.totalRank || item.rank}</Text>
+            <Text style={styles.rank}>{index + 1}</Text>
             <Text style={styles.name}>{item.username || item.name}</Text>
             <Text style={styles.points}>{item['cumulative-total-points'] != null ? item['cumulative-total-points'] : item["totalPoints"]}</Text>
         </View>

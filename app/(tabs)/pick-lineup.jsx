@@ -73,7 +73,7 @@ const PickLineup = () => {
 
     const goToNextWeek = () => {
         setCycleWeekNum(prevWeek => {
-            const maxWeeks = user["weekly-lineup"] ? user["weekly-lineup"].length - 1 : 0;
+            const maxWeeks = user["weekly-lineup"] > 0 ? user["weekly-lineup"].length - 1 : 0;
             return Math.min(prevWeek + 1, maxWeeks);
         });
     };
