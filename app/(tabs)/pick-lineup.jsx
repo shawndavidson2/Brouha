@@ -4,66 +4,50 @@ import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UpdatePoints from '../../components/updatePoints';
 import { useGlobalContext } from '../../context/GlobalProvider';
-import { createWeeklyLineup, getUserWeeklyLineup } from '../../lib/appwrite';
+import { createWeeklyLineup, getUserWeeklyLineup, updatePickAttributes } from '../../lib/appwrite';
 
 const PickLineup = () => {
     const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
 
-    const [picks, setPicks] = useState([{ id: 1, team: 'Houston Texans to Win', points: 820, status: 'pending' },
-    { id: 2, team: 'Stefon Diggs TD', points: 1450, status: 'lost' },
-    { id: 3, team: 'Nick Chubb 78+ Yards', points: 1150, status: 'pending' },
-    { id: 4, team: 'Chris Olave 100+ Rec. Yards', points: 2150, status: 'pending' }]);
+    const [picks, setPicks] = useState([]);
 
     useEffect(() => {
         //console.log(createWeeklyLineup(0, 10, 20, 30));
-        getUserWeeklyLineup(0)
+        getUserWeeklyLineup(weekNum)
             .then((lineup) => {
-                console.log(lineup.picks[3]);
+                setPicks(lineup.picks)
             })
             .catch((error) => {
                 console.error(error);
             });
 
-        setPicks([
-            { id: 1, team: 'Houston Texans to Win', points: 820, status: 'won' },
-            { id: 2, team: 'Stefon Diggs TD', points: 1450, status: 'won' },
-            { id: 3, team: 'Nick Chubb 78+ Yards', points: 1150, status: 'lost' },
-            { id: 4, team: 'Chris Olave 100+ Rec. Yards', points: 2150, status: 'won' },
-        ]);
     }, []);
 
-
-
-    const previousPicksRef = useRef(picks);
 
     const totalPointsEarned = useMemo(() => {
         return picks.reduce((total, pick) => {
             if (pick.status === 'won') {
-                return total + pick.points;
+                return total + pick[["potential-points"]];
             }
             return total;
         }, 0);
     }, [picks]);
 
     useEffect(() => {
-        const previousPicks = previousPicksRef.current;
         let pointsWon = 0;
         let hasStatusChangedToWon = false;
 
-        picks.forEach((pick, index) => {
-            const previousPick = previousPicks.find(p => p.id === pick.id);
-            const flag = previousPick && (previousPick.status === 'lost' || previousPick.status === 'pending') && pick.status === 'won';
-            if (flag) {
-                hasStatusChangedToWon = true
-                pointsWon += pick.points;
+        picks.forEach((pick) => {
+            if (!pick.processed && pick.status === 'won') {
+                hasStatusChangedToWon = true;
+                pointsWon += pick["potential-points"];
+                pick.processed = true;
+                updatePickAttributes(pick.$id, { processed: true })
             }
         });
-
         if (hasStatusChangedToWon) {
             UpdatePoints(pointsWon, user, setUser, league, setLeague);
         }
-
-        previousPicksRef.current = picks;
     }, [picks]);
 
     const renderStatusIcon = (status) => {
@@ -83,16 +67,16 @@ const PickLineup = () => {
                 <Text style={styles.subHeader}>Week 0</Text>
                 <ScrollView style={styles.scrollView}>
                     {picks.map((pick) => (
-                        <View key={pick.id} style={styles.pickItem}>
-                            <Text style={styles.pickText}>{pick.team}</Text>
-                            <Text style={styles.pointsText}>{pick.points} pts</Text>
+                        <View key={pick.$id} style={styles.pickItem}>
+                            <Text style={styles.pickText}>{pick["pick-title"]}</Text>
+                            <Text style={styles.pointsText}>{pick["potential-points"]} pts</Text>
                             <View style={styles.statusIcon}>{renderStatusIcon(pick.status)}</View>
                         </View>
                     ))}
                 </ScrollView>
                 <View style={styles.totalContainer}>
                     <Text style={styles.totalText}>Total Potential Points</Text>
-                    <Text style={styles.totalPointsText}>{picks.reduce((total, pick) => total + pick.points, 0)} pts</Text>
+                    <Text style={styles.totalPointsText}>{picks.reduce((total, pick) => total + pick["potential-points"], 0)} pts</Text>
                 </View>
                 <View style={styles.totalContainer}>
                     <Text style={styles.totalText}>Total Points Earned</Text>
