@@ -39,7 +39,7 @@ const League = () => {
                         <>
                             <LeagueTitleAndProfile currentUser={user} leagueTitle={league.name} weekNum={weekNum} />
                             <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} weekNum={weekNum} />
-                            <LeagueParticipants leagueMembers={league.users} />
+                            <LeagueParticipants leagueMembers={league.users} weekNum={weekNum} />
                         </>
 
                     )}

@@ -5,7 +5,7 @@ const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
 
 const GlobalProvider = ({ children }) => {
-    const [weekNum, setWeekNum] = useState(0);
+    const [weekNum, setWeekNum] = useState(1);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
     const [league, setLeague] = useState(null);
