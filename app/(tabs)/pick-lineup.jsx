@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState, useMemo } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UpdatePoints from '../../components/updatePoints';
@@ -8,26 +8,32 @@ import { createWeeklyLineup, getUserWeeklyLineup, updatePickAttributes } from '.
 
 const PickLineup = () => {
     const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
-
+    const [cycleWeekNum, setCycleWeekNum] = useState(weekNum);
     const [picks, setPicks] = useState([]);
+    const [lineupCache, setLineupCache] = useState({}); // Cache to store lineups
 
     useEffect(() => {
-        //console.log(createWeeklyLineup(0, 10, 20, 30));
-        getUserWeeklyLineup(weekNum)
-            .then((lineup) => {
-                setPicks(lineup.picks)
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-
-    }, []);
-
+        if (lineupCache[cycleWeekNum]) {
+            setPicks(lineupCache[cycleWeekNum]);
+        } else {
+            getUserWeeklyLineup(cycleWeekNum)
+                .then((lineup) => {
+                    setPicks(lineup.picks);
+                    setLineupCache((prevCache) => ({
+                        ...prevCache,
+                        [cycleWeekNum]: lineup.picks,
+                    }));
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    }, [cycleWeekNum, lineupCache]);
 
     const totalPointsEarned = useMemo(() => {
         return picks.reduce((total, pick) => {
             if (pick.status === 'won') {
-                return total + pick[["potential-points"]];
+                return total + pick["potential-points"];
             }
             return total;
         }, 0);
@@ -38,17 +44,18 @@ const PickLineup = () => {
         let hasStatusChangedToWon = false;
 
         picks.forEach((pick) => {
-            if (!pick.processed && pick.status === 'won') {
+            if (cycleWeekNum === weekNum && !pick.processed && pick.status === 'won') {
                 hasStatusChangedToWon = true;
                 pointsWon += pick["potential-points"];
                 pick.processed = true;
-                updatePickAttributes(pick.$id, { processed: true })
+                updatePickAttributes(pick.$id, { processed: true });
             }
         });
+
         if (hasStatusChangedToWon) {
             UpdatePoints(pointsWon, user, setUser, league, setLeague);
         }
-    }, [picks]);
+    }, [picks, user, setUser, league, setLeague]);
 
     const renderStatusIcon = (status) => {
         if (status === 'won') {
@@ -60,11 +67,30 @@ const PickLineup = () => {
         }
     };
 
+    const goToPreviousWeek = () => {
+        setCycleWeekNum(prevWeek => Math.max(prevWeek - 1, 0));
+    };
+
+    const goToNextWeek = () => {
+        setCycleWeekNum(prevWeek => {
+            const maxWeeks = user["weekly-lineup"] ? user["weekly-lineup"].length - 1 : 0;
+            return Math.min(prevWeek + 1, maxWeeks);
+        });
+    };
+
     return (
-        <SafeAreaView className="bg-red-100 h-full">
+        <SafeAreaView className="bg-red-100 h-full" style={{ height: '100%' }}>
             <View style={styles.container}>
                 <Text style={styles.header}>My Pick - Lineup</Text>
-                <Text style={styles.subHeader}>Week 0</Text>
+                <View style={styles.weekNavigation}>
+                    <TouchableOpacity onPress={goToPreviousWeek}>
+                        <FontAwesome name="arrow-left" size={24} />
+                    </TouchableOpacity>
+                    <Text style={styles.subHeader}>Week {cycleWeekNum}</Text>
+                    <TouchableOpacity onPress={goToNextWeek}>
+                        <FontAwesome name="arrow-right" size={24} />
+                    </TouchableOpacity>
+                </View>
                 <ScrollView style={styles.scrollView}>
                     {picks.map((pick) => (
                         <View key={pick.$id} style={styles.pickItem}>
@@ -99,10 +125,15 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+    weekNavigation: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
     subHeader: {
         fontSize: 18,
         textAlign: 'center',
-        marginBottom: 20,
     },
     scrollView: {
         flex: 1,
