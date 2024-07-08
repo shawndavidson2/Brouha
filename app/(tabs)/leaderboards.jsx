@@ -9,6 +9,7 @@ const Leaderboards = () => {
     const [leagueLeaders, setLeagueLeaders] = useState([]);
 
     useEffect(() => {
+        console.log("helloLeaders");
         const fetchData = async () => {
             if (selectedTab === 'users') {
                 const users = await getAllUsers();

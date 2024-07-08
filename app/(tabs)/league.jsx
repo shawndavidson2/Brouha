@@ -20,7 +20,7 @@ const League = () => {
     };
 
     useEffect(() => {
-    }, [user]);
+    }, [user, league]);
 
     const [refreshing, setRefreshing] = useState(false);
 

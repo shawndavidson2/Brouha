@@ -1,15 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 import { SafeAreaView } from 'react-native-safe-area-context';
+import UpdatePoints from '../../components/updatePoints';
+import { useGlobalContext } from '../../context/GlobalProvider';
 
 const PickLineup = () => {
-    const picks = [
-        { id: 1, team: 'Houston Texans to Win', points: 820, status: 'lost' },
-        { id: 2, team: 'Stefon Diggs TD', points: 1450, status: 'won' },
-        { id: 3, team: 'Nick Chubb 78+ Yards', points: 1150, status: 'pending' },
-        { id: 4, team: 'Chris Olave 100+ Rec. Yards', points: 2150, status: 'lost' },
-    ];
+    const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
+
+    const [picks, setPicks] = useState([{ id: 1, team: 'Houston Texans to Win', points: 820, status: 'pending' },
+    { id: 2, team: 'Stefon Diggs TD', points: 1450, status: 'lost' },
+    { id: 3, team: 'Nick Chubb 78+ Yards', points: 1150, status: 'pending' },
+    { id: 4, team: 'Chris Olave 100+ Rec. Yards', points: 2150, status: 'pending' }]);
+
+    useEffect(() => {
+        setPicks([
+            { id: 1, team: 'Houston Texans to Win', points: 820, status: 'won' },
+            { id: 2, team: 'Stefon Diggs TD', points: 1450, status: 'won' },
+            { id: 3, team: 'Nick Chubb 78+ Yards', points: 1150, status: 'lost' },
+            { id: 4, team: 'Chris Olave 100+ Rec. Yards', points: 2150, status: 'won' },
+        ]);
+    }, []);
+
+    const previousPicksRef = useRef(picks);
+
+    const totalPointsEarned = useMemo(() => {
+        return picks.reduce((total, pick) => {
+            if (pick.status === 'won') {
+                return total + pick.points;
+            }
+            return total;
+        }, 0);
+    }, [picks]);
+
+    useEffect(() => {
+        const previousPicks = previousPicksRef.current;
+        let pointsWon = 0;
+        let hasStatusChangedToWon = false;
+
+        picks.forEach((pick, index) => {
+            const previousPick = previousPicks.find(p => p.id === pick.id);
+            const flag = previousPick && (previousPick.status === 'lost' || previousPick.status === 'pending') && pick.status === 'won';
+            if (flag) {
+                hasStatusChangedToWon = true
+                pointsWon += pick.points;
+            }
+        });
+
+        if (hasStatusChangedToWon) {
+            UpdatePoints(pointsWon, user, setUser, league, setLeague);
+        }
+
+        previousPicksRef.current = picks;
+    }, [picks]);
 
     const renderStatusIcon = (status) => {
         if (status === 'won') {
@@ -20,13 +63,6 @@ const PickLineup = () => {
             return <FontAwesome name="circle-o" size={24} color="black" />;
         }
     };
-
-    const totalPointsEarned = picks.reduce((total, pick) => {
-        if (pick.status === 'won') {
-            return total + pick.points;
-        }
-        return total;
-    }, 0);
 
     return (
         <SafeAreaView className="bg-red-100 h-full">
@@ -116,6 +152,5 @@ const styles = StyleSheet.create({
         color: 'green',
     },
 });
-
 
 export default PickLineup;
