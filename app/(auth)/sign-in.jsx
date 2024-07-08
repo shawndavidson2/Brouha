@@ -10,7 +10,7 @@ import { useGlobalContext } from '../../context/GlobalProvider'
 import { StatusBar } from 'expo-status-bar'
 
 const SignIn = () => {
-    const { setUser, setIsLoggedIn } = useGlobalContext();
+    const { setUser, setIsLoggedIn, setLeague } = useGlobalContext();
     const [form, setForm] = useState({
         email: '',
         password: ''
