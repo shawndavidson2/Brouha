@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { getAllUsers, getAllLeagues } from '../../lib/appwrite';
+import { getAllUsers, getAllLeagues, updateLeagueAttributes } from '../../lib/appwrite';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Leaderboards = () => {
@@ -17,6 +17,10 @@ const Leaderboards = () => {
             } else {
                 const leagues = await getAllLeagues();
                 const sortedLeagues = leagues.sort((a, b) => b['cumulative-total-points'] - a['cumulative-total-points']);
+                sortedLeagues.forEach((league, index) => {
+                    console.log(league.name + " " + index);
+                    updateLeagueAttributes(league, { rank: index + 1 })
+                });
                 setLeagueLeaders(sortedLeagues);
             }
         };
@@ -27,6 +31,7 @@ const Leaderboards = () => {
     const renderLeaderboardItem = (item, index) => (
         <View key={item.$id} style={styles.leaderboardItem}>
             <Text style={styles.rank}>{index + 1}</Text>
+
             <Text style={styles.name}>{item.username || item.name}</Text>
             <Text style={styles.points}>{item['cumulative-total-points'] != null ? item['cumulative-total-points'] : item["totalPoints"]}</Text>
         </View>
