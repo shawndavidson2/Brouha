@@ -1,8 +1,20 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import getImageSource from './getImageSource';
+import { useRouter } from 'expo-router';
 
 const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder }) => {
+    const router = useRouter();
+
+    const handlePress = () => {
+        const sheetName1 = `${awayTeam}vs${homeTeam}`;
+        const sheetName2 = `${homeTeam} vs ${awayTeam}`;
+        router.push({
+            pathname: '/gameDetail',
+            params: { sheetName1, sheetName2 },
+        });
+    };
+
     return (
         <View style={styles.card}>
             <View style={styles.teamContainer}>
@@ -18,7 +30,7 @@ const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder }) => {
                 <Text style={styles.spreadText}>{spread}</Text>
                 <Text style={styles.overUnderText}>O/U {overUnder}</Text>
             </View>
-            <TouchableOpacity style={styles.button} onPress={() => { }}>
+            <TouchableOpacity style={styles.button} onPress={handlePress}>
                 <Text style={styles.buttonText}>See Picks</Text>
             </TouchableOpacity>
         </View>
