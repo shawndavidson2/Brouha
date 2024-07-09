@@ -16,7 +16,7 @@ const RootLayout = () => {
                     <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                     <Stack.Screen name="profile" options={{ headerShown: false }} />
                     <Stack.Screen name="join-league" options={{ headerShown: false }} />
-                    <Stack.Screen name="GameDetail" options={{ headerShown: false }} />
+                    <Stack.Screen name="gameDetail" options={{ headerShown: false }} />
                 </Stack>
             </LineupProvider>
         </GlobalProvider>
