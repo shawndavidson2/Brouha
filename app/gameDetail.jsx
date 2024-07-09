@@ -100,6 +100,7 @@ const GameDetail = () => {
         } else {
             try {
                 const newPick = await createPick(pick, pts, 'pending');
+                picks.push(newPick)
                 setSelectedPicks(prevState => {
                     const newState = { ...prevState, [index]: newPick.$id };
                     saveSelectedPicks(newState);
@@ -111,8 +112,7 @@ const GameDetail = () => {
                 if (!weeklyLineup) {
                     weeklyLineup, updatedUser = await createWeeklyLineup([newPick.$id], pts, 0, weekNum);
                 }
-                setUser(updatedUser)
-                picks.push(newPick)
+                //setUser(updatedUser)
             } catch (error) {
                 console.error('Error creating pick:', error);
             }
