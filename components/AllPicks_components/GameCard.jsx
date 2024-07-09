@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, Image } from 'react-native';
+import getImageSource from './getImageSource';
 
 const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder }) => {
     return (
         <View style={styles.card}>
             <View style={styles.teamContainer}>
-                <Text style={styles.teamText}>{homeTeam}</Text>
+                <Image source={getImageSource(homeTeam)} style={styles.teamImage} />
                 <Text style={styles.vsText}>-vs-</Text>
-                <Text style={styles.teamText}>{awayTeam}</Text>
+                <Image source={getImageSource(awayTeam)} style={styles.teamImage} />
             </View>
             <View style={styles.dateTimeContainer}>
                 <Text style={styles.dateText}>{date}</Text>
@@ -35,6 +36,11 @@ const styles = StyleSheet.create({
     teamContainer: {
         flexDirection: 'column',
         alignItems: 'center',
+    },
+    teamImage: {
+        width: 50,
+        height: 50,
+        resizeMode: 'contain',
     },
     teamText: {
         fontSize: 24,
