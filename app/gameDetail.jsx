@@ -4,6 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 import * as XLSX from 'xlsx';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AntDesign } from '@expo/vector-icons'; // Import AntDesign icons
+import { createPick, deletePick } from '../lib/appwrite';
 
 const GameDetail = () => {
     const { sheetName1, sheetName2 } = useLocalSearchParams();
@@ -48,16 +49,36 @@ const GameDetail = () => {
         return Math.max(Math.min(maxFontSize, scale), minFontSize);
     };
 
-    const handleAddToPL = (index, pick, pts) => {
+    const handleAddToPL = async (index, pick, pts) => {
         console.log(`Pick: ${pick}, Pts: ${pts}`);
-        setSelectedPicks(prevState => ({
-            ...prevState,
-            [index]: !prevState[index]
-        }));
+        const isSelected = selectedPicks[index];
+
+        if (isSelected) {
+            try {
+                await deletePick(selectedPicks[index]);
+                setSelectedPicks(prevState => {
+                    const newState = { ...prevState };
+                    delete newState[index];
+                    return newState;
+                });
+            } catch (error) {
+                console.error('Error deleting pick:', error);
+            }
+        } else {
+            try {
+                const newPick = await createPick(pick, pts, 'pending');
+                setSelectedPicks(prevState => ({
+                    ...prevState,
+                    [index]: newPick.$id // Ensure this uses the new pick's ID
+                }));
+            } catch (error) {
+                console.error('Error creating pick:', error);
+            }
+        }
     };
 
     return (
-        <SafeAreaView className="bg-red-100 h-full">
+        <SafeAreaView style={styles.safeArea}>
             <ScrollView style={styles.container}>
                 <TouchableOpacity style={styles.backButton}>
                     <Text style={styles.backButtonText}>Back</Text>
