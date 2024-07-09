@@ -61,7 +61,7 @@ const Profile = () => {
                         <Text style={{ fontSize: 26, marginTop: 5 }}>{user?.totalPoints >= 0 ? user.totalPoints : ""}  Points</Text>
                     </View>
                 </View>
-                <ProfileLineup user={user} />
+                <ProfileLineup />
             </ScrollView >
         </SafeAreaView >
     )

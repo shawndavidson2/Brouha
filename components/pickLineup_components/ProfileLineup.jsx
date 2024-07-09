@@ -3,12 +3,16 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 import { SafeAreaView } from 'react-native-safe-area-context';
 import usePickLineup from '../../components/pickLineup_components/usePickLineup';
+import { useGlobalContext } from '../../context/GlobalProvider';
 
-const ProfileLineup = ({ user }) => {
+const ProfileLineup = () => {
     const [expandedWeek, setExpandedWeek] = useState(null);
 
-    const userWeeks = user["weekly-lineup"] ? user["weekly-lineup"].length : 0;
-    const weeks = Array.from({ length: userWeeks }, (_, i) => i);
+    const { user, weekNum } = useGlobalContext();
+
+    const userWeeks = weekNum;
+    const weeks = Array.from({ length: weekNum + 1 }, (_, i) => i);
+    weeks.reverse();
 
     const toggleWeek = (week) => {
         if (expandedWeek === week) {

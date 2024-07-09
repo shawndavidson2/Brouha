@@ -60,8 +60,8 @@ const usePickLineup = (initialWeekNum = 0) => {
 
     const goToNextWeek = () => {
         setCycleWeekNum(prevWeek => {
-            const maxWeeks = user["weekly-lineup"] ? user["weekly-lineup"].length - 1 : 0;
-            return Math.min(prevWeek + 1, maxWeeks);
+            //const maxWeeks = user["weekly-lineup"] ? user["weekly-lineup"].length - 1 : 0;
+            return Math.min(prevWeek + 1, weekNum);
         });
     };
 
