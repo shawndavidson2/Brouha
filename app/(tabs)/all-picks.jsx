@@ -100,7 +100,7 @@ const AllPicks = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView className="bg-red-100 h-full" style={styles.container}>
             <ScrollView
                 style={styles.container}
                 refreshControl={

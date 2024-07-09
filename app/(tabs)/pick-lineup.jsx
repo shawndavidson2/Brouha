@@ -51,10 +51,6 @@ const PickLineup = () => {
 };
 
 const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-        backgroundColor: '#f0f0f0',
-    },
     container: {
         flex: 1,
         padding: 20,
