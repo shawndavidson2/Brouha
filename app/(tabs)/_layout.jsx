@@ -24,10 +24,10 @@ const TabsLayout = () => {
                 screenOptions={{
                     tabBarShowLabel: false,
                     tabBarActiveTintColor: "#AF462F",
-                    tabBarInactiveTintColor: "#CDCDE0",
+                    tabBarInactiveTintColor: "#4D4B4B",
                     tabBarStyle: {
                         //backgroundColor: "#161622",
-                        borderTopWidth: 1,
+                        borderTopWidth: 0,
                         borderTopColor: "#232533",
                         height: 84
                     }
@@ -57,7 +57,7 @@ const TabsLayout = () => {
                         headerShown: false,
                         tabBarIcon: ({ color, focused }) => (
                             <TabIcon
-                                icon={icons.home}
+                                icon={icons.todo}
                                 color={color}
                                 name="Pick Lineup"
                                 focused={focused}
@@ -73,7 +73,7 @@ const TabsLayout = () => {
                         headerShown: false,
                         tabBarIcon: ({ color, focused }) => (
                             <TabIcon
-                                icon={icons.home}
+                                icon={icons.search}
                                 color={color}
                                 name="All Picks"
                                 focused={focused}
@@ -89,7 +89,7 @@ const TabsLayout = () => {
                         headerShown: false,
                         tabBarIcon: ({ color, focused }) => (
                             <TabIcon
-                                icon={icons.home}
+                                icon={icons.trophy}
                                 color={color}
                                 name="Leaderboards"
                                 focused={focused}

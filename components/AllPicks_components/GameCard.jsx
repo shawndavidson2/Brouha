@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, Image } from 'react-native';
+import { View, Text, StyleSheet, Button, Image, TouchableOpacity } from 'react-native';
 import getImageSource from './getImageSource';
 
 const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder }) => {
@@ -16,10 +16,11 @@ const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder }) => {
             </View>
             <View style={styles.spreadContainer}>
                 <Text style={styles.spreadText}>{spread}</Text>
-                <Text></Text>
                 <Text style={styles.overUnderText}>O/U {overUnder}</Text>
             </View>
-            <Button title="See Picks" onPress={() => { }} />
+            <TouchableOpacity style={styles.button} onPress={() => { }}>
+                <Text style={styles.buttonText}>See Picks</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -42,10 +43,6 @@ const styles = StyleSheet.create({
         height: 55,
         resizeMode: 'contain',
     },
-    teamText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
     vsText: {
         fontSize: 18,
     },
@@ -64,11 +61,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     spreadText: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
     },
     overUnderText: {
-        fontSize: 18,
+        marginTop: 10,
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    button: {
+        borderWidth: 2,
+        borderColor: '#000',
+        paddingVertical: 5,
+        paddingHorizontal: 7,
+        borderRadius: 5,
+    },
+    buttonText: {
+        fontSize: 14,
         fontWeight: 'bold',
     },
 });

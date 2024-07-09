@@ -13,6 +13,8 @@ import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
 
 import people from "../assets/icons/people.png";
+import trophy from "../assets/icons/trophy.png";
+import todo from "../assets/icons/todo.png";
 
 export default {
   play,
@@ -28,5 +30,7 @@ export default {
   logout,
   eyeHide,
   eye,
-  people
+  people,
+  trophy,
+  todo
 };
