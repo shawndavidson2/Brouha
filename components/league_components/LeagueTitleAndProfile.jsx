@@ -20,8 +20,8 @@ const LeagueTitleAndProfile = ({ currentUser, leagueTitle, weekNum }) => {
                     <Text className="mt-2">Profile</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{leagueTitle}</Text>
-            <Text className="mt-2" style={{ fontSize: 16, fontWeight: 'medium' }}>Week {weekNum}</Text>
+            <Text style={{ fontSize: 30, fontWeight: 'bold' }}>{leagueTitle}</Text>
+            <Text className="mt-2" style={{ fontSize: 18, fontWeight: 'medium' }}>Week {weekNum}</Text>
         </View>
     );
 };

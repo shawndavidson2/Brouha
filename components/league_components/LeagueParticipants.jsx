@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { getTotalPointsEarned } from '../../lib/appwrite';
 
@@ -28,38 +28,65 @@ const LeagueParticipants = ({ leagueMembers, weekNum }) => {
     const participants = sortedMembers.slice(5);
 
     return (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '90%', marginTop: 30 }}>
-            <View>
-                <Text>League Contributors</Text>
+        <View style={styles.container}>
+            <View style={styles.headerRow}>
+                <Text style={styles.header}>League Contributors</Text>
+                <Text style={styles.header}>Points</Text>
+            </View>
+            <View style={styles.section}>
                 {contributors.map((contributor, index) => (
-                    <View key={contributor.$id} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                        <Text style={{ fontSize: 16 }}>{index + 1}. {contributor.username}</Text>
-                    </View>
-                ))}
-                {participants.length > 0 && <Text style={{ marginTop: 10 }}>League Participants</Text>}
-                {participants.map((participant, index) => (
-                    <View key={participant.$id} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                        <Text style={{ fontSize: 16 }}>{index + 1 + contributors.length}. {participant.username}</Text>
+                    <View key={contributor.$id} style={styles.row}>
+                        <Text style={styles.memberText}>{index + 1}. {contributor.username}</Text>
+                        <Text style={styles.pointsText}>{points[contributor.$id] ?? 'Loading...'}</Text>
                     </View>
                 ))}
             </View>
-            <View>
-                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Points</Text>
-                {contributors.map((contributor, index) => (
-                    <View key={contributor.$id} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                        <Text style={{ fontSize: 16 }}>{points[contributor.$id] ?? 'Loading...'}</Text>
-                    </View>
-                ))}
-                <View style={{ marginTop: 14 }}>
+            {participants.length > 0 && (
+                <View style={styles.section}>
+                    <Text style={styles.header}>League Participants</Text>
                     {participants.map((participant, index) => (
-                        <View key={participant.$id} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                            <Text style={{ fontSize: 16 }}>{points[participant.$id] ?? 'Loading...'}</Text>
+                        <View key={participant.$id} style={styles.row}>
+                            <Text style={styles.memberText}>{index + 1 + contributors.length}. {participant.username}</Text>
+                            <Text style={styles.pointsText}>{points[participant.$id] ?? 'Loading...'}</Text>
                         </View>
                     ))}
                 </View>
-            </View>
+            )}
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'column',
+        width: '90%',
+        marginTop: 30,
+    },
+    headerRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10,
+    },
+    section: {
+        marginBottom: 20,
+    },
+    header: {
+        fontSize: 22,
+        fontWeight: 'bold',
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+    },
+    memberText: {
+        marginLeft: 20,
+        fontSize: 20,
+    },
+    pointsText: {
+        fontSize: 20,
+        textAlign: 'center',
+    },
+});
 
 export default LeagueParticipants;
