@@ -1,5 +1,37 @@
-
 import BAL from '../assets/images/BAL.png'
 import KC from '../assets/images/KC.png'
+import ARI from '../assets/images/ARI.png'
+import ATL from '../assets/images/ATL.png'
+import BUF from '../assets/images/BUF.png'
+import CAR from '../assets/images/CAR.png'
+import CHI from '../assets/images/CHI.png'
+import CIN from '../assets/images/CIN.png'
+import CLE from '../assets/images/CLE.png'
+import DAL from '../assets/images/DAL.png'
+import DEN from '../assets/images/DEN.png'
+import DET from '../assets/images/DET.png'
+import GB from '../assets/images/GB.png'
+import HOU from '../assets/images/HOU.png'
+import IND from '../assets/images/IND.png'
+import JAX from '../assets/images/JAX.png'
+import LAC from '../assets/images/LAC.png'
+import LAR from '../assets/images/LAR.png'
+import LV from '../assets/images/LV.png'
+import MIA from '../assets/images/MIA.png'
+import MIN from '../assets/images/MIN.png'
+import NE from '../assets/images/NE.png'
+import NO from '../assets/images/NO.png'
+import NYG from '../assets/images/NYG.png'
+import NYJ from '../assets/images/NYJ.png'
+import PHI from '../assets/images/PHI.png'
+import PIT from '../assets/images/PIT.png'
+import SEA from '../assets/images/SEA.png'
+import SF from '../assets/images/SF.png'
+import TB from '../assets/images/TB.png'
+import TEN from '../assets/images/TEN.png'
+import WAS from '../assets/images/WAS.png'
 
-export default { BAL, KC };
+export default {
+    BAL, KC, ARI, ATL, BUF, CAR, CHI, CIN, CLE, DAL, DEN, DET, GB, HOU, IND,
+    JAX, LAC, LAR, LV, MIA, MIN, NE, NO, NYG, NYJ, PHI, PIT, SEA, SF, TB, TEN, WAS
+};
