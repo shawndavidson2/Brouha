@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import * as XLSX from 'xlsx';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -99,20 +99,24 @@ const GameDetail = () => {
             }
         } else {
             try {
-                const newPick = await createPick(pick, pts, 'pending');
-                picks.push(newPick)
-                setSelectedPicks(prevState => {
-                    const newState = { ...prevState, [index]: newPick.$id };
-                    saveSelectedPicks(newState);
-                    return newState;
-                });
-                let weeklyLineup;
-                let updatedUser;
-                updatedUser, weeklyLineup = await updateWeeklyLineup(weekNum, newPick);
-                if (!weeklyLineup) {
-                    weeklyLineup, updatedUser = await createWeeklyLineup([newPick.$id], pts, 0, weekNum);
+                if (picks.length == 4) {
+                    Alert.alert("You are already at your maximum number of picks for the week!");
+                } else {
+                    const newPick = await createPick(pick, pts, 'pending');
+                    picks.push(newPick)
+                    setSelectedPicks(prevState => {
+                        const newState = { ...prevState, [index]: newPick.$id };
+                        saveSelectedPicks(newState);
+                        return newState;
+                    });
+                    let weeklyLineup;
+                    let updatedUser;
+                    updatedUser, weeklyLineup = await updateWeeklyLineup(weekNum, newPick);
+                    if (!weeklyLineup) {
+                        weeklyLineup, updatedUser = await createWeeklyLineup([newPick.$id], pts, 0, weekNum);
+                    }
+                    //setUser(updatedUser)
                 }
-                //setUser(updatedUser)
             } catch (error) {
                 console.error('Error creating pick:', error);
             }
