@@ -1,15 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { Slot, Stack } from 'expo-router'
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Slot, Stack } from 'expo-router';
 import GlobalProvider from '../context/GlobalProvider';
-import { useState, useEffect } from 'react';
-import { getCurrentUser } from '../lib/appwrite';
 import { LineupProvider } from '../context/lineupContext';
 
 const RootLayout = () => {
+    const [refreshKey, setRefreshKey] = useState(0);
+
+    const triggerRefresh = () => {
+        setRefreshKey(prevKey => prevKey + 1);
+    };
+
     return (
         <GlobalProvider>
-            <LineupProvider>
+            <LineupProvider key={refreshKey}>
                 <Stack>
                     <Stack.Screen name="index" options={{ headerShown: false }} />
                     <Stack.Screen name="(auth)" options={{ headerShown: false }} />
@@ -23,5 +27,4 @@ const RootLayout = () => {
     )
 }
 
-export default RootLayout
-
+export default RootLayout;

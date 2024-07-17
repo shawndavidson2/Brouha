@@ -40,9 +40,10 @@ const League = () => {
     const onRefresh = async () => {
         setRefreshing(true);
         // await refetch();
-        //SSawait UpdateUserStats(user, setUser, league, setLeague, weekNum, lineupCache);
-        setRefreshing(false);
+        //await UpdateUserStats(user, setUser, league, setLeague, weekNum, lineupCache);
         setRefreshKey(prevKey => prevKey + 1); // Change the refresh key to restart the component
+        setRefreshing(false);
+
     };
 
     if (loading) {

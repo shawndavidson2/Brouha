@@ -12,11 +12,11 @@ const Leaderboards = () => {
         const fetchData = async () => {
             if (selectedTab === 'users') {
                 const users = await getAllUsers();
-                const sortedUsers = users.sort((a, b) => b.totalPoints - a.totalPoints);
+                const sortedUsers = users.sort((a, b) => b.weekPoints - a.weekPoints);
                 setUserLeaders(sortedUsers);
             } else {
                 const leagues = await getAllLeagues();
-                const sortedLeagues = leagues.sort((a, b) => b['cumulative-total-points'] - a['cumulative-total-points']);
+                const sortedLeagues = leagues.sort((a, b) => b['weekly-total-points'] - a['weekly-total-points']);
                 sortedLeagues.forEach((league, index) => {
                     updateLeagueAttributes(league, { rank: index + 1 })
                 });
