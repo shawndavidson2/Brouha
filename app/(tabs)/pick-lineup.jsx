@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import usePickLineup from '../../components/pickLineup_components/usePickLineup';
 import { FontAwesome } from '@expo/vector-icons'; // Import icon library
+import { useGlobalContext } from '../../context/GlobalProvider';
 
 const PickLineup = () => {
+    const { weekNum } = useGlobalContext();
     const {
         cycleWeekNum,
         picks,
@@ -13,7 +15,7 @@ const PickLineup = () => {
         renderStatusIcon,
         goToPreviousWeek,
         goToNextWeek,
-    } = usePickLineup();
+    } = usePickLineup(weekNum);
 
     return (
         <SafeAreaView className="bg-red-100 h-full" style={styles.safeArea}>

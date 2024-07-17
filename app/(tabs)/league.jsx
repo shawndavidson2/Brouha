@@ -16,6 +16,7 @@ const League = () => {
     const { user, setUser, league, setLeague, weekNum, isInitailzed } = useGlobalContext();
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0); // Add a refresh key state
 
     // Use the custom hook to get lineupCache
     const lineupCache = useLineupCache();
@@ -39,12 +40,14 @@ const League = () => {
     const onRefresh = async () => {
         setRefreshing(true);
         // await refetch();
+        //SSawait UpdateUserStats(user, setUser, league, setLeague, weekNum, lineupCache);
         setRefreshing(false);
+        setRefreshKey(prevKey => prevKey + 1); // Change the refresh key to restart the component
     };
 
     if (loading) {
         return (
-            <SafeAreaView className="bg-red-100 h-full flex justify-center items-center">
+            <SafeAreaView key={refreshKey} className="bg-red-100 h-full flex justify-center items-center">
                 <ActivityIndicator size="large" color="#0000ff" />
             </SafeAreaView>
         );
@@ -52,13 +55,13 @@ const League = () => {
 
     if (league) {
         return (
-            <SafeAreaView className="bg-red-100 h-full">
+            <SafeAreaView key={refreshKey} className="bg-red-100 h-full">
                 <FlatList
                     ListHeaderComponent={() => (
                         <>
                             <LeagueTitleAndProfile currentUser={user} leagueTitle={league.name} weekNum={weekNum} />
                             <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} weekNum={weekNum} />
-                            <LeagueParticipants leagueMembers={league.users} weekNum={weekNum} />
+                            <LeagueParticipants />
                         </>
                     )}
                     refreshControl={
@@ -70,13 +73,16 @@ const League = () => {
         );
     } else {
         return (
-            <SafeAreaView className="bg-red-100 h-full">
+            <SafeAreaView key={refreshKey} className="bg-red-100 h-full">
                 <FlatList
                     ListHeaderComponent={() => (
                         <>
                             <LeagueTitleAndProfile currentUser={user} leagueTitle={"NO LEAGUE YET"} weekNum={weekNum} />
                         </>
                     )}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
                 />
                 <JoinLeagueButton joinLeague={joinLeague} />
             </SafeAreaView>

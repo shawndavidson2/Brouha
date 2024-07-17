@@ -1,9 +1,13 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { getTotalPointsEarned } from '../../lib/appwrite';
+import { useGlobalContext } from '../../context/GlobalProvider';
 
-const LeagueParticipants = ({ leagueMembers, weekNum }) => {
+const LeagueParticipants = () => {
 
+    const { league } = useGlobalContext();
+
+    const leagueMembers = league.users
 
     // Sort league members by weekPoints in descending order
     const sortedMembers = [...leagueMembers].sort((a, b) => b.weekPoints - a.weekPoints);

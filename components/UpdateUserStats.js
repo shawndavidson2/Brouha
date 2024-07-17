@@ -1,4 +1,4 @@
-import { updateUserAttributes } from "../lib/appwrite";
+import { updateLeagueAttributes, updateUserAttributes } from "../lib/appwrite";
 import { useLineupCache } from "../context/lineupContext";
 
 // Function to determine rank category based on total points
@@ -35,6 +35,14 @@ const UpdateUserStats = async (user, setUser, league, setLeague, weekNum, lineup
         return sum;
     }, 0);
 
+    const weeklyTotalPoints = league.users.reduce((accumulator, user) => {
+        return accumulator + user.weekPoints;
+    }, 0);
+    const cumulaticeTotalPoints = league.users.reduce((accumulator, user) => {
+        return accumulator + user.totalPoints;
+    }, 0);
+
+
     console.log(totalPoints, weekPoints)
 
     const userAttributes = {
@@ -45,8 +53,14 @@ const UpdateUserStats = async (user, setUser, league, setLeague, weekNum, lineup
         // totalRank: 1, // Example value, adjust as needed
     };
 
+    const leagueAttributes = {
+        "weekly-total-points": weeklyTotalPoints,
+        "cumulative-total-points": cumulaticeTotalPoints,
+    };
+    const updatedLeague = await updateLeagueAttributes(league, leagueAttributes)
     const updatedUser = await updateUserAttributes(userAttributes);
     setUser(updatedUser);
+    setLeague(updatedLeague)
     console.log("Hello2");
 };
 
