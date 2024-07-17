@@ -1,10 +1,14 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { getAllWeeklyLineups } from '../lib/appwrite';
+import { useGlobalContext } from './GlobalProvider';
 
 const LineupContext = createContext();
 
+
 export const LineupProvider = ({ children }) => {
     const [lineupCache, setLineupCache] = useState({});
+
+    const { weekNum } = useGlobalContext();
 
     useEffect(() => {
         const fetchAllLineups = async () => {
@@ -12,6 +16,15 @@ export const LineupProvider = ({ children }) => {
                 const allLineups = await getAllWeeklyLineups();
                 const lineupCache = allLineups.reduce((acc, lineup) => {
                     acc[lineup.weekNumber] = lineup.picks;
+
+                    //Calculate total points earned
+                    if (lineup.weekNumber === weekNum) {
+                        const points = lineup.picks.reduce((sum, pick) => {
+                            return pick.status === "won" ? sum + pick["potential-points"] : sum;
+                        }, 0);
+                        //setWeeklyPoints(points);
+                    }
+
                     return acc;
                 }, {});
                 setLineupCache(lineupCache);

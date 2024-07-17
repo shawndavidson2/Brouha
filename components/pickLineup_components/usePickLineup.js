@@ -24,25 +24,7 @@ const usePickLineup = (initialWeekNum = 0) => {
 
     useEffect(() => {
         setTotalPotentialPoints(picks.reduce((total, pick) => total + pick["potential-points"], 0));
-
-        let pointsWon = 0;
-        let hasStatusChangedToWon = false;
-
-
-        picks.forEach((pick) => {
-            if (cycleWeekNum === weekNum && !pick.processed && pick.status === 'won') {
-                hasStatusChangedToWon = true;
-                pointsWon += pick["potential-points"];
-                pick.processed = true;
-                updatePickAttributes(pick.$id, { processed: true });
-            }
-        });
-
-        if (hasStatusChangedToWon) {
-            UpdatePoints(pointsWon, user, setUser, league, setLeague);
-        }
-        //UpdateWeeklyLineup(totalPointsEarned, totalPotentialPoints, cycleWeekNum)
-    }, [picks]);
+    }, [picks, totalPointsEarned]);
 
     const renderStatusIcon = (status) => {
         if (status === 'won') {

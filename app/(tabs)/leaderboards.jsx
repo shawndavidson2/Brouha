@@ -32,7 +32,7 @@ const Leaderboards = () => {
             <Text style={styles.rank}>{index + 1}</Text>
 
             <Text style={styles.name}>{item.username || item.name}</Text>
-            <Text style={styles.points}>{item['cumulative-total-points'] != null ? item['cumulative-total-points'] : item["totalPoints"]}</Text>
+            <Text style={styles.points}>{item['weekly-total-points'] != null ? item['weekly-total-points'] : item["weekPoints"]}</Text>
         </View>
     );
 

@@ -3,22 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { getTotalPointsEarned } from '../../lib/appwrite';
 
 const LeagueParticipants = ({ leagueMembers, weekNum }) => {
-    // State to hold the points for each member
-    const [points, setPoints] = useState({});
 
-    // Fetch points for all members
-    useEffect(() => {
-        const fetchPoints = async () => {
-            const pointsMap = {};
-            for (const member of leagueMembers) {
-                const earnedPoints = await getTotalPointsEarned(member.$id, weekNum);
-                pointsMap[member.$id] = earnedPoints;
-            }
-            setPoints(pointsMap);
-        };
-
-        fetchPoints();
-    }, [leagueMembers, weekNum]);
 
     // Sort league members by weekPoints in descending order
     const sortedMembers = [...leagueMembers].sort((a, b) => b.weekPoints - a.weekPoints);
@@ -37,7 +22,7 @@ const LeagueParticipants = ({ leagueMembers, weekNum }) => {
                 {contributors.map((contributor, index) => (
                     <View key={contributor.$id} style={styles.row}>
                         <Text style={styles.memberText}>{index + 1}. {contributor.username}</Text>
-                        <Text style={styles.pointsText}>{points[contributor.$id] ?? 'Loading...'}</Text>
+                        <Text style={styles.pointsText}>{contributor.weekPoints ?? 'Loading...'}</Text>
                     </View>
                 ))}
             </View>
@@ -47,7 +32,7 @@ const LeagueParticipants = ({ leagueMembers, weekNum }) => {
                     {participants.map((participant, index) => (
                         <View key={participant.$id} style={styles.row}>
                             <Text style={styles.memberText}>{index + 1 + contributors.length}. {participant.username}</Text>
-                            <Text style={styles.pointsText}>{points[participant.$id] ?? 'Loading...'}</Text>
+                            <Text style={styles.pointsText}>{participant.weekPoints ?? 'Loading...'}</Text>
                         </View>
                     ))}
                 </View>

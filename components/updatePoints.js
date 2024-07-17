@@ -15,13 +15,13 @@ const getRankCategory = (totalPoints) => {
 };
 
 
-const UpdatePoints = async (points, user, setUser, league, setLeague) => {
+
+const UpdatePoints = async (points, totalPointsEarned, user, setUser, league, setLeague) => {
     console.log("Hello!");
     const totalPoints = user.totalPoints + points;
-    const weekPoints = user.weekPoints + points;
     const userAttributes = {
         totalPoints: totalPoints,
-        weekPoints: weekPoints,
+        weekPoints: totalPointsEarned,
         rankCategory: getRankCategory(totalPoints)
         //leagueRank: calculataeLeagueRank(user, weekPoints, league),
         //totalRank: 1, // Example value, adjust as needed
@@ -30,12 +30,12 @@ const UpdatePoints = async (points, user, setUser, league, setLeague) => {
     const updatedUser = await updateUserAttributes(userAttributes);
     setUser(updatedUser);
 
-    const leagueAttributes = {
-        "weekly-total-points": league["weekly-total-points"] + points,
-        "cumulative-total-points": league["cumulative-total-points"] + points
-    };
-    const updatedLeague = await updateLeagueAttributes(leagueAttributes);
-    setLeague(updatedLeague);
+    // const leagueAttributes = {
+    //     //"weekly-total-points": league["weekly-total-points"] + totalPointsEarned,
+    //     "cumulative-total-points": league["cumulative-total-points"] + points
+    // };
+    // const updatedLeague = await updateLeagueAttributes(leagueAttributes);
+    // setLeague(updatedLeague);
     console.log("Hello2!");
 }
 

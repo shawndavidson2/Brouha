@@ -9,27 +9,46 @@ import LeagueTitleAndProfile from '../../components/league_components/LeagueTitl
 import JoinLeagueButton from '../../components/league_components/JoinLeagueButton';
 import { getCurrentUser, appwriteConfig, databases } from '../../lib/appwrite';
 import { useGlobalContext } from '../../context/GlobalProvider';
+import { UpdateUserStats } from '../../components/UpdateUserStats';
+import { useLineupCache } from '../../context/lineupContext';
 
 const League = () => {
+    const { user, setUser, league, setLeague, weekNum, isInitailzed } = useGlobalContext();
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
-    const { user, league, setLeague, weekNum } = useGlobalContext();
+    // Use the custom hook to get lineupCache
+    const lineupCache = useLineupCache();
+
+    // When the user first logs in, we want to update their stats...
+    useEffect(() => {
+        const updateStats = async () => {
+            setLoading(true);  // Set loading to true before updating stats
+            if (!isInitailzed) {
+                await UpdateUserStats(user, setUser, league, setLeague, weekNum, lineupCache);
+                setLoading(false); // Set loading to false after updating stats
+            }
+        };
+        updateStats();
+    }, []);
 
     const joinLeague = () => {
         router.push("../join-league");
     };
 
-    useEffect(() => {
-    }, [user, league]);
-
-    const [refreshing, setRefreshing] = useState(false);
-
     const onRefresh = async () => {
         setRefreshing(true);
-        //await refetch();
+        // await refetch();
         setRefreshing(false);
     };
 
+    if (loading) {
+        return (
+            <SafeAreaView className="bg-red-100 h-full flex justify-center items-center">
+                <ActivityIndicator size="large" color="#0000ff" />
+            </SafeAreaView>
+        );
+    }
 
     if (league) {
         return (
@@ -41,11 +60,11 @@ const League = () => {
                             <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} weekNum={weekNum} />
                             <LeagueParticipants leagueMembers={league.users} weekNum={weekNum} />
                         </>
-
                     )}
-
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
                 />
-
                 <JoinLeagueButton joinLeague={joinLeague} />
             </SafeAreaView>
         );

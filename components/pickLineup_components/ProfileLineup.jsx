@@ -24,19 +24,21 @@ const ProfileLineup = () => {
 
     return (
         <SafeAreaView className="bg-red-100 h-full" style={styles.safeArea}>
-            <View style={styles.container}>
-                {weeks.map((week) => (
-                    <View key={week}>
-                        <TouchableOpacity onPress={() => toggleWeek(week)} style={styles.weekSummary}>
-                            <Text style={styles.weekText}>Week {week} Pick Lineup</Text>
-                            <FontAwesome name={expandedWeek === week ? "angle-up" : "angle-down"} size={24} />
-                        </TouchableOpacity>
-                        {expandedWeek === week && (
-                            <WeekDetails week={week} />
-                        )}
-                    </View>
-                ))}
-            </View>
+            <ScrollView>
+                <View style={styles.container}>
+                    {weeks.map((week) => (
+                        <View key={week}>
+                            <TouchableOpacity onPress={() => toggleWeek(week)} style={styles.weekSummary}>
+                                <Text style={styles.weekText}>Week {week} Pick Lineup</Text>
+                                <FontAwesome name={expandedWeek === week ? "angle-up" : "angle-down"} size={24} />
+                            </TouchableOpacity>
+                            {expandedWeek === week && (
+                                <WeekDetails week={week} />
+                            )}
+                        </View>
+                    ))}
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };

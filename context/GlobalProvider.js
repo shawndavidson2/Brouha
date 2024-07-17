@@ -10,39 +10,36 @@ const GlobalProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [league, setLeague] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        getCurrentUser()
-            .then((res) => {
-                if (res) {
+        const initialize = async () => {
+            try {
+                const currentUser = await getCurrentUser();
+                if (currentUser) {
                     setIsLoggedIn(true);
-                    setUser(res);
+                    setUser(currentUser);
                 } else {
                     setIsLoggedIn(false);
                     setUser(null);
                 }
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            })
-        getCurrentLeague()
-            .then((res) => {
-                if (res) {
-                    setLeague(res);
+
+                const currentLeague = await getCurrentLeague();
+                if (currentLeague) {
+                    setLeague(currentLeague);
                 } else {
                     setLeague(null);
                 }
-            })
-            .catch((error) => {
+            } catch (error) {
                 console.log(error);
-            })
-            .finally(() => {
+            } finally {
                 setIsLoading(false);
-            })
-    }, [])
+                setIsInitialized(true);
+            }
+        };
+
+        initialize();
+    }, []);
 
     return (
         <GlobalContext.Provider
@@ -54,12 +51,13 @@ const GlobalProvider = ({ children }) => {
                 league,
                 setLeague,
                 isLoading,
-                weekNum
+                weekNum,
+                isInitialized,
             }}
         >
             {children}
         </GlobalContext.Provider>
-    )
-}
+    );
+};
 
 export default GlobalProvider;
