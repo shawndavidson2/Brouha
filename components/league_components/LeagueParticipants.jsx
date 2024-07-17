@@ -5,9 +5,11 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 
 const LeagueParticipants = () => {
 
-    const { league } = useGlobalContext();
+    const { league, user } = useGlobalContext();
 
-    const leagueMembers = league.users
+
+    const leagueMembers = league.users.map(member =>
+        member.username === user.username ? user : member);
 
     // Sort league members by weekPoints in descending order
     const sortedMembers = [...leagueMembers].sort((a, b) => b.weekPoints - a.weekPoints);
