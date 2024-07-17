@@ -35,10 +35,16 @@ const UpdateUserStats = async (user, setUser, league, setLeague, weekNum, lineup
         return sum;
     }, 0);
 
-    const weeklyTotalPoints = league.users.reduce((accumulator, user) => {
+    const leagueMembers = league.users.map(member =>
+        member.username === user.username ? user : member);
+
+    const sortedMembers = [...leagueMembers].sort((a, b) => b.weekPoints - a.weekPoints);
+    const contributors = sortedMembers.slice(0, 5);
+
+    const weeklyTotalPoints = contributors.reduce((accumulator, user) => {
         return accumulator + user.weekPoints;
     }, 0);
-    const cumulaticeTotalPoints = league.users.reduce((accumulator, user) => {
+    const cumulaticeTotalPoints = contributors.reduce((accumulator, user) => {
         return accumulator + user.totalPoints;
     }, 0);
 
