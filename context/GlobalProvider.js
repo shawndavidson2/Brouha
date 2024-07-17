@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCurrentUser, getCurrentLeague } from "../lib/appwrite";
 
 const GlobalContext = createContext();
@@ -38,6 +39,29 @@ const GlobalProvider = ({ children }) => {
             }
         };
 
+        const updateWeekNum = async () => {
+            try {
+                const lastUpdatedDate = await AsyncStorage.getItem("lastUpdatedDate");
+                const currentDate = new Date();
+                const lastDate = lastUpdatedDate ? new Date(lastUpdatedDate) : null;
+
+                if (lastDate) {
+                    const diffTime = Math.abs(currentDate - lastDate);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if (diffDays >= 7) {
+                        const weeksToAdd = Math.floor(diffDays / 7);
+                        setWeekNum(prevWeekNum => prevWeekNum + weeksToAdd);
+                        await AsyncStorage.setItem("lastUpdatedDate", currentDate.toISOString());
+                    }
+                } else {
+                    await AsyncStorage.setItem("lastUpdatedDate", currentDate.toISOString());
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        updateWeekNum();
         initialize();
     }, []);
 
