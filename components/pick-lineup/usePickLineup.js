@@ -45,6 +45,10 @@ const usePickLineup = (initialWeekNum = 0) => {
             return Math.min(prevWeek + 1, weekNum);
         });
     };
+    const deletePick = (pickId) => {
+        // Logic to delete the pick from the state or backend
+    };
+
 
     return {
         cycleWeekNum,
@@ -54,6 +58,7 @@ const usePickLineup = (initialWeekNum = 0) => {
         renderStatusIcon,
         goToPreviousWeek,
         goToNextWeek,
+        deletePick,
     };
 };
 
