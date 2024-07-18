@@ -47,7 +47,7 @@ const AllPicks = () => {
 
     const fetchFile = async () => {
         try {
-            const fileUrl = 'https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/668c9594001b31ff0cf4/view?project=667edab40004ed4257b4&mode=admin';
+            const fileUrl = 'https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/66997754d6c51b09cbb4/view?project=667edab40004ed4257b4&mode=admin';
             const response = await fetch(fileUrl);
             const blob = await response.blob();
 
