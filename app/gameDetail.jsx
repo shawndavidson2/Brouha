@@ -9,6 +9,7 @@ import { createPick, deletePick, getUserWeeklyLineup, createWeeklyLineup, update
 import { useGlobalContext } from '../context/GlobalProvider';
 import { updateWeeklyLineup } from '../lib/appwrite';
 import { useLineupCache } from '../context/lineupContext';
+import { useRouter } from 'expo-router';
 
 const GameDetail = () => {
     const { sheetName1, sheetName2 } = useLocalSearchParams();
@@ -21,10 +22,16 @@ const GameDetail = () => {
     const lineupCache = useLineupCache();
     const picks = lineupCache[weekNum] || [];
 
+    const router = useRouter();
+
     useEffect(() => {
         fetchGameDetails();
         loadSelectedPicks();
     }, []);
+
+    const goBack = () => {
+        router.back();
+    };
 
     const fetchGameDetails = async () => {
         try {
@@ -42,7 +49,8 @@ const GameDetail = () => {
                     const json = XLSX.utils.sheet_to_json(worksheet);
                     setDetails(json);
                 } else {
-                    console.error('Sheet not found:', sheetName);
+                    Alert.alert("Game not added in yet!")
+                    router.back()
                 }
             };
 
@@ -129,7 +137,7 @@ const GameDetail = () => {
         <SafeAreaView style={styles.safeArea}>
             <ScrollView style={styles.container}>
                 <TouchableOpacity style={styles.backButton}>
-                    <Text style={styles.backButtonText}>Back</Text>
+                    <Text onPress={goBack} style={styles.backButtonText}>Back</Text>
                 </TouchableOpacity>
                 <Text style={styles.title}>{`${sheetName}`}</Text>
                 <Text style={styles.sectionTitle}>Game:</Text>

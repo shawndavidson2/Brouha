@@ -23,6 +23,10 @@ const Profile = () => {
         }
     }, [user]);
 
+    const goBack = () => {
+        router.back();
+    };
+
     const logout = async () => {
         await signOut();
         setUser(null);
@@ -34,7 +38,9 @@ const Profile = () => {
     return (
         <SafeAreaView className="bg-red-100 h-full">
             <ScrollView contentContainerStyle={{ height: '100%' }} >
-
+                <TouchableOpacity className="ml-4" >
+                    <Text onPress={goBack} style={{ fontSize: 18 }}> Back</Text>
+                </TouchableOpacity>
                 < View className="w-full flex justify-center items-center mt-6 px-4">
                     <TouchableOpacity
                         onPress={logout}
