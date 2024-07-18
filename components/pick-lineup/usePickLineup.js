@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useGlobalContext } from '../../context/GlobalProvider';
 import { updatePickAttributes } from '../../lib/appwrite';
-import UpdatePoints from '../updatePoints';
 import { FontAwesome } from '@expo/vector-icons';
 import { useLineupCache } from '../../context/lineupContext';
 
