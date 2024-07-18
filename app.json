@@ -14,7 +14,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "package": "com.brouha.Brouha"
+      "bundleIdentifier": "com.Brouha.Brouha",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
@@ -32,6 +33,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a2fd11bb-c3f8-47cb-85bd-b60c070d635b"
+      }
     }
   }
 }
