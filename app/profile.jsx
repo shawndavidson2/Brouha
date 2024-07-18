@@ -10,7 +10,7 @@ import { signOut } from '../lib/appwrite'
 import { useState, useEffect } from 'react'
 import { router } from 'expo-router'
 import { ScrollView } from 'react-native'
-import ProfileLineup from '../components/pickLineup_components/ProfileLineup'
+import ProfileLineup from '../components/pick-lineup/ProfileLineup'
 
 const Profile = () => {
     const { user, setUser, setIsLoggedIn, league } = useGlobalContext();
@@ -38,10 +38,10 @@ const Profile = () => {
     return (
         <SafeAreaView className="bg-red-100 h-full">
             <ScrollView contentContainerStyle={{ height: '100%' }} >
-                <TouchableOpacity className="ml-4" >
-                    <Text onPress={goBack} style={{ fontSize: 18 }}> Back</Text>
-                </TouchableOpacity>
-                < View className="w-full flex justify-center items-center mt-6 px-4">
+                <View className="w-full flex justify-center items-center mt-6 px-4">
+                    <TouchableOpacity className="flex w-full items-start mb-0 mt-0" >
+                        <Text onPress={goBack} style={{ fontSize: 18 }}>Back</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity
                         onPress={logout}
                         className="flex w-full items-end mb-0"

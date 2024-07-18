@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import usePickLineup from '../../components/pickLineup_components/usePickLineup';
+import usePickLineup from '../../components/pick-lineup/usePickLineup';
 import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 import { useGlobalContext } from '../../context/GlobalProvider';
 
