@@ -14,7 +14,7 @@ const getRankCategory = (totalPoints) => {
 
 
 const UpdateUserStats = async (user, setUser, league, setLeague, weekNum, lineupCache) => {
-    console.log("Hello!");
+    console.log("Start!");
 
     //const currentWeekPicks = lineupCache[weekNum] || [];
     //console.log(currentWeekPicks)
@@ -35,22 +35,6 @@ const UpdateUserStats = async (user, setUser, league, setLeague, weekNum, lineup
         return sum;
     }, 0);
 
-    const leagueMembers = league.users.map(member =>
-        member.username === user.username ? user : member);
-
-    const sortedMembers = [...leagueMembers].sort((a, b) => b.weekPoints - a.weekPoints);
-    const contributors = sortedMembers.slice(0, 5);
-
-    const weeklyTotalPoints = contributors.reduce((accumulator, user) => {
-        return accumulator + user.weekPoints;
-    }, 0);
-    const cumulaticeTotalPoints = contributors.reduce((accumulator, user) => {
-        return accumulator + user.totalPoints;
-    }, 0);
-
-
-    console.log(totalPoints, weekPoints)
-
     const userAttributes = {
         totalPoints: totalPoints,
         weekPoints: weekPoints,
@@ -58,16 +42,31 @@ const UpdateUserStats = async (user, setUser, league, setLeague, weekNum, lineup
         // leagueRank: calculateLeagueRank(user, weekPoints, league),
         // totalRank: 1, // Example value, adjust as needed
     };
+    const updatedUser = await updateUserAttributes(userAttributes);
+    setUser(updatedUser);
+
+    const leagueMembers = league.users.map(member =>
+        member.username === user.username ? user : member);
+
+    const sortedMembers = [...leagueMembers].sort((a, b) => b.weekPoints - a.weekPoints);
+    const contributors = sortedMembers.slice(0, 5);
+
+    const weeklyTotalPoints = contributors.reduce((accumulator, member) => {
+        return accumulator + (member.username === user.username ? weekPoints : member.weekPoints);
+    }, 0);
+    const cumulaticeTotalPoints = contributors.reduce((accumulator, member) => {
+        return accumulator + (member.username === user.username ? totalPoints : member.totalPoints);
+    }, 0);
 
     const leagueAttributes = {
         "weekly-total-points": weeklyTotalPoints,
         "cumulative-total-points": cumulaticeTotalPoints,
     };
     const updatedLeague = await updateLeagueAttributes(league, leagueAttributes)
-    const updatedUser = await updateUserAttributes(userAttributes);
-    setUser(updatedUser);
+
+
     setLeague(updatedLeague)
-    console.log("Hello2");
+    console.log("Done!!");
 };
 
 // Export the function to make it available in other files
