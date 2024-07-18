@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import GameCard from '../../components/AllPicks_components/GameCard'; // Adjust the path as needed
+import GameCard from '../../components/all-picks/GameCard'; // Adjust the path as needed
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Client, Storage } from 'react-native-appwrite';
 import * as XLSX from 'xlsx';
