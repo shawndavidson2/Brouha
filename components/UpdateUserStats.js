@@ -19,6 +19,8 @@ const UpdateUserStats = async (user, setUser, league, setLeague, weekNum, lineup
     //const currentWeekPicks = lineupCache[weekNum] || [];
     //console.log(currentWeekPicks)
 
+
+
     // Calculate totalPoints as the sum of potential-points of all entries in lineupCache
     const totalPoints = Object.values(lineupCache).flat().reduce((sum, lineup) => {
         if (lineup.status === "won") {

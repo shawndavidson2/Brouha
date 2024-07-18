@@ -110,7 +110,7 @@ const GameDetail = () => {
                 if (picks.length >= 4) {
                     Alert.alert("You are already at your maximum number of picks for the week!");
                 } else {
-                    const newPick = await createPick(pick, pts, 'pending');
+                    const newPick = await createPick(pick, pts, 'pending', sheetName);
                     picks.push(newPick)
                     setSelectedPicks(prevState => {
                         const newState = { ...prevState, [index]: newPick.$id };

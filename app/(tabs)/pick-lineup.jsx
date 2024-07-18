@@ -33,7 +33,10 @@ const PickLineup = () => {
                 <ScrollView style={styles.scrollView}>
                     {picks.map((pick) => (
                         <View key={pick.$id} style={styles.pickItem}>
-                            <Text style={styles.pickText}>{pick["pick-title"]}</Text>
+                            <View style={styles.pickDetails}>
+                                <Text style={styles.pickText}>{pick["pick-title"]}</Text>
+                                <Text style={styles.gameText}>{pick.game}</Text>
+                            </View>
                             <Text style={styles.pointsText}>{pick["potential-points"]} pts</Text>
                             <View style={styles.statusIcon}>{renderStatusIcon(pick.status)}</View>
                         </View>
@@ -85,9 +88,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
     },
+    pickDetails: {
+        flex: 1,
+    },
     pickText: {
         fontSize: 16,
-        flex: 1,
+    },
+    gameText: {
+        fontSize: 14,
+        color: '#555',
     },
     pointsText: {
         fontSize: 16,

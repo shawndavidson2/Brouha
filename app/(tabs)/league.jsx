@@ -7,7 +7,6 @@ import LeagueParticipants from '../../components/league/LeagueParticipants';
 import LeagueStats from '../../components/league/LeagueStats';
 import LeagueTitleAndProfile from '../../components/league/LeagueTitleAndProfile';
 import JoinLeagueButton from '../../components/league/JoinLeagueButton';
-import { getCurrentUser, appwriteConfig, databases } from '../../lib/appwrite';
 import { useGlobalContext } from '../../context/GlobalProvider';
 import { UpdateUserStats } from '../../components/UpdateUserStats';
 import { useLineupCache } from '../../context/lineupContext';
@@ -40,7 +39,7 @@ const League = () => {
     const onRefresh = async () => {
         setRefreshing(true);
         // await refetch();
-        //await UpdateUserStats(user, setUser, league, setLeague, weekNum, lineupCache);
+        await UpdateUserStats(user, setUser, league, setLeague, weekNum, lineupCache);
         setRefreshKey(prevKey => prevKey + 1); // Change the refresh key to restart the component
         setRefreshing(false);
 
