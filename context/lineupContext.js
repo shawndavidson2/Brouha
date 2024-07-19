@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { getAllWeeklyLineups } from '../lib/appwrite';
 import { useGlobalContext } from './GlobalProvider';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LineupContext = createContext();
 
@@ -36,13 +38,31 @@ export const LineupProvider = ({ children }) => {
         };
 
         fetchAllLineups();
-    }, []);
+    }, [weekNum]);
 
-    return (
-        <LineupContext.Provider value={{ lineupCache, isInitialized }}>
-            {children}
-        </LineupContext.Provider>
-    );
+    if (!isInitialized) {
+        return (
+            <SafeAreaView style={styles.container}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </SafeAreaView>
+        );
+    } else {
+        return (
+            <LineupContext.Provider value={lineupCache}>
+                {children}
+            </LineupContext.Provider>
+        );
+    }
 };
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#FEE2E2', // Equivalent to bg-green-500
+        height: '100%', // Equivalent to h-full
+        flex: 1, // Equivalent to flex
+        justifyContent: 'center', // Equivalent to justify-center
+        alignItems: 'center', // Equivalent to items-center
+    },
+});
 
 export const useLineupCache = () => useContext(LineupContext);
