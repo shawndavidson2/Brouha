@@ -10,39 +10,34 @@ import JoinLeagueButton from '../../components/league/JoinLeagueButton';
 import { useGlobalContext } from '../../context/GlobalProvider';
 import { UpdateUserStats } from '../../components/UpdateUserStats';
 import { useLineupCache } from '../../context/lineupContext';
+import { useRefresh } from '../../context/RefreshContext';
 
 const League = () => {
-    const { user, setUser, league, setLeague, weekNum, isInitailzed } = useGlobalContext();
+    const { user, setUser, league, setLeague, weekNum, isInitialized: isGlobalInitialized } = useGlobalContext();
     const [loading, setLoading] = useState(true);
-    const [refreshing, setRefreshing] = useState(false);
+    const { triggerRefresh } = useRefresh();
+    const { lineupCache, isInitialized: isLineupInitialized } = useLineupCache();
     const [refreshKey, setRefreshKey] = useState(0); // Add a refresh key state
-
-    // Use the custom hook to get lineupCache
-    const lineupCache = useLineupCache();
 
     // When the user first logs in, we want to update their stats...
     useEffect(() => {
         const updateStats = async () => {
             setLoading(true);  // Set loading to true before updating stats
-            if (!isInitailzed) {
+            if (isGlobalInitialized && isLineupInitialized) {
                 await UpdateUserStats(user, setUser, league, setLeague, weekNum, lineupCache);
                 setLoading(false); // Set loading to false after updating stats
             }
         };
         updateStats();
-    }, []);
+    }, [isGlobalInitialized, isLineupInitialized]);
 
     const joinLeague = () => {
         router.push("../join-league");
     };
 
     const onRefresh = async () => {
-        setRefreshing(true);
-        // await refetch();
-        await UpdateUserStats(user, setUser, league, setLeague, weekNum, lineupCache);
         setRefreshKey(prevKey => prevKey + 1); // Change the refresh key to restart the component
-        setRefreshing(false);
-
+        triggerRefresh(); // Call the triggerRefresh function to refresh RootLayout
     };
 
     if (loading) {
@@ -65,7 +60,7 @@ const League = () => {
                         </>
                     )}
                     refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                        <RefreshControl refreshing={loading} onRefresh={onRefresh} />
                     }
                 />
                 <JoinLeagueButton joinLeague={joinLeague} />
@@ -81,7 +76,7 @@ const League = () => {
                         </>
                     )}
                     refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                        <RefreshControl refreshing={loading} onRefresh={onRefresh} />
                     }
                 />
                 <JoinLeagueButton joinLeague={joinLeague} />

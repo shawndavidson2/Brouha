@@ -10,7 +10,7 @@ import { router } from 'expo-router';
 const usePickLineup = (initialWeekNum = 0) => {
     const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
     const [cycleWeekNum, setCycleWeekNum] = useState(initialWeekNum);
-    const lineupCache = useLineupCache();
+    const { lineupCache } = useLineupCache();
     const [totalPotentialPoints, setTotalPotentialPoints] = useState(0);
 
     const picks = lineupCache[cycleWeekNum] || [];
