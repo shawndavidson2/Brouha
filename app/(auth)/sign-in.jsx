@@ -8,7 +8,6 @@ import { Link, router } from 'expo-router'
 import { getCurrentUser, signIn } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/GlobalProvider'
 import { StatusBar } from 'expo-status-bar'
-import { useRefresh } from '../../context/RefreshContext'
 
 const SignIn = () => {
     const { setUser, setIsLoggedIn, setLeague } = useGlobalContext();
@@ -16,7 +15,6 @@ const SignIn = () => {
         email: '',
         password: ''
     })
-    const { triggerRefresh } = useRefresh();
 
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -34,8 +32,6 @@ const SignIn = () => {
             setIsLoggedIn(true);
 
             router.replace('../league')
-            triggerRefresh();
-
         } catch (error) {
             Alert.alert('Error', error.message);
         } finally {
