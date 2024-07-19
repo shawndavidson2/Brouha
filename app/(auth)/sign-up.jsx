@@ -8,6 +8,7 @@ import { Link, router } from 'expo-router'
 import Checkbox from 'expo-checkbox';
 import { createUser } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/GlobalProvider'
+import { useRefresh } from '../../context/RefreshContext'
 
 const SignUp = () => {
     const { setUser, setIsLoggedIn, setLeague } = useGlobalContext();
@@ -16,6 +17,8 @@ const SignUp = () => {
         email: '',
         password: ''
     })
+
+    const { triggerRefresh } = useRefresh();
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isChecked, setChecked] = useState(false);
@@ -33,6 +36,7 @@ const SignUp = () => {
             setIsLoggedIn(true);
 
             router.replace("../league")
+            triggerRefresh();
         } catch (error) {
             Alert.alert('Error', error.message);
         } finally {
