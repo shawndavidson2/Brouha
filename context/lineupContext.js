@@ -4,9 +4,9 @@ import { useGlobalContext } from './GlobalProvider';
 
 const LineupContext = createContext();
 
+
 export const LineupProvider = ({ children }) => {
     const [lineupCache, setLineupCache] = useState({});
-    const [isInitialized, setIsInitialized] = useState(false);
 
     const { weekNum } = useGlobalContext();
 
@@ -17,12 +17,12 @@ export const LineupProvider = ({ children }) => {
                 const lineupCache = allLineups.reduce((acc, lineup) => {
                     acc[lineup.weekNumber] = lineup.picks;
 
-                    // Calculate total points earned
+                    //Calculate total points earned
                     if (lineup.weekNumber === weekNum) {
                         const points = lineup.picks.reduce((sum, pick) => {
                             return pick.status === "won" ? sum + pick["potential-points"] : sum;
                         }, 0);
-                        // setWeeklyPoints(points);
+                        //setWeeklyPoints(points);
                     }
 
                     return acc;
@@ -30,8 +30,6 @@ export const LineupProvider = ({ children }) => {
                 setLineupCache(lineupCache);
             } catch (error) {
                 console.error('Failed to fetch all weekly lineups:', error);
-            } finally {
-                setIsInitialized(true);
             }
         };
 
@@ -39,7 +37,7 @@ export const LineupProvider = ({ children }) => {
     }, []);
 
     return (
-        <LineupContext.Provider value={{ lineupCache, isInitialized }}>
+        <LineupContext.Provider value={lineupCache}>
             {children}
         </LineupContext.Provider>
     );
