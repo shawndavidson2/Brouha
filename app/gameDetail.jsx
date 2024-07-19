@@ -13,7 +13,7 @@ import { useRouter } from 'expo-router';
 
 const GameDetail = () => {
     const { sheetName1, sheetName2, date, time } = useLocalSearchParams();
-    const { weekNum, setUser } = useGlobalContext();
+    const { weekNum, user, setUser } = useGlobalContext();
     const [sheetName, setSheetName] = useState(sheetName1);
     const [details, setDetails] = useState([]);
     const [selectedPicks, setSelectedPicks] = useState({});
@@ -62,7 +62,7 @@ const GameDetail = () => {
 
     const loadSelectedPicks = async () => {
         try {
-            const storedPicks = await AsyncStorage.getItem('selectedPicks');
+            const storedPicks = await AsyncStorage.getItem(`selectedPicks_${user.$id}`);
             if (storedPicks) {
                 setSelectedPicks(JSON.parse(storedPicks));
             }
@@ -73,7 +73,7 @@ const GameDetail = () => {
 
     const saveSelectedPicks = async (picks) => {
         try {
-            await AsyncStorage.setItem('selectedPicks', JSON.stringify(picks));
+            await AsyncStorage.setItem(`selectedPicks_${user.$id}`, JSON.stringify(picks));
         } catch (error) {
             console.error('Error saving selected picks to storage:', error);
         }
@@ -91,7 +91,7 @@ const GameDetail = () => {
         const isSelected = selectedPicks[index];
 
         if (!isSelected) await addNewPick(index, pick, pts);
-        // else await deleteExistingPick(index);
+        //else await deleteExistingPick(index);
 
         setLoading(false); // Reset global loading state
     };
@@ -118,6 +118,22 @@ const GameDetail = () => {
             } catch (error) {
                 console.error('Error creating pick:', error);
             }
+        }
+    };
+
+    const deleteExistingPick = async (index) => {
+        try {
+            //picks.splice(picks.findIndex(pick => pick.$id === selectedPicks[index]), 1);
+            //await deletePick(selectedPicks[index]);
+
+            setSelectedPicks(prevState => {
+                const newState = { ...prevState };
+                delete newState[index];
+                saveSelectedPicks(newState);
+                return newState;
+            });
+        } catch (error) {
+            console.error('Error deleting pick:', error, selectedPicks[index]);
         }
     };
 

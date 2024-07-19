@@ -15,7 +15,6 @@ const usePickLineup = (initialWeekNum = 0) => {
 
     const picks = lineupCache[cycleWeekNum] || [];
 
-
     const totalPointsEarned = useMemo(() => {
         return picks.reduce((total, pick) => {
             if (pick.status === 'won') {
@@ -49,6 +48,7 @@ const usePickLineup = (initialWeekNum = 0) => {
             return Math.min(prevWeek + 1, weekNum);
         });
     };
+
     const deletePickFromPL = async (pickId) => {
         try {
             // Update the lineup cache by removing the pick
@@ -56,7 +56,7 @@ const usePickLineup = (initialWeekNum = 0) => {
             lineupCache[weekNum] = updatedPicks;
 
             // Update the AsyncStorage to reflect the changes in selected picks
-            const storedPicks = await AsyncStorage.getItem('selectedPicks');
+            const storedPicks = await AsyncStorage.getItem(`selectedPicks_${user.$id}`);
             const selectedPicks = storedPicks ? JSON.parse(storedPicks) : {};
 
             const newSelectedPicks = {};
@@ -66,7 +66,7 @@ const usePickLineup = (initialWeekNum = 0) => {
                 }
             }
 
-            await AsyncStorage.setItem('selectedPicks', JSON.stringify(newSelectedPicks));
+            await AsyncStorage.setItem(`selectedPicks_${user.$id}`, JSON.stringify(newSelectedPicks));
             router.replace('./pick-lineup')
             await deletePick(pickId);
 
@@ -74,7 +74,6 @@ const usePickLineup = (initialWeekNum = 0) => {
             console.error('Error deleting pick:', error);
         }
     };
-
 
     return {
         cycleWeekNum,
