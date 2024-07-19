@@ -21,7 +21,6 @@ const RootLayout = () => {
                     <Stack.Screen name="gameDetail" options={{ headerShown: false }} />
                 </Stack>
             </LineupProvider>
-            <StatusBar style='dark' />
         </GlobalProvider>
     );
 };
@@ -29,6 +28,7 @@ const RootLayout = () => {
 const App = () => (
     <RefreshProvider>
         <RootLayout />
+        <StatusBar style='dark' />
     </RefreshProvider>
 );
 
