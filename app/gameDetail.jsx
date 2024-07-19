@@ -90,44 +90,70 @@ const GameDetail = () => {
         setLoadingButtons(prevState => ({ ...prevState, [index]: true })); // Set loading state
         const isSelected = selectedPicks[index];
 
-        if (isSelected) {
+        if (isSelected) await deleteExistingPick(index);
+        else await addNewPick(index, pick, pts);
+
+        setLoadingButtons(prevState => ({ ...prevState, [index]: false })); // Reset loading state
+    };
+
+    const addNewPick = async (index, pick, pts) => {
+        if (picks.length >= 4) {
+            Alert.alert("You are already at your maximum number of picks for the week!");
+        } else {
             try {
-                picks.splice(picks.findIndex(pick => pick.$id === selectedPicks[index]), 1)
-
-                await deletePick(selectedPicks[index]);
-
+                const newPick = await createPick(pick, pts, 'pending', sheetName);
+                picks.push(newPick);
                 setSelectedPicks(prevState => {
-                    const newState = { ...prevState };
-                    delete newState[index];
+                    const newState = { ...prevState, [index]: newPick.$id };
                     saveSelectedPicks(newState);
                     return newState;
                 });
-            } catch (error) {
-                console.error('Error deleting pick:', error, selectedPicks[index]);
-            }
-        } else {
-            try {
-                if (picks.length >= 4) {
-                    Alert.alert("You are already at your maximum number of picks for the week!");
-                } else {
-                    const newPick = await createPick(pick, pts, 'pending', sheetName);
-                    picks.push(newPick)
-                    setSelectedPicks(prevState => {
-                        const newState = { ...prevState, [index]: newPick.$id };
-                        saveSelectedPicks(newState);
-                        return newState;
-                    });
-                    let weeklyLineup;
-                    let updatedUser;
-                    updatedUser, weeklyLineup = await updateWeeklyLineup(weekNum, newPick);
-                    if (!weeklyLineup) {
-                        weeklyLineup, updatedUser = await createWeeklyLineup([newPick.$id], pts, 0, weekNum);
-                    }
-                    //setUser(updatedUser)
+
+                let weeklyLineup, updatedUser;
+                updatedUser, weeklyLineup = await updateWeeklyLineup(weekNum, newPick);
+                if (!weeklyLineup) {
+                    weeklyLineup, updatedUser = await createWeeklyLineup([newPick.$id], pts, 0, weekNum);
                 }
+                // setUser(updatedUser);
             } catch (error) {
                 console.error('Error creating pick:', error);
             }
+        }
+    };
+
+    const deleteExistingPick = async (index) => {
+        try {
+            picks.splice(picks.findIndex(pick => pick.$id === selectedPicks[index]), 1);
+            await deletePick(selectedPicks[index]);
+
+            setSelectedPicks(prevState => {
+                const newState = { ...prevState };
+                delete newState[index];
+                saveSelectedPicks(newState);
+                return newState;
+            });
+        } catch (error) {
+            console.error('Error deleting pick:', error, selectedPicks[index]);
+        }
+    };
+
+
+
+    const deletePickFromLineup = async (lineupPick) => {
+        setLoadingButtons(prevState => ({ ...prevState, [index]: true })); // Set loading state
+        try {
+            picks.splice(picks.findIndex(pick => pick.$id === lineupPick), 1)
+
+            await deletePick(lineupPick);
+
+            setSelectedPicks(prevState => {
+                const newState = { ...prevState };
+                delete newState[index];
+                saveSelectedPicks(newState);
+                return newState;
+            });
+        } catch (error) {
+            console.error('Error deleting pick:', error, lineupPick);
         }
 
         setLoadingButtons(prevState => ({ ...prevState, [index]: false })); // Reset loading state

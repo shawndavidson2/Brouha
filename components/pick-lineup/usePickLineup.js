@@ -46,7 +46,9 @@ const usePickLineup = (initialWeekNum = 0) => {
         });
     };
     const deletePick = (pickId) => {
-        // Logic to delete the pick from the state or backend
+        console.log(pickId)
+        console.log(picks)
+        //deletePickFromLineup(pickId);
     };
 
 

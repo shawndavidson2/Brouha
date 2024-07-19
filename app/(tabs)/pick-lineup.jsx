@@ -22,7 +22,7 @@ const PickLineup = () => {
     const renderRightActions = (progress, dragX, onDelete) => {
         return (
             <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
-                <Text style={styles.deleteButtonText}>Delete</Text>
+                <Text style={styles.deleteButtonText}>Remove from PL</Text>
             </TouchableOpacity>
         );
     };
