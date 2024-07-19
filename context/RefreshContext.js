@@ -1,25 +1,22 @@
-import React, { createContext, useContext, useState } from 'react';
+// RefreshContext.js
+import React, { createContext, useState, useContext } from 'react';
 
 const RefreshContext = createContext();
 
 export const RefreshProvider = ({ children }) => {
     const [refreshKey, setRefreshKey] = useState(0);
-    const [refreshing, setRefreshing] = useState(false);
 
-    const triggerRefresh = async (refreshFunc) => {
-        setRefreshing(true);
-        if (refreshFunc) {
-            await refreshFunc();
-        }
-        setRefreshing(false);
+    const triggerRefresh = () => {
         setRefreshKey(prevKey => prevKey + 1);
     };
 
     return (
-        <RefreshContext.Provider value={{ refreshing, refreshKey, triggerRefresh }}>
+        <RefreshContext.Provider value={{ refreshKey, triggerRefresh }}>
             {children}
         </RefreshContext.Provider>
     );
 };
 
-export const useRefresh = () => useContext(RefreshContext);
+export const useRefresh = () => {
+    return useContext(RefreshContext);
+};
