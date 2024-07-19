@@ -42,7 +42,7 @@ export const LineupProvider = ({ children }) => {
 
     if (!isInitialized) {
         return (
-            <SafeAreaView className="bg-green-100 h-full flex justify-center items-center">
+            <SafeAreaView style={styles.container}>
                 <ActivityIndicator size="large" color="#0000ff" />
             </SafeAreaView>
         );
@@ -56,11 +56,12 @@ export const LineupProvider = ({ children }) => {
 };
 
 const styles = StyleSheet.create({
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
+    container: {
+        backgroundColor: '#FEE2E2', // Equivalent to bg-green-500
+        height: '100%', // Equivalent to h-full
+        flex: 1, // Equivalent to flex
+        justifyContent: 'center', // Equivalent to justify-center
+        alignItems: 'center', // Equivalent to items-center
     },
 });
 
