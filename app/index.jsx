@@ -23,8 +23,6 @@ const index = () => {
                     <SignIn />
                 )}
             </ScrollView>
-
-            <StatusBar style='dark' />
         </SafeAreaView>
     )
 }

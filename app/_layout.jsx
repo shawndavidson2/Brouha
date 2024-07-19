@@ -4,6 +4,7 @@ import { Slot, Stack } from 'expo-router';
 import GlobalProvider from '../context/GlobalProvider';
 import { LineupProvider } from '../context/lineupContext';
 import { RefreshProvider, useRefresh } from '../context/RefreshContext';
+import { StatusBar } from 'expo-status-bar';
 
 const RootLayout = () => {
     const { refreshKey } = useRefresh();
@@ -20,6 +21,7 @@ const RootLayout = () => {
                     <Stack.Screen name="gameDetail" options={{ headerShown: false }} />
                 </Stack>
             </LineupProvider>
+            <StatusBar style='dark' />
         </GlobalProvider>
     );
 };
