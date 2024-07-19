@@ -20,16 +20,13 @@ const GlobalProvider = ({ children }) => {
                 if (currentUser) {
                     setIsLoggedIn(true);
                     setUser(currentUser);
+                    const currentLeague = await getCurrentLeague();
+                    if (currentLeague) {
+                        setLeague(currentLeague);
+                    }
                 } else {
                     setIsLoggedIn(false);
                     setUser(null);
-                }
-
-                const currentLeague = await getCurrentLeague();
-                if (currentLeague) {
-                    setLeague(currentLeague);
-                } else {
-                    setLeague(null);
                 }
             } catch (error) {
                 console.log(error);

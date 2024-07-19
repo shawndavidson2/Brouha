@@ -8,12 +8,12 @@ const LineupContext = createContext();
 export const LineupProvider = ({ children }) => {
     const [lineupCache, setLineupCache] = useState({});
 
-    const { weekNum } = useGlobalContext();
+    const { weekNum, user } = useGlobalContext();
 
     useEffect(() => {
         const fetchAllLineups = async () => {
             try {
-                const allLineups = await getAllWeeklyLineups();
+                const allLineups = await getAllWeeklyLineups(user);
                 const lineupCache = allLineups.reduce((acc, lineup) => {
                     acc[lineup.weekNumber] = lineup.picks;
 

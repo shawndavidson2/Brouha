@@ -28,11 +28,10 @@ const Profile = () => {
     };
 
     const logout = async () => {
+        router.replace("./(auth)/sign-in");
         await signOut();
         setUser(null);
         setIsLoggedIn(false);
-
-        router.replace("./(auth)/sign-in");
     };
 
     return (
