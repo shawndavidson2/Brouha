@@ -3,6 +3,8 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 import { updatePickAttributes } from '../../lib/appwrite';
 import { FontAwesome } from '@expo/vector-icons';
 import { useLineupCache } from '../../context/lineupContext';
+import { deletePick } from '../../lib/appwrite';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const usePickLineup = (initialWeekNum = 0) => {
     const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
@@ -45,10 +47,30 @@ const usePickLineup = (initialWeekNum = 0) => {
             return Math.min(prevWeek + 1, weekNum);
         });
     };
-    const deletePick = (pickId) => {
-        console.log(pickId)
-        console.log(picks)
-        //deletePickFromLineup(pickId);
+    const deletePickFromPL = async (pickId) => {
+        try {
+            // Update the lineup cache by removing the pick
+            const updatedPicks = lineupCache[weekNum].filter(pick => pick.$id !== pickId);
+            lineupCache[weekNum] = updatedPicks;
+
+            // Update the AsyncStorage to reflect the changes in selected picks
+            const storedPicks = await AsyncStorage.getItem('selectedPicks');
+            const selectedPicks = storedPicks ? JSON.parse(storedPicks) : {};
+
+            const newSelectedPicks = {};
+            for (const key in selectedPicks) {
+                if (selectedPicks[key] !== pickId) {
+                    newSelectedPicks[key] = selectedPicks[key];
+                }
+            }
+
+            await AsyncStorage.setItem('selectedPicks', JSON.stringify(newSelectedPicks));
+
+            // Delete the pick from the backend
+            await deletePick(pickId);
+        } catch (error) {
+            console.error('Error deleting pick:', error);
+        }
     };
 
 
@@ -60,7 +82,7 @@ const usePickLineup = (initialWeekNum = 0) => {
         renderStatusIcon,
         goToPreviousWeek,
         goToNextWeek,
-        deletePick,
+        deletePickFromPL,
     };
 };
 

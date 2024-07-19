@@ -16,7 +16,7 @@ const PickLineup = () => {
         renderStatusIcon,
         goToPreviousWeek,
         goToNextWeek,
-        deletePick, // Assuming you have a function to delete a pick
+        deletePickFromPL, // Assuming you have a function to delete a pick
     } = usePickLineup(weekNum);
 
     const renderRightActions = (progress, dragX, onDelete) => {
@@ -46,7 +46,7 @@ const PickLineup = () => {
                             <Swipeable
                                 key={pick.$id}
                                 renderRightActions={(progress, dragX) =>
-                                    renderRightActions(progress, dragX, () => deletePick(pick.$id))
+                                    renderRightActions(progress, dragX, () => deletePickFromPL(pick.$id))
                                 }
                             >
                                 <View style={styles.pickItem}>

@@ -137,28 +137,6 @@ const GameDetail = () => {
         }
     };
 
-
-
-    const deletePickFromLineup = async (lineupPick) => {
-        setLoadingButtons(prevState => ({ ...prevState, [index]: true })); // Set loading state
-        try {
-            picks.splice(picks.findIndex(pick => pick.$id === lineupPick), 1)
-
-            await deletePick(lineupPick);
-
-            setSelectedPicks(prevState => {
-                const newState = { ...prevState };
-                delete newState[index];
-                saveSelectedPicks(newState);
-                return newState;
-            });
-        } catch (error) {
-            console.error('Error deleting pick:', error, lineupPick);
-        }
-
-        setLoadingButtons(prevState => ({ ...prevState, [index]: false })); // Reset loading state
-    };
-
     return (
         <SafeAreaView style={styles.safeArea}>
             <ScrollView style={styles.container}>
