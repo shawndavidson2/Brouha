@@ -20,11 +20,13 @@ const PickLineup = () => {
     } = usePickLineup(weekNum);
 
     const renderRightActions = (progress, dragX, onDelete) => {
-        return (
-            <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
-                <Text style={styles.deleteButtonText}>Remove from PL</Text>
-            </TouchableOpacity>
-        );
+        if (cycleWeekNum === weekNum) {
+            return (
+                <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
+                    <Text style={styles.deleteButtonText}>Remove from PL</Text>
+                </TouchableOpacity>
+            );
+        }
     };
 
     return (
