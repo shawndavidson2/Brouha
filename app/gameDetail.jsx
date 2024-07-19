@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'rea
 import { useLocalSearchParams } from 'expo-router';
 import * as XLSX from 'xlsx';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AntDesign } from '@expo/vector-icons'; // Import AntDesign icons
+import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createPick, deletePick, getUserWeeklyLineup, createWeeklyLineup, updatePickAttributes } from '../lib/appwrite';
 import { useGlobalContext } from '../context/GlobalProvider';
@@ -17,7 +17,7 @@ const GameDetail = () => {
     const [sheetName, setSheetName] = useState(sheetName1);
     const [details, setDetails] = useState([]);
     const [selectedPicks, setSelectedPicks] = useState({});
-    const [loadingButtons, setLoadingButtons] = useState({}); // Add loading state
+    const [loading, setLoading] = useState(false); // Global loading state
 
     const lineupCache = useLineupCache();
     const picks = lineupCache[weekNum] || [];
@@ -87,14 +87,13 @@ const GameDetail = () => {
     };
 
     const handleAddToPL = async (index, pick, pts) => {
-        setLoadingButtons(prevState => ({ ...prevState, [index]: true })); // Set loading state
+        setLoading(true); // Set global loading state
         const isSelected = selectedPicks[index];
 
         if (!isSelected) await addNewPick(index, pick, pts);
-        //else await deleteExistingPick(index);
+        // else await deleteExistingPick(index);
 
-
-        setLoadingButtons(prevState => ({ ...prevState, [index]: false })); // Reset loading state
+        setLoading(false); // Reset global loading state
     };
 
     const addNewPick = async (index, pick, pts) => {
@@ -119,22 +118,6 @@ const GameDetail = () => {
             } catch (error) {
                 console.error('Error creating pick:', error);
             }
-        }
-    };
-
-    const deleteExistingPick = async (index) => {
-        try {
-            picks.splice(picks.findIndex(pick => pick.$id === selectedPicks[index]), 1);
-            await deletePick(selectedPicks[index]);
-
-            setSelectedPicks(prevState => {
-                const newState = { ...prevState };
-                delete newState[index];
-                saveSelectedPicks(newState);
-                return newState;
-            });
-        } catch (error) {
-            console.error('Error deleting pick:', error, selectedPicks[index]);
         }
     };
 
@@ -163,7 +146,7 @@ const GameDetail = () => {
                                 <TouchableOpacity
                                     style={styles.addButton}
                                     onPress={() => handleAddToPL(index, detail[sheetName], Math.round(detail['__EMPTY']))}
-                                    disabled={loadingButtons[index]} // Disable button based on loading state
+                                    disabled={loading} // Disable button based on global loading state
                                 >
                                     <View style={styles.buttonContent}>
                                         {selectedPicks[index] ? (
