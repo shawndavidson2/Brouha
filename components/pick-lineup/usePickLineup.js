@@ -5,6 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useLineupCache } from '../../context/lineupContext';
 import { deletePick } from '../../lib/appwrite';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 
 const usePickLineup = (initialWeekNum = 0) => {
     const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
@@ -13,6 +14,7 @@ const usePickLineup = (initialWeekNum = 0) => {
     const [totalPotentialPoints, setTotalPotentialPoints] = useState(0);
 
     const picks = lineupCache[cycleWeekNum] || [];
+
 
     const totalPointsEarned = useMemo(() => {
         return picks.reduce((total, pick) => {
@@ -65,9 +67,9 @@ const usePickLineup = (initialWeekNum = 0) => {
             }
 
             await AsyncStorage.setItem('selectedPicks', JSON.stringify(newSelectedPicks));
-
-            // Delete the pick from the backend
+            router.replace('./pick-lineup')
             await deletePick(pickId);
+
         } catch (error) {
             console.error('Error deleting pick:', error);
         }
