@@ -53,6 +53,7 @@ const PickLineup = () => {
                                     <View style={styles.pickDetails}>
                                         <Text style={styles.pickText}>{pick["pick-title"]}</Text>
                                         <Text style={styles.gameText}>{pick.game}</Text>
+                                        <Text style={styles.gameText}>{pick.date} {pick.time}</Text>
                                     </View>
                                     <Text style={styles.pointsText}>{pick["potential-points"]} pts</Text>
                                     <View style={styles.statusIcon}>{renderStatusIcon(pick.status)}</View>

@@ -12,7 +12,7 @@ import { useLineupCache } from '../context/lineupContext';
 import { useRouter } from 'expo-router';
 
 const GameDetail = () => {
-    const { sheetName1, sheetName2 } = useLocalSearchParams();
+    const { sheetName1, sheetName2, date, time } = useLocalSearchParams();
     const { weekNum, setUser } = useGlobalContext();
     const [sheetName, setSheetName] = useState(sheetName1);
     const [details, setDetails] = useState([]);
@@ -90,8 +90,9 @@ const GameDetail = () => {
         setLoadingButtons(prevState => ({ ...prevState, [index]: true })); // Set loading state
         const isSelected = selectedPicks[index];
 
-        if (isSelected) await deleteExistingPick(index);
-        else await addNewPick(index, pick, pts);
+        if (!isSelected) await addNewPick(index, pick, pts);
+        //else await deleteExistingPick(index);
+
 
         setLoadingButtons(prevState => ({ ...prevState, [index]: false })); // Reset loading state
     };
@@ -101,7 +102,7 @@ const GameDetail = () => {
             Alert.alert("You are already at your maximum number of picks for the week!");
         } else {
             try {
-                const newPick = await createPick(pick, pts, 'pending', sheetName);
+                const newPick = await createPick(pick, pts, 'pending', sheetName, date, time);
                 picks.push(newPick);
                 setSelectedPicks(prevState => {
                     const newState = { ...prevState, [index]: newPick.$id };

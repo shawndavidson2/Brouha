@@ -11,7 +11,7 @@ const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder }) => {
         const sheetName2 = `${homeTeam} vs ${awayTeam}`;
         router.push({
             pathname: '/gameDetail',
-            params: { sheetName1, sheetName2 },
+            params: { sheetName1, sheetName2, date, time },
         });
     };
 
