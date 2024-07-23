@@ -14,22 +14,23 @@ import { useRefresh } from '../../context/RefreshContext';
 
 const League = () => {
     const { user, setUser, league, setLeague, weekNum, isInitialized: isGlobalInitialized } = useGlobalContext();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const { triggerRefresh } = useRefresh();
     const lineupCache = useLineupCache();
     const [refreshKey, setRefreshKey] = useState(0); // Add a refresh key state
 
     // When the user first logs in, we want to update their stats...
     useEffect(() => {
+
         const updateStats = async () => {
-            setLoading(true);  // Set loading to true before updating stats
-            if (isGlobalInitialized) {
+            if (isGlobalInitialized && league) {
+                setLoading(true);  // Set loading to true before updating stats
                 await UpdateUserStats(user, setUser, league, setLeague, weekNum, lineupCache);
                 setLoading(false); // Set loading to false after updating stats
             }
         };
         updateStats();
-    }, [isGlobalInitialized]);
+    }, [isGlobalInitialized, league]);
 
     const joinLeague = () => {
         router.push("../join-league");

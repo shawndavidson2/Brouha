@@ -15,7 +15,9 @@ export const LineupProvider = ({ children }) => {
     useEffect(() => {
         const fetchAllLineups = async () => {
             try {
+
                 const allLineups = await getAllWeeklyLineups();
+
                 const lineupCache = allLineups.reduce((acc, lineup) => {
                     acc[lineup.weekNumber] = lineup.picks;
 
