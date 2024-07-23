@@ -9,19 +9,46 @@ const LeagueTitleAndProfile = ({ currentUser, leagueTitle, weekNum }) => {
     };
 
     return (
-        <View style={{ width: '100%', paddingVertical: 20, alignItems: 'center' }}>
-            <View style={{ position: 'absolute', top: 10, right: 40, alignItems: 'center' }}>
-                <TouchableOpacity onPress={profile}>
+        <View style={{ width: '100%', paddingVertical: 20 }}>
+            <View style={{ 
+                flexDirection: 'row',
+             }}>
+                <View
+                    style={{
+                        flexDirection: 'column',
+                        // alignItems: 'center',
+                        // justifyContent: 'space-around',
+                    }}
+                >
+                    <Text style={{ fontSize: 30, fontWeight: 'bold' }}>{leagueTitle}</Text>
+                    <Text className="mt-2" style={{ fontSize: 18, fontWeight: 'medium' }}>Week {weekNum}</Text>
+                </View>
+                <TouchableOpacity onPress={profile}
+                    style={{
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        paddingLeft: 120,
+                        justifyContent: 'space-around',
+                    }}
+                >
                     <Image
                         source={icons.profile}
                         resizeMode="contain"
-                        style={{ width: 40, height: 40 }}
+                        style={{ 
+                            width: 40, 
+                            height: 40,
+                            tintColor: '#8b2326'
+                        }}
                     />
-                    <Text className="mt-2">Profile</Text>
+                    <Text
+                        style={{
+                            color: '#8b2326',
+                            fontSize: 16,
+                            fontWeight: 'bold'
+                        }}
+                    >Profile</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={{ fontSize: 30, fontWeight: 'bold' }}>{leagueTitle}</Text>
-            <Text className="mt-2" style={{ fontSize: 18, fontWeight: 'medium' }}>Week {weekNum}</Text>
         </View>
     );
 };

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, TouchableOpacity, Image,  StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -51,20 +51,22 @@ const League = () => {
 
     if (league) {
         return (
-            <SafeAreaView key={refreshKey} className="bg-red-100 h-full">
-                <FlatList
-                    ListHeaderComponent={() => (
-                        <>
-                            <LeagueTitleAndProfile currentUser={user} leagueTitle={league.name} weekNum={weekNum} />
-                            <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} weekNum={weekNum} />
-                            <LeagueParticipants />
-                        </>
-                    )}
-                    refreshControl={
-                        <RefreshControl refreshing={loading} onRefresh={onRefresh} />
-                    }
-                />
-                <JoinLeagueButton joinLeague={joinLeague} />
+            <SafeAreaView key={refreshKey} style={styles.safeArea}>
+                <View style={styles.container}>
+                    <FlatList
+                        ListHeaderComponent={() => (
+                            <>
+                                <LeagueTitleAndProfile currentUser={user} leagueTitle={league.name} weekNum={weekNum} />
+                                <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} weekNum={weekNum} />
+                                <LeagueParticipants />
+                            </>
+                        )}
+                        refreshControl={
+                            <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+                        }
+                    />
+                    <JoinLeagueButton joinLeague={joinLeague} />
+                </View> 
             </SafeAreaView>
         );
     } else {
@@ -85,5 +87,93 @@ const League = () => {
         );
     }
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 10,
+        margin: 20,
+        backgroundColor: '#fefcf9',
+        borderRadius: 10,
+        borderTopColor: '#8b2326',
+        borderTopWidth: 20,
+        justifyContent: 'center',
+    },
+    header: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    weekNavigation: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    subHeader: {
+        fontSize: 18,
+        textAlign: 'center',
+    },
+    scrollView: {
+        flex: 1,
+    },
+    pickItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    },
+    pickDetails: {
+        flex: 1,
+    },
+    pickText: {
+        fontSize: 16,
+    },
+    gameText: {
+        fontSize: 14,
+        color: '#555',
+    },
+    pointsText: {
+        fontSize: 16,
+    },
+    statusIcon: {
+        marginLeft: 10,
+    },
+    totalContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+    },
+    totalText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    totalPointsText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    earnedPointsText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: 'green',
+    },
+    deleteButton: {
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 75,
+        height: '100%',
+    },
+    deleteButtonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#343434',
+    },
+});
 
 export default League;

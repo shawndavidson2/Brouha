@@ -38,7 +38,7 @@ const PickLineup = () => {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <SafeAreaView className="bg-red-100 h-full" style={styles.safeArea}>
+            <SafeAreaView style={styles.safeArea}>
                 <View style={styles.container}>
                     <Text style={styles.header}>My Pick - Lineup</Text>
                     <View style={styles.weekNavigation}>
@@ -87,9 +87,13 @@ const PickLineup = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
-        margin: 10,
-        backgroundColor: '#fff',
+        padding: 10,
+        margin: 20,
+        backgroundColor: '#fefcf9',
+        borderRadius: 10,
+        borderTopColor: '#8b2326',
+        borderTopWidth: 20,
+        justifyContent: 'center',
     },
     header: {
         fontSize: 24,
@@ -161,6 +165,10 @@ const styles = StyleSheet.create({
     deleteButtonText: {
         color: 'white',
         fontWeight: 'bold',
+    },
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#343434',
     },
 });
 
