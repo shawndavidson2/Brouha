@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image,  StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -43,7 +43,7 @@ const League = () => {
 
     if (loading) {
         return (
-            <SafeAreaView key={refreshKey} className="bg-red-100 h-full flex justify-center items-center">
+            <SafeAreaView key={refreshKey} style={styles.safeArea}>
                 <ActivityIndicator size="large" color="#0000ff" />
             </SafeAreaView>
         );
@@ -66,12 +66,12 @@ const League = () => {
                         }
                     />
                     <JoinLeagueButton joinLeague={joinLeague} />
-                </View> 
+                </View>
             </SafeAreaView>
         );
     } else {
         return (
-            <SafeAreaView key={refreshKey} className="bg-red-100 h-full">
+            <SafeAreaView key={refreshKey} style={styles.safeArea}>
                 <FlatList
                     ListHeaderComponent={() => (
                         <>

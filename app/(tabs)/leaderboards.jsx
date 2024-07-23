@@ -45,7 +45,7 @@ const Leaderboards = () => {
     };
 
     return (
-        <SafeAreaView className="bg-red-100 h-full">
+        <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
                 <View style={styles.leaderboard}>
                     <Text style={styles.title}>{selectedTab === 'users' ? 'User Leaderboards' : 'Leagues Leaderboard'}</Text>
@@ -73,6 +73,10 @@ const Leaderboards = () => {
 };
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#343434'
+    },
     container: {
         flex: 1,
         padding: 16,

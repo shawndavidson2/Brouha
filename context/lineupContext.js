@@ -59,7 +59,7 @@ export const LineupProvider = ({ children }) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#FEE2E2', // Equivalent to bg-green-500
+        backgroundColor: '#343434', // Equivalent to bg-green-500
         height: '100%', // Equivalent to h-full
         flex: 1, // Equivalent to flex
         justifyContent: 'center', // Equivalent to justify-center
