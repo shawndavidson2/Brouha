@@ -31,7 +31,7 @@ const Leaderboards = () => {
     }, [selectedTab]);
 
     const renderLeaderboardItem = (item, index) => {
-        const isCurrentUser = null, isCurrentLeague = null;
+        let isCurrentUser, isCurrentLeague;
         if (user) isCurrentUser = item.username === user.username;
         if (league) isCurrentLeague = item.name === league.name
 
