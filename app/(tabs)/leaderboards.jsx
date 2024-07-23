@@ -31,8 +31,9 @@ const Leaderboards = () => {
     }, [selectedTab]);
 
     const renderLeaderboardItem = (item, index) => {
-        const isCurrentUser = item.username === user.username;
-        const isCurrentLeague = item.name === league.name
+        const isCurrentUser = null, isCurrentLeague = null;
+        if (user) isCurrentUser = item.username === user.username;
+        if (league) isCurrentLeague = item.name === league.name
 
         return (
             <View key={item.$id} style={[styles.leaderboardItem, (isCurrentUser || isCurrentLeague) && styles.current]}>
