@@ -5,13 +5,31 @@ import { icons } from '../../constants';
 const JoinLeagueButton = ({ joinLeague }) => {
     return (
         <View style={{ position: 'absolute', bottom: 20, right: 20, alignItems: 'center' }}>
-            <TouchableOpacity onPress={joinLeague}>
+            <TouchableOpacity onPress={joinLeague}
+                style={{
+                    width: 150,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: 10,
+                    justifyContent: 'space-around',
+                    gap: 30,
+                }}
+            >
+                <Text
+                    style={{ 
+                        color: '#8b2326',
+                        fontSize: 16,
+                        fontWeight: 'bold'
+                    }}
+                >
+                    Join a League
+                </Text>
                 <Image
-                    className="w-[40] h-[40] flex items-center ml-5 mb-3"
+                    className="w-[40] h-[40]"
                     source={icons.plus}
                     resizeMode="contain"
+                    tintColor={'#8b2326'}
                 />
-                <Text>Join a League</Text>
             </TouchableOpacity>
         </View>
     );

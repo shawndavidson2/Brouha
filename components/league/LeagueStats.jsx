@@ -3,7 +3,16 @@ import React from 'react';
 
 const LeagueStats = ({ rank, weekPoints, totalPoints, weekNum }) => {
     return (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginTop: 25 }}>
+        <View style={{ 
+            flexDirection: 'row', 
+            // justifyContent: 'space-around', 
+            justifyContent: 'center',
+            width: '100%', 
+            padding: 20,
+            paddingHorizontal: 0,
+            backgroundColor: '#dbb978',
+            borderRadius: 10,
+        }}>
             <View style={{ alignItems: 'center' }}>
                 <Text style={{ fontSize: 16, fontWeight: 'bold' }}>League Rank</Text>
                 <Text style={{ fontSize: 26, marginTop: 5 }}>{rank}</Text>
