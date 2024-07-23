@@ -15,23 +15,23 @@ export const LineupProvider = ({ children }) => {
     useEffect(() => {
         const fetchAllLineups = async () => {
             try {
-
                 const allLineups = await getAllWeeklyLineups();
+                if (allLineups) {
+                    const lineupCache = allLineups.reduce((acc, lineup) => {
+                        acc[lineup.weekNumber] = lineup.picks;
 
-                const lineupCache = allLineups.reduce((acc, lineup) => {
-                    acc[lineup.weekNumber] = lineup.picks;
+                        // Calculate total points earned
+                        if (lineup.weekNumber === weekNum) {
+                            const points = lineup.picks.reduce((sum, pick) => {
+                                return pick.status === "won" ? sum + pick["potential-points"] : sum;
+                            }, 0);
+                            // setWeeklyPoints(points);
+                        }
 
-                    // Calculate total points earned
-                    if (lineup.weekNumber === weekNum) {
-                        const points = lineup.picks.reduce((sum, pick) => {
-                            return pick.status === "won" ? sum + pick["potential-points"] : sum;
-                        }, 0);
-                        // setWeeklyPoints(points);
-                    }
-
-                    return acc;
-                }, {});
-                setLineupCache(lineupCache);
+                        return acc;
+                    }, {});
+                    setLineupCache(lineupCache);
+                }
             } catch (error) {
                 console.error('Failed to fetch all weekly lineups:', error);
             } finally {

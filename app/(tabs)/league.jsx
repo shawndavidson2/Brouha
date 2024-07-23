@@ -30,7 +30,7 @@ const League = () => {
             }
         };
         updateStats();
-    }, [isGlobalInitialized, league]);
+    }, [isGlobalInitialized]);
 
     const joinLeague = () => {
         router.push("../join-league");
