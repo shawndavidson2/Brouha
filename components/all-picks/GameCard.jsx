@@ -43,8 +43,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+        marginVertical: 5,
+        backgroundColor: '#fff',
+        borderRadius: 10,
     },
     teamContainer: {
         flexDirection: 'column',

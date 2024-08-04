@@ -145,4 +145,20 @@ export default styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#343434',
     },
+    loadingScreen: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#343434',
+    },
+    input: {
+        height: 40,
+        width: '100%',
+        borderColor: 'gray',
+        borderWidth: 1,
+        margin: 10,
+        padding: 10,
+        borderRadius: 5,
+        backgroundColor: '#fff',
+    }
 });

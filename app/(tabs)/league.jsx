@@ -1,8 +1,7 @@
-import { View, Text, TouchableOpacity, Image,  StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, TouchableOpacity, Image,  StyleSheet, FlatList, RefreshControl } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { icons } from '../../constants';
 import styles from '../styles';
 import LeagueParticipants from '../../components/league/LeagueParticipants';
 import LeagueStats from '../../components/league/LeagueStats';
@@ -12,6 +11,7 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 import { UpdateUserStats } from '../../components/UpdateUserStats';
 import { useLineupCache } from '../../context/lineupContext';
 import { useRefresh } from '../../context/RefreshContext';
+import Loading from '../../components/Loading';
 
 const League = () => {
     const { user, setUser, league, setLeague, weekNum, isInitialized: isGlobalInitialized } = useGlobalContext();
@@ -43,9 +43,7 @@ const League = () => {
 
     if (loading) {
         return (
-            <SafeAreaView key={refreshKey} className="bg-red-100 h-full flex justify-center items-center">
-                <ActivityIndicator size="large" color="#0000ff" />
-            </SafeAreaView>
+            <Loading/>
         );
     }
 
@@ -75,18 +73,20 @@ const League = () => {
         );
     } else {
         return (
-            <SafeAreaView key={refreshKey} className="bg-red-100 h-full">
-                <FlatList
-                    ListHeaderComponent={() => (
-                        <>
-                            <LeagueTitleAndProfile currentUser={user} leagueTitle={"NO LEAGUE YET"} weekNum={weekNum} />
-                        </>
-                    )}
-                    refreshControl={
-                        <RefreshControl refreshing={loading} onRefresh={onRefresh} />
-                    }
-                />
-                <JoinLeagueButton joinLeague={joinLeague} />
+            <SafeAreaView key={refreshKey} style={styles.safeArea}>
+                <View style={styles.container}>
+                    <FlatList
+                        ListHeaderComponent={() => (
+                            <>
+                                <LeagueTitleAndProfile currentUser={user} leagueTitle={"NO LEAGUE YET"} weekNum={weekNum} />
+                            </>
+                        )}
+                        refreshControl={
+                            <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+                        }
+                    />
+                    <JoinLeagueButton joinLeague={joinLeague} />
+                </View>
             </SafeAreaView>
         );
     }

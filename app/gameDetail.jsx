@@ -10,6 +10,8 @@ import { useGlobalContext } from '../context/GlobalProvider';
 import { updateWeeklyLineup } from '../lib/appwrite';
 import { useLineupCache } from '../context/lineupContext';
 import { useRouter } from 'expo-router';
+import Loading from '../components/Loading';
+import styles from './styles';
 
 const GameDetail = () => {
     const { sheetName1, sheetName2, date, time } = useLocalSearchParams();
@@ -176,99 +178,11 @@ const GameDetail = () => {
                         )
                     ))
                 ) : (
-                    <View style={styles.safeArea}>
-                        <ActivityIndicator size="large" color="#8b2326" />
-                    </View>
+                    <Loading/>
                 )}
             </ScrollView>
         </SafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-        backgroundColor: '#FFEBEE',
-    },
-    container: {
-        flex: 1,
-        padding: 20,
-    },
-    backButton: {
-        marginBottom: 10,
-    },
-    backButtonText: {
-        fontSize: 18,
-    },
-    title: {
-        textAlign: 'center',
-        fontSize: 30,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
-    headerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    headerTextPick: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        flex: 1,
-        textAlign: 'left',
-    },
-    headerTextPts: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        flex: 1,
-        textAlign: 'right',
-        marginRight: 140
-    },
-    detailContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-    },
-    detailText: {
-        textAlign: 'center',
-        flex: 1,
-    },
-    pickColumn: {
-        flex: 3,
-        textAlign: 'center',
-        marginRight: 20
-    },
-    ptsColumn: {
-        flex: 1,
-        textAlign: 'center',
-        marginRight: 20
-    },
-    addButton: {
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        borderRadius: 5,
-        borderWidth: 3,
-        marginLeft: 10,
-    },
-    buttonContent: {
-        width: 70, // Fixed width to avoid layout shift
-        alignItems: 'center',
-    },
-    addButtonText: {
-        fontSize: 14,
-    },
-});
 
 export default GameDetail;

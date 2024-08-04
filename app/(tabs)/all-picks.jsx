@@ -5,6 +5,7 @@ import GameCard from '../../components/all-picks/GameCard'; // Adjust the path a
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Client, Storage } from 'react-native-appwrite';
 import * as XLSX from 'xlsx';
+import Loading from '../../components/Loading';
 
 const client = new Client();
 client.setEndpoint('https://cloud.appwrite.io/v1').setProject('667edab40004ed4257b4');
@@ -100,31 +101,29 @@ const AllPicks = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView
-                style={styles.container}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
-            >
-                {data.length ? (
-                    data.map((row, index) => (
-                        <GameCard
-                            key={index}
-                            date={row['Game-Date'].split(',')[0]} // Adjust based on actual data structure
-                            time={row['Game-Date'].split(',')[1]} // Adjust based on actual data structure
-                            homeTeam={row['Matchup'].split('vs')[1]} // Adjust based on actual data structure
-                            awayTeam={row['Matchup'].split('vs')[0]} // Adjust based on actual data structure
-                            spread={row['HomeTeam (Spread)']} // Adjust based on actual data structure
-                            overUnder={row['Matchup Over']} // Adjust based on actual data structure
-                        />
-                    ))
-                ) : (
-                    <View >
-                        <ActivityIndicator size="large" color="#0000ff" />
-                    </View>
-                )}
-            </ScrollView>
+        <SafeAreaView style={styles.safeArea}>
+            <View style={styles.picksContainer}>
+                <ScrollView
+                    style={styles.container}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                >
+                    {
+                        data.map((row, index) => (
+                            <GameCard
+                                key={index}
+                                date={row['Game-Date'].split(',')[0]} // Adjust based on actual data structure
+                                time={row['Game-Date'].split(',')[1]} // Adjust based on actual data structure
+                                homeTeam={row['Matchup'].split('vs')[1]} // Adjust based on actual data structure
+                                awayTeam={row['Matchup'].split('vs')[0]} // Adjust based on actual data structure
+                                spread={row['HomeTeam (Spread)']} // Adjust based on actual data structure
+                                overUnder={row['Matchup Over']} // Adjust based on actual data structure
+                            />
+                        ))
+                    }
+                </ScrollView>
+            </View>
         </SafeAreaView>
     );
 };
@@ -144,6 +143,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#343434',
     },
+    picksContainer: {
+        padding: 0,
+        paddingHorizontal: 10,
+        flex: 1,
+    }
 });
 
 export default AllPicks;
