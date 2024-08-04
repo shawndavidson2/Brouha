@@ -7,7 +7,7 @@ import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createPick, deletePick, getUserWeeklyLineup, createWeeklyLineup, updatePick } from '../lib/appwrite';
 import { useGlobalContext } from '../context/GlobalProvider';
-import { updateWeeklyLineup, createGame } from '../lib/appwrite';
+import { updateWeeklyLineup } from '../lib/appwrite';
 import { useLineupCache } from '../context/lineupContext';
 import { useRouter } from 'expo-router';
 import Loading from '../components/Loading';
@@ -28,30 +28,8 @@ const GameDetail = () => {
 
     useEffect(() => {
         fetchGameDetails();
+        loadSelectedPicks();
     }, []);
-
-    useEffect(() => {
-        const processDetails = async () => {
-            const picksArr = []
-            if (details.length > 0) {
-                const createStatus = await createGame(sheetName, weekNum); // Adjust parameters as needed
-
-                if (createStatus) {
-                    details.map((detail, index) => {
-                        if (index > 0) {
-                            createPick(detail[sheetName], Math.round(detail["__EMPTY"]), "pending", sheetName, date, time).then(res => {
-                                picksArr.push(res)
-                            })
-                        }
-                    })
-                }
-
-            }
-            await loadSelectedPicks();
-        };
-
-        processDetails();
-    }, [details]); // This useEffect runs whenever `details` changes
 
     const goBack = () => {
         router.back();
@@ -125,7 +103,7 @@ const GameDetail = () => {
             Alert.alert("You are already at your maximum number of picks for the week!");
         } else {
             try {
-                const newPick = await updatePick(pick, pts, user.$id);
+                const newPick = await createPick(pick, pts, 'pending', sheetName, date, time);
                 picks.push(newPick);
                 setSelectedPicks(prevState => {
                     const newState = { ...prevState, [index]: newPick.$id };
@@ -167,7 +145,7 @@ const GameDetail = () => {
                 <TouchableOpacity style={styles.backButton}>
                     <Text onPress={goBack} style={styles.backButtonText}>Back</Text>
                 </TouchableOpacity>
-                <Text style={styles.title}>{`${sheetName}`}</Text>
+                <Text style={styles.header}>{`${sheetName}`}</Text>
                 <Text style={styles.sectionTitle}>Game:</Text>
                 <View style={styles.headerContainer}>
                     <Text style={styles.headerTextPick}>Pick</Text>

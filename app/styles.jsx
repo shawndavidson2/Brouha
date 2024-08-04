@@ -68,7 +68,7 @@ export default styles = StyleSheet.create({
         borderRadius: 10,
         borderTopColor: '#8b2326',
         borderTopWidth: 20,
-        justifyContent: 'center',
+        // justifyContent: 'center',
     },
     header: {
         fontSize: 24,
