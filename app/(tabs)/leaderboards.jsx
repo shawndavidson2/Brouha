@@ -3,11 +3,14 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import styles from '../styles';
 import { getAllUsers, getAllLeagues, updateLeagueAttributes } from '../../lib/appwrite';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useGlobalContext } from '../../context/GlobalProvider';
 
 const Leaderboards = () => {
     const [selectedTab, setSelectedTab] = useState('users');
     const [userLeaders, setUserLeaders] = useState([]);
     const [leagueLeaders, setLeagueLeaders] = useState([]);
+
+    const { user, league } = useGlobalContext();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,7 +22,7 @@ const Leaderboards = () => {
                 const leagues = await getAllLeagues();
                 const sortedLeagues = leagues.sort((a, b) => b['weekly-total-points'] - a['weekly-total-points']);
                 sortedLeagues.forEach((league, index) => {
-                    updateLeagueAttributes(league, { rank: index + 1 })
+                    updateLeagueAttributes(league, { rank: index + 1 });
                 });
                 setLeagueLeaders(sortedLeagues);
             }
@@ -28,14 +31,19 @@ const Leaderboards = () => {
         fetchData();
     }, [selectedTab]);
 
-    const renderLeaderboardItem = (item, index) => (
-        <View key={item.$id} style={styles.leaderboardItem}>
-            <Text style={styles.rank}>{index + 1}</Text>
+    const renderLeaderboardItem = (item, index) => {
+        let isCurrentUser, isCurrentLeague;
+        if (user) isCurrentUser = item.username === user.username;
+        if (league) isCurrentLeague = item.name === league.name
 
-            <Text style={styles.name}>{item.username || item.name}</Text>
-            <Text style={styles.points}>{item['weekly-total-points'] != null ? item['weekly-total-points'] : item["weekPoints"]}</Text>
-        </View>
-    );
+        return (
+            <View key={item.$id} style={[styles.leaderboardItem, (isCurrentUser || isCurrentLeague) && styles.current]}>
+                <Text style={styles.rank}>{index + 1}</Text>
+                <Text style={styles.name}>{item.username || item.name}</Text>
+                <Text style={styles.points}>{item['weekly-total-points'] != null ? item['weekly-total-points'] : item["weekPoints"]}</Text>
+            </View>
+        );
+    };
 
     return (
         <SafeAreaView style={styles.safeArea}>

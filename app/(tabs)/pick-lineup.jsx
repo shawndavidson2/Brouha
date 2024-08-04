@@ -5,6 +5,8 @@ import { Swipeable, GestureHandlerRootView } from 'react-native-gesture-handler'
 import usePickLineup from '../../components/pick-lineup/usePickLineup';
 import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 import { useGlobalContext } from '../../context/GlobalProvider';
+import { useEffect } from 'react';
+import { router } from 'expo-router';
 
 const PickLineup = () => {
     const { weekNum } = useGlobalContext();
@@ -18,6 +20,11 @@ const PickLineup = () => {
         goToNextWeek,
         deletePickFromPL, // Assuming you have a function to delete a pick
     } = usePickLineup(weekNum);
+
+    // useEffect(() => {
+    //     router.replace('./pick-lineup')
+    // }, [])
+
 
     const renderRightActions = (progress, dragX, onDelete) => {
         if (cycleWeekNum === weekNum) {

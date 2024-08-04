@@ -39,6 +39,7 @@ const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder }) => {
 
 const styles = StyleSheet.create({
     card: {
+        backgroundColor: 'white',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

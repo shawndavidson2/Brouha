@@ -3,7 +3,7 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 import { updatePickAttributes } from '../../lib/appwrite';
 import { FontAwesome } from '@expo/vector-icons';
 import { useLineupCache } from '../../context/lineupContext';
-import { deletePick } from '../../lib/appwrite';
+import { removePickFromWeeklyLineup } from '../../lib/appwrite';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 
@@ -68,7 +68,7 @@ const usePickLineup = (initialWeekNum = 0) => {
 
             await AsyncStorage.setItem(`selectedPicks_${user.$id}`, JSON.stringify(newSelectedPicks));
             router.replace('./pick-lineup')
-            await deletePick(pickId);
+            await removePickFromWeeklyLineup(pickId, user.$id, weekNum);
 
         } catch (error) {
             console.error('Error deleting pick:', error);

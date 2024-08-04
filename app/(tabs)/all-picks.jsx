@@ -132,12 +132,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
+        backgroundColor: '#343434',
     },
-    header: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginVertical: 20,
+    card: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: '#343434',
     },
     safeArea: {
         flex: 1,
