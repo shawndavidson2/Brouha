@@ -1,9 +1,12 @@
-import { ScrollView, View, ActivityIndicator } from 'react-native';
+import { ScrollView } from 'react-native';
 import React from 'react';
 import { Redirect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../context/GlobalProvider';
 import SignIn from './(auth)/sign-in';
+import { symbolName } from 'typescript';
+import styles from './styles';
+import Loading from '../components/Loading';
 
 const index = () => {
     const { isLoading, isLoggedIn } = useGlobalContext();
@@ -11,12 +14,10 @@ const index = () => {
     if (!isLoading && isLoggedIn) return <Redirect href="./league" />
 
     return (
-        <SafeAreaView className="bg-red-100 h-full">
+        <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={{ height: '100%' }}>
                 {isLoading ? (
-                    <View >
-                        <ActivityIndicator size="large" color="#0000ff" />
-                    </View>
+                    <Loading/>
                 ) : (
                     <SignIn />
                 )}

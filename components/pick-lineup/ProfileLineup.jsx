@@ -23,7 +23,7 @@ const ProfileLineup = () => {
     };
 
     return (
-        <SafeAreaView className="bg-red-100 h-full" style={styles.safeArea}>
+        <SafeAreaView style={styles.safeArea}>
             <ScrollView>
                 <View style={styles.container}>
                     {weeks.map((week) => (

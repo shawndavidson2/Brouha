@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import styles from '../styles';
 import { getAllUsers, getAllLeagues, updateLeagueAttributes } from '../../lib/appwrite';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../../context/GlobalProvider';
@@ -72,77 +73,6 @@ const Leaderboards = () => {
     );
 };
 
-const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-        backgroundColor: '#343434'
-    },
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: '#fff',
-    },
-    leaderboard: {
-        flex: 1,
-        marginBottom: 24,
-        padding: 16,
-        borderRadius: 8,
-        backgroundColor: '#f9f9f9',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        elevation: 3,
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 8,
-    },
-    leaderboardItem: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: '#eee',
-    },
-    current: {
-        backgroundColor: '#d3ffd3', // Highlight color for the current user
-    },
-    rank: {
-        width: 40,
-        textAlign: 'center',
-        fontWeight: 'bold',
-    },
-    name: {
-        flex: 1,
-        textAlign: 'left',
-    },
-    points: {
-        width: 80,
-        textAlign: 'right',
-        fontWeight: 'bold',
-    },
-    tabContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        paddingVertical: 16,
-        borderTopWidth: 1,
-        borderTopColor: '#eee',
-    },
-    tab: {
-        flex: 1,
-        alignItems: 'center',
-        paddingVertical: 8,
-    },
-    activeTab: {
-        borderBottomWidth: 2,
-        borderBottomColor: '#000',
-    },
-    tabText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-});
+
 
 export default Leaderboards;

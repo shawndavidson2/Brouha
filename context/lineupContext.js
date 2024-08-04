@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { getAllWeeklyLineups } from '../lib/appwrite';
 import { useGlobalContext } from './GlobalProvider';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import styles from '../app/styles';
+import Loading from '../components/Loading';
 
 const LineupContext = createContext();
 
@@ -44,9 +44,7 @@ export const LineupProvider = ({ children }) => {
 
     if (!isInitialized) {
         return (
-            <SafeAreaView style={styles.container}>
-                <ActivityIndicator size="large" color="#0000ff" />
-            </SafeAreaView>
+            <Loading />
         );
     } else {
         return (
@@ -56,15 +54,5 @@ export const LineupProvider = ({ children }) => {
         );
     }
 };
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#343434', // Equivalent to bg-green-500
-        height: '100%', // Equivalent to h-full
-        flex: 1, // Equivalent to flex
-        justifyContent: 'center', // Equivalent to justify-center
-        alignItems: 'center', // Equivalent to items-center
-    },
-});
 
 export const useLineupCache = () => useContext(LineupContext);
