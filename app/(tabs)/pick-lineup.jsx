@@ -26,8 +26,8 @@ const PickLineup = () => {
     // }, [])
 
 
-    const renderRightActions = (progress, dragX, onDelete) => {
-        if (cycleWeekNum === weekNum) {
+    const renderRightActions = (pick, progress, dragX, onDelete) => {
+        if (cycleWeekNum === weekNum && pick.status === "pending") {
             return (
                 <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
                     <Text style={styles.deleteButtonText}>Remove from PL</Text>
@@ -55,7 +55,7 @@ const PickLineup = () => {
                             <Swipeable
                                 key={pick.$id}
                                 renderRightActions={(progress, dragX) =>
-                                    renderRightActions(progress, dragX, () => deletePickFromPL(pick.$id))
+                                    renderRightActions(pick, progress, dragX, () => deletePickFromPL(pick, pick.$id))
                                 }
                             >
                                 <View style={styles.pickItem}>
