@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl, ActivityIndicator} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GameCard from '../../components/all-picks/GameCard'; // Adjust the path as needed
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -100,7 +100,7 @@ const AllPicks = () => {
     };
 
     return (
-        <SafeAreaView className="bg-red-100 h-full" style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <ScrollView
                 style={styles.container}
                 refreshControl={
@@ -120,7 +120,9 @@ const AllPicks = () => {
                         />
                     ))
                 ) : (
-                    <Text>Loading...</Text>
+                    <View >
+                        <ActivityIndicator size="large" color="#0000ff" />
+                    </View>
                 )}
             </ScrollView>
         </SafeAreaView>
@@ -137,6 +139,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginVertical: 20,
+    },
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#343434',
     },
 });
 

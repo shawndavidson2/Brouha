@@ -4,6 +4,7 @@ import { createAndJoinLeague, searchLeagues, joinLeague } from '../lib/appwrite'
 import { router } from 'expo-router';
 import { useGlobalContext } from '../context/GlobalProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import styles from './styles';
 
 const JoinLeague = () => {
     const { setUser, league, setLeague, setIsLoggedIn, getCurrentUser } = useGlobalContext();
@@ -55,7 +56,7 @@ const JoinLeague = () => {
     };
 
     return (
-        <SafeAreaView className="bg-red-100 h-full">
+        <SafeAreaView style={styles.safeArea}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 }}>
                 <Text style={{ fontSize: 24, marginBottom: 16 }}>Join or Create a League</Text>
                 <TextInput

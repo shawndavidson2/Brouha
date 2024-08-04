@@ -176,7 +176,9 @@ const GameDetail = () => {
                         )
                     ))
                 ) : (
-                    <Text>Loading...</Text>
+                    <View style={styles.safeArea}>
+                        <ActivityIndicator size="large" color="#8b2326" />
+                    </View>
                 )}
             </ScrollView>
         </SafeAreaView>

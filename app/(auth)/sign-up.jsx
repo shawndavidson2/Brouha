@@ -9,6 +9,7 @@ import Checkbox from 'expo-checkbox';
 import { createUser } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/GlobalProvider'
 import { useRefresh } from '../../context/RefreshContext'
+import styles from '../styles'
 
 const SignUp = () => {
     const { setUser, setIsLoggedIn, setLeague } = useGlobalContext();
@@ -45,7 +46,7 @@ const SignUp = () => {
     }
 
     return (
-        <SafeAreaView className="bg-red-100 h-full">
+        <SafeAreaView style={styles.safeArea}>
             <View className="w-full  h-full px-5 my-6">
                 <Text className="text-5xl mt-2 text-bold font-bold text-center">
                     Brouha

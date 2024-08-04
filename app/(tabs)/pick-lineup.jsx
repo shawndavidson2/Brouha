@@ -77,7 +77,7 @@ const PickLineup = () => {
     );
 };
 
-const styles = StyleSheet.create({
+const styless = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,

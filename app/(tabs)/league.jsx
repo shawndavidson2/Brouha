@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { icons } from '../../constants';
+import styles from '../styles';
 import LeagueParticipants from '../../components/league/LeagueParticipants';
 import LeagueStats from '../../components/league/LeagueStats';
 import LeagueTitleAndProfile from '../../components/league/LeagueTitleAndProfile';
@@ -55,7 +56,11 @@ const League = () => {
                     <FlatList
                         ListHeaderComponent={() => (
                             <>
-                                <LeagueTitleAndProfile currentUser={user} leagueTitle={league.name} weekNum={weekNum} />
+                                <LeagueTitleAndProfile 
+                                    currentUser={user} 
+                                    leagueTitle={capitalizeFirstLetterOfEachWord(league.name)} 
+                                    weekNum={weekNum} 
+                                />
                                 <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} weekNum={weekNum} />
                                 <LeagueParticipants />
                             </>
@@ -85,94 +90,10 @@ const League = () => {
             </SafeAreaView>
         );
     }
-};
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-        margin: 20,
-        backgroundColor: '#fefcf9',
-        borderRadius: 10,
-        borderTopColor: '#8b2326',
-        borderTopWidth: 20,
-        justifyContent: 'center',
-    },
-    header: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    weekNavigation: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    subHeader: {
-        fontSize: 18,
-        textAlign: 'center',
-    },
-    scrollView: {
-        flex: 1,
-    },
-    pickItem: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
-    },
-    pickDetails: {
-        flex: 1,
-    },
-    pickText: {
-        fontSize: 16,
-    },
-    gameText: {
-        fontSize: 14,
-        color: '#555',
-    },
-    pointsText: {
-        fontSize: 16,
-    },
-    statusIcon: {
-        marginLeft: 10,
-    },
-    totalContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 10,
-    },
-    totalText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    totalPointsText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    earnedPointsText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: 'green',
-    },
-    deleteButton: {
-        backgroundColor: 'red',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 75,
-        height: '100%',
-    },
-    deleteButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-    safeArea: {
-        flex: 1,
-        backgroundColor: '#343434',
-    },
-});
+    
+    function capitalizeFirstLetterOfEachWord(string) {
+        return string.replace(/\b\w/g, (char) => char.toUpperCase());
+    }
+}
 
 export default League;

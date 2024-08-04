@@ -7,6 +7,7 @@ const LeagueStats = ({ rank, weekPoints, totalPoints, weekNum }) => {
             flexDirection: 'row', 
             // justifyContent: 'space-around', 
             justifyContent: 'center',
+            alignContent: 'space-evenly',
             width: '100%', 
             padding: 20,
             paddingHorizontal: 0,
@@ -19,12 +20,12 @@ const LeagueStats = ({ rank, weekPoints, totalPoints, weekNum }) => {
             </View>
             <View style={{ borderLeftWidth: 1, borderLeftColor: 'black', height: '100%', marginHorizontal: 10 }} />
             <View style={{ alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Week {weekNum} Points</Text>
+                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Week {weekNum} Pts</Text>
                 <Text style={{ fontSize: 26, marginTop: 5 }}>{weekPoints}</Text>
             </View>
             <View style={{ borderLeftWidth: 1, borderLeftColor: 'black', height: '100%', marginHorizontal: 10 }} />
             <View style={{ alignItems: 'center' }}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Total Points</Text>
+                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Total Pts</Text>
                 <Text style={{ fontSize: 26, marginTop: 5 }}>{totalPoints}</Text>
             </View>
         </View>
