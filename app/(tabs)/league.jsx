@@ -43,12 +43,8 @@ const League = () => {
         triggerRefresh(); // Call the triggerRefresh function to refresh RootLayout
     };
 
-    if (loading) {
-        return (
-            <SafeAreaView key={refreshKey} style={styles.safeArea}>
-                <ActivityIndicator size="large" color="#0000ff" />
-            </SafeAreaView>
-        );
+    {
+        loading && <Loading key={refreshKey} />
     }
 
     if (league) {
