@@ -157,9 +157,6 @@ const GameDetail = () => {
                 </View> 
                 <ScrollView 
                     bounces={false}
-                    style={{
-                        backgroundColor: 'blue',
-                    }}
                 >
                     {details.length ? (
                         details.map((detail, index) => (
