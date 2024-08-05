@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getCurrentUser, getCurrentLeague } from "../lib/appwrite";
+import { getCurrentUser, getCurrentLeague, checkAndUpdateWeekNum, resetWeekPoints } from "../lib/appwrite";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -37,29 +37,30 @@ const GlobalProvider = ({ children }) => {
         };
 
         const updateWeekNum = async () => {
-            try {
-                const lastUpdatedDate = await AsyncStorage.getItem("lastUpdatedDate");
-                const currentDate = new Date();
-                const lastDate = lastUpdatedDate ? new Date(lastUpdatedDate) : null;
+            // Hardcoded start date for Week 1 (July 15, 2024 at midnight)
+            const startWeek1 = new Date('2024-07-22T00:00:00');
 
-                if (lastDate) {
-                    const diffTime = Math.abs(currentDate - lastDate);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    if (diffDays >= 7) {
-                        const weeksToAdd = Math.floor(diffDays / 7);
-                        setWeekNum(prevWeekNum => prevWeekNum + weeksToAdd);
-                        await AsyncStorage.setItem("lastUpdatedDate", currentDate.toISOString());
-                    }
-                } else {
-                    await AsyncStorage.setItem("lastUpdatedDate", currentDate.toISOString());
-                }
-            } catch (error) {
-                console.log(error);
+            // Get the current date and time
+            const currentDate = new Date();
+
+            // Calculate the number of weeks since the start of Week 1
+            const millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
+            const weeksSinceStart = Math.floor((currentDate - startWeek1) / millisecondsPerWeek);
+
+            // Calculate the current week number
+            const currentWeekNum = 1 + weeksSinceStart; // Week 1 started on July 15, 2024
+
+            console.log('Current Week Number:', currentWeekNum);
+
+            const needsWeekClearing = await checkAndUpdateWeekNum(currentWeekNum)
+            if (needsWeekClearing) {
+                await resetWeekPoints();
             }
         };
 
-        updateWeekNum();
         initialize();
+        updateWeekNum();
+
     }, []);
 
     return (
