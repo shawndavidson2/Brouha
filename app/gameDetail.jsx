@@ -200,7 +200,7 @@ const GameDetail = () => {
                         )
                     ))
                 ) : (
-                    <Loading/>
+                    <Loading />
                 )}
             </ScrollView>
         </SafeAreaView>
