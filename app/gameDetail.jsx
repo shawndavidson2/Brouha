@@ -133,13 +133,14 @@ const GameDetail = () => {
                     saveSelectedPicks(newState);
                     return newState;
                 });
-                setLoadingScreen(false);
+
 
                 let weeklyLineup, updatedUser;
                 updatedUser, weeklyLineup = await updateWeeklyLineup(weekNum, picks, pts);
                 if (!weeklyLineup) {
                     weeklyLineup, updatedUser = await createWeeklyLineup([newPick.$id], pts, 0, weekNum);
                 }
+                setLoadingScreen(false);
                 // setUser(updatedUser);
             } catch (error) {
                 console.error('Error creating pick:', error);
