@@ -133,7 +133,7 @@ const GameDetail = () => {
                 });
 
                 let weeklyLineup, updatedUser;
-                updatedUser, weeklyLineup = await updateWeeklyLineup(weekNum, picks);
+                updatedUser, weeklyLineup = await updateWeeklyLineup(weekNum, picks, pts);
                 if (!weeklyLineup) {
                     weeklyLineup, updatedUser = await createWeeklyLineup([newPick.$id], pts, 0, weekNum);
                 }

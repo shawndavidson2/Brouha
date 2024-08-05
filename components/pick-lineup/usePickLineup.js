@@ -49,7 +49,7 @@ const usePickLineup = (initialWeekNum = 0) => {
         });
     };
 
-    const deletePickFromPL = async (pickId) => {
+    const deletePickFromPL = async (pick, pickId) => {
         try {
             // Update the lineup cache by removing the pick
             const updatedPicks = lineupCache[weekNum].filter(pick => pick.$id !== pickId);
@@ -68,7 +68,7 @@ const usePickLineup = (initialWeekNum = 0) => {
 
             await AsyncStorage.setItem(`selectedPicks_${user.$id}`, JSON.stringify(newSelectedPicks));
             router.replace('./pick-lineup')
-            await removePickFromWeeklyLineup(pickId, user.$id, weekNum);
+            await removePickFromWeeklyLineup(pickId, user.$id, weekNum, pick["potential-points"]);
 
         } catch (error) {
             console.error('Error deleting pick:', error);
