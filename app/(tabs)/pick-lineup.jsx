@@ -55,7 +55,7 @@ const PickLineup = () => {
                             <Swipeable
                                 key={pick.$id}
                                 renderRightActions={(progress, dragX) =>
-                                    renderRightActions(pick, progress, dragX, () => deletePickFromPL(pick, pick.$id))
+                                    renderRightActions(pick, progress, dragX, () => deletePickFromPL(pick.$id))
                                 }
                             >
                                 <View style={styles.pickItem}>
