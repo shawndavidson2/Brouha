@@ -27,7 +27,7 @@ const League = () => {
         const updateStats = async () => {
             if (isGlobalInitialized && league) {
                 setLoading(true);  // Set loading to true before updating stats
-                await UpdateUserStats(user, setUser, league, setLeague, weekNum, lineupCache);
+                //await UpdateUserStats(user, setUser, league, setLeague, weekNum, lineupCache);
                 setLoading(false); // Set loading to false after updating stats
             }
         };
@@ -54,10 +54,10 @@ const League = () => {
                     <FlatList
                         ListHeaderComponent={() => (
                             <>
-                                <LeagueTitleAndProfile 
-                                    currentUser={user} 
-                                    leagueTitle={capitalizeFirstLetterOfEachWord(league.name)} 
-                                    weekNum={weekNum} 
+                                <LeagueTitleAndProfile
+                                    currentUser={user}
+                                    leagueTitle={capitalizeFirstLetterOfEachWord(league.name)}
+                                    weekNum={weekNum}
                                 />
                                 <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} weekNum={weekNum} />
                                 <LeagueParticipants />
@@ -90,7 +90,7 @@ const League = () => {
             </SafeAreaView>
         );
     }
-    
+
     function capitalizeFirstLetterOfEachWord(string) {
         return string.replace(/\b\w/g, (char) => char.toUpperCase());
     }
