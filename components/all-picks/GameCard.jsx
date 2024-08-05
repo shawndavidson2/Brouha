@@ -7,6 +7,9 @@ const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder }) => {
     const router = useRouter();
 
     const handlePress = () => {
+        // TODO
+        // if past date and time DONT LET USER IN!
+        console.log("date: ", date, "time: ", time)
         const sheetName1 = `${awayTeam}vs${homeTeam}`;
         const sheetName2 = `${homeTeam} vs ${awayTeam}`;
         router.push({
