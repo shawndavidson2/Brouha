@@ -160,5 +160,103 @@ export default styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         backgroundColor: '#fff',
-    }
+    },
+    backButton: {
+        marginBottom: 10,
+    },
+    backButtonText: {
+        fontSize: 18,
+    },
+    title: {
+        textAlign: 'center',
+        fontSize: 30,
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    sectionTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    headerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '58%',
+        backgroundColor: '#8b2326',
+        padding: 10,
+        paddingHorizontal: 30,
+        borderTopStartRadius: 10,
+        borderTopEndRadius: 10,
+        marginTop: 30,
+        marginLeft: 10,
+        justifyContent: 'space-between'
+    },
+    headerTextPick: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    headerTextPts: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    headerPick: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '32%',
+        backgroundColor: '#DBB978',
+        padding: 10,
+        paddingHorizontal: 30,
+        borderTopStartRadius: 10,
+        borderTopEndRadius: 10,
+        marginTop: 30,
+        marginLeft: 10,
+        justifyContent: 'space-between'
+    },
+    detailContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+    },
+    detailText: {
+        fontSize: 16,
+        textAlign: 'center',
+        flex: 1,
+    },
+    pickColumn: {
+        flex: 3,
+        textAlign: 'center',
+        marginRight: 20
+    },
+    ptsColumn: {
+        flex: 1,
+        textAlign: 'center',
+        marginRight: 20
+    },
+    addButton: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 5,
+        borderWidth: 3,
+        marginLeft: 10,
+    },
+    buttonContent: {
+        width: 70, // Fixed width to avoid layout shift
+        alignItems: 'center',
+    },
+    addButtonText: {
+        fontSize: 14,
+    },
 });
+                // <Text style={styles.title}>{`${sheetName}`}</Text>
+                // <Text style={styles.sectionTitle}>Game:</Text>
+                // <View style={styles.headerContainer}>
+                //     <Text style={styles.headerTextPick}>Pick</Text>
+                //     <Text style={styles.headerTextPts}>Pts</Text>
