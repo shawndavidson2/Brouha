@@ -54,7 +54,7 @@ const GameDetail = () => {
     }, [details]); // This useEffect runs whenever `details` changes
 
     const goBack = () => {
-        router.back();
+        if (!loading) router.back();
     };
 
     const fetchGameDetails = async () => {
@@ -111,13 +111,19 @@ const GameDetail = () => {
     };
 
     const handleAddToPL = async (index, pick, pts) => {
-        setLoading(true); // Set global loading state
-        const isSelected = selectedPicks[index];
 
-        if (!isSelected) await addNewPick(index, pick, pts);
-        //else await deleteExistingPick(index);
+        if (!user.league) {
+            Alert.alert("Please join or create a league to make a pick!");
+        } else {
+            setLoading(true); // Set global loading state
 
-        setLoading(false); // Reset global loading state
+            const isSelected = selectedPicks[index];
+
+            if (!isSelected) await addNewPick(index, pick, pts);
+            //else await deleteExistingPick(index);
+
+            setLoading(false); // Reset global loading state
+        }
     };
 
     const addNewPick = async (index, pick, pts) => {
@@ -134,13 +140,14 @@ const GameDetail = () => {
                     return newState;
                 });
 
+                setLoadingScreen(false);
 
                 let weeklyLineup, updatedUser;
                 updatedUser, weeklyLineup = await updateWeeklyLineup(weekNum, picks, pts);
                 if (!weeklyLineup) {
                     weeklyLineup, updatedUser = await createWeeklyLineup([newPick.$id], pts, 0, weekNum);
                 }
-                setLoadingScreen(false);
+
                 // setUser(updatedUser);
             } catch (error) {
                 console.error('Error creating pick:', error);
