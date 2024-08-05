@@ -7,21 +7,18 @@ import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createPick, deletePick, getUserWeeklyLineup, createWeeklyLineup, updatePick } from '../lib/appwrite';
 import { useGlobalContext } from '../context/GlobalProvider';
-import { updateWeeklyLineup } from '../lib/appwrite';
+import { updateWeeklyLineup, createGame } from '../lib/appwrite';
 import { useLineupCache } from '../context/lineupContext';
 import { useRouter } from 'expo-router';
 import Loading from '../components/Loading';
-import styles from './styles';
 
 const GameDetail = () => {
-
     const { sheetName1, sheetName2, date, time } = useLocalSearchParams();
     const { weekNum, user, setUser } = useGlobalContext();
     const [sheetName, setSheetName] = useState(sheetName1);
     const [details, setDetails] = useState([]);
     const [selectedPicks, setSelectedPicks] = useState({});
     const [loading, setLoading] = useState(false); // Global loading state
-    const [contentHeight, setContentHeight] = useState(0);
 
     const lineupCache = useLineupCache();
     const picks = lineupCache[weekNum] || [];
@@ -30,8 +27,30 @@ const GameDetail = () => {
 
     useEffect(() => {
         fetchGameDetails();
-        loadSelectedPicks();
     }, []);
+
+    useEffect(() => {
+        const processDetails = async () => {
+            const picksArr = []
+            if (details.length > 0) {
+                const createStatus = await createGame(sheetName, weekNum); // Adjust parameters as needed
+
+                if (createStatus) {
+                    details.map((detail, index) => {
+                        if (index > 0) {
+                            createPick(detail[sheetName], Math.round(detail["__EMPTY"]), "pending", sheetName, date, time, weekNum).then(res => {
+                                picksArr.push(res)
+                            })
+                        }
+                    })
+                }
+
+            }
+            await loadSelectedPicks();
+        };
+
+        processDetails();
+    }, [details]); // This useEffect runs whenever `details` changes
 
     const goBack = () => {
         router.back();
@@ -105,7 +124,7 @@ const GameDetail = () => {
             Alert.alert("You are already at your maximum number of picks for the week!");
         } else {
             try {
-                const newPick = await createPick(pick, pts, 'pending', sheetName, date, time);
+                const newPick = await updatePick(pick, pts, user.$id);
                 picks.push(newPick);
                 setSelectedPicks(prevState => {
                     const newState = { ...prevState, [index]: newPick.$id };
@@ -148,14 +167,14 @@ const GameDetail = () => {
                     <Text onPress={goBack} style={styles.backButtonText}>Back</Text>
                 </TouchableOpacity>
                 <Text style={styles.header}>{`${sheetName}`}</Text>
-                <View style={{ flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row' }}>
                     <View style={styles.headerContainer}>
                         <Text style={styles.headerTextPick}>Pick</Text>
                         <Text style={styles.headerTextPts}>Pts</Text>
                     </View>
-                    <View style={styles.headerPick}/>
-                </View> 
-                <ScrollView 
+                    <View style={styles.headerPick} />
+                </View>
+                <ScrollView
                     bounces={false}
                 >
                     {details.length ? (
@@ -185,7 +204,7 @@ const GameDetail = () => {
                             )
                         ))
                     ) : (
-                        <Loading/>
+                        <Loading />
                     )}
                 </ScrollView>
             </View>
