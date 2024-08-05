@@ -6,7 +6,7 @@ const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
 
 const GlobalProvider = ({ children }) => {
-    const [weekNum, setWeekNum] = useState(3);
+    const [weekNum, setWeekNum] = useState(0);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
     const [league, setLeague] = useState(null);
@@ -51,6 +51,7 @@ const GlobalProvider = ({ children }) => {
             const currentWeekNum = 1 + weeksSinceStart; // Week 1 started on July 15, 2024
 
             console.log('Current Week Number:', currentWeekNum);
+            setWeekNum(currentWeekNum)
 
             const needsWeekClearing = await checkAndUpdateWeekNum(currentWeekNum)
             if (needsWeekClearing) {
