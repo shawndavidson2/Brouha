@@ -60,7 +60,6 @@ const GameDetail = () => {
 
     const fetchGameDetails = async () => {
         try {
-            console.log("Fetching game details")
             const fileUrl = 'https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/66997754d6c51b09cbb4/view?project=667edab40004ed4257b4&mode=admin';
             const response = await fetch(fileUrl);
             const blob = await response.blob();
