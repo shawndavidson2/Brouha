@@ -26,6 +26,9 @@ export default styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#eee',
     },
+    current: {
+        backgroundColor: '#DBB978', // Light green background
+    },
     rank: {
         width: 40,
         textAlign: 'center',
@@ -254,8 +257,8 @@ export default styles = StyleSheet.create({
         fontSize: 14,
     },
 });
-                // <Text style={styles.title}>{`${sheetName}`}</Text>
-                // <Text style={styles.sectionTitle}>Game:</Text>
-                // <View style={styles.headerContainer}>
-                //     <Text style={styles.headerTextPick}>Pick</Text>
-                //     <Text style={styles.headerTextPts}>Pts</Text>
+// <Text style={styles.title}>{`${sheetName}`}</Text>
+// <Text style={styles.sectionTitle}>Game:</Text>
+// <View style={styles.headerContainer}>
+//     <Text style={styles.headerTextPick}>Pick</Text>
+//     <Text style={styles.headerTextPts}>Pts</Text>
