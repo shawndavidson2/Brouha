@@ -27,7 +27,7 @@ export default styles = StyleSheet.create({
         borderBottomColor: '#eee',
     },
     current: {
-        backgroundColor: '#DBB978', // Light green background
+        backgroundColor: '#DBB978',
     },
     rank: {
         width: 40,
