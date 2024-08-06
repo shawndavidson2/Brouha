@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getCurrentUser, getCurrentLeague, checkAndUpdateWeekNum, resetWeekPoints } from "../lib/appwrite";
+import { getCurrentUser, checkAndUpdateWeekNum, resetWeekPoints } from "../lib/appwrite";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -20,7 +20,7 @@ const GlobalProvider = ({ children }) => {
                 if (currentUser) {
                     setIsLoggedIn(true);
                     setUser(currentUser);
-                    const currentLeague = await getCurrentLeague();
+                    const currentLeague = await currentUser.league;
                     if (currentLeague) {
                         setLeague(currentLeague);
                     }
