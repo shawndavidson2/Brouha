@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import styles from '../styles';
-import { getAllUsers, getAllLeagues, updateLeagueAttributes } from '../../lib/appwrite';
+import { getAllUsers, getAllLeagues, updateLeagueAttributes, getAllUsersForLeaderboard, getAllLeaguesForLeaderboard } from '../../lib/appwrite';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../../context/GlobalProvider';
 
@@ -15,14 +15,14 @@ const Leaderboards = () => {
     useEffect(() => {
         // Load all users
         const fetchUsers = async () => {
-            const users = await getAllUsers();
+            const users = await getAllUsersForLeaderboard();
             const sortedUsers = users.sort((a, b) => b.weekPoints - a.weekPoints);
             setUserLeaders(sortedUsers);
         };
 
         // Load all leagues
         const fetchLeagues = async () => {
-            const leagues = await getAllLeagues();
+            const leagues = await getAllLeaguesForLeaderboard();
             const sortedLeagues = leagues.sort((a, b) => b['weekly-total-points'] - a['weekly-total-points']);
             sortedLeagues.forEach((league, index) => {
                 updateLeagueAttributes(league, { rank: index + 1 });
