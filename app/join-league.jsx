@@ -1,14 +1,14 @@
-import { View, Text, Alert, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Alert, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { createAndJoinLeague, searchLeagues, joinLeague } from '../lib/appwrite';
 import { router } from 'expo-router';
 import { useGlobalContext } from '../context/GlobalProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './styles';
-import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const JoinLeague = () => {
-    const { setUser, league, setLeague, setIsLoggedIn, getCurrentUser } = useGlobalContext();
+    const { user, setUser, league, setLeague, setIsLoggedIn } = useGlobalContext();
     const [leagueName, setLeagueName] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [selectedLeague, setSelectedLeague] = useState(null);
@@ -23,14 +23,16 @@ const JoinLeague = () => {
             return;
         }
         try {
-            const { newLeague, updatedUser } = await createAndJoinLeague(leagueName);
-            Alert.alert('Success', `League '${newLeague.name}' created and joined!`);
-            // Navigate to the league details or home screen if needed
-            //fetchUserLeague();
-            setUser(updatedUser);
-            setIsLoggedIn(true);
-            setLeague(newLeague);
-            router.replace('./league')
+            if (user.league) {
+                Alert.alert("Error", "You are already in a league!")
+            } else {
+                const { newLeague, updatedUser } = await createAndJoinLeague(leagueName);
+                Alert.alert('Success', `League '${newLeague.name}' created and joined!`);
+                setUser(updatedUser);
+                setIsLoggedIn(true);
+                setLeague(newLeague);
+                router.replace('./league')
+            }
         } catch (error) {
             Alert.alert('Error', error.message);
         }
@@ -47,14 +49,16 @@ const JoinLeague = () => {
 
     const handleJoinLeague = async (leagueId) => {
         try {
-            const { updatedUser, updatedLeague } = await joinLeague(leagueId);
-            Alert.alert('Success', `Joined league '${updatedLeague.name}' successfully!`);
-            // Navigate to the league details or home screen if needed
-            //fetchUserLeague();
-            setUser(updatedUser);
-            setIsLoggedIn(true);
-            setLeague(updatedLeague);
-            router.replace('./league')
+            if (user.league) {
+                Alert.alert("Error", "You are already in a league!")
+            } else {
+                const { updatedUser, updatedLeague } = await joinLeague(leagueId);
+                Alert.alert('Success', `Joined league '${updatedLeague.name}' successfully!`);
+                setUser(updatedUser);
+                setIsLoggedIn(true);
+                setLeague(updatedLeague);
+                router.replace('./league')
+            }
         } catch (error) {
             Alert.alert('Error', error.message);
         }
@@ -62,42 +66,48 @@ const JoinLeague = () => {
 
     return (
         <GestureHandlerRootView>
-        <SafeAreaView style={styles.safeArea}>
-            <View style={styles.container} >
-                <ScrollView contentContainerStyle={{ height: '100%' }} >
-                    <View className="w-full flex justify-center items-center mt-6 px-4">
-                        <TouchableOpacity className="flex w-full items-start mb-0 mt-0" >
-                            <Text onPress={goBack} style={{ fontSize: 18 }}>Back</Text>
-                        </TouchableOpacity>
-                        <View className="pt-0 mt-20">
-                            <Text style={styles.header}>Join or Create a League</Text>
-                        </View>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Enter league name"
-                            value={leagueName}
-                            onChangeText={setLeagueName}
-                        />
-                        <Button title="Search Leagues" onPress={handleSearchLeagues} />
-                        {searchResults.length > 0 && (
-                            <FlatList
-                                data={searchResults}
-                                keyExtractor={(item) => item.$id}
-                                renderItem={({ item }) => (
-                                    <TouchableOpacity onPress={() => setSelectedLeague(item.$id)}>
-                                        <Text style={{ padding: 10, backgroundColor: selectedLeague === item.$id ? 'lightgray' : 'white' }}>
-                                            {item.name}
-                                        </Text>
-                                    </TouchableOpacity>
-                                )}
+            <SafeAreaView style={styles.safeArea}>
+                <View style={styles.container}>
+                    <View style={{ height: '100%' }}>
+                        <View className="w-full flex justify-center items-center mt-6 px-4">
+                            <TouchableOpacity className="flex w-full items-start mb-0 mt-0">
+                                <Text onPress={goBack} style={{ fontSize: 18 }}>Back</Text>
+                            </TouchableOpacity>
+                            <View className="pt-0 mt-20">
+                                <Text style={styles.header}>Join or Create a League</Text>
+                            </View>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Enter league name"
+                                value={leagueName}
+                                onChangeText={setLeagueName}
                             />
-                        )}
-                        <Button title="Join Selected League" onPress={() => handleJoinLeague(selectedLeague)} disabled={!selectedLeague} />
-                        <Button title="Create and Join League" onPress={handleCreateAndJoinLeague} />
+                            <TouchableOpacity style={styles.button} onPress={handleSearchLeagues}>
+                                <Text style={styles.buttonText}>Search Leagues</Text>
+                            </TouchableOpacity>
+                            {searchResults.length > 0 && (
+                                <FlatList
+                                    data={searchResults}
+                                    keyExtractor={(item) => item.$id}
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity onPress={() => setSelectedLeague(item.$id)}>
+                                            <Text style={{ padding: 10, backgroundColor: selectedLeague === item.$id ? '#DBB978' : 'white' }}>
+                                                {item.name}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )}
+                                />
+                            )}
+                            <TouchableOpacity style={styles.button} onPress={() => handleJoinLeague(selectedLeague)} disabled={!selectedLeague}>
+                                <Text style={styles.buttonText}>Join Selected League</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.button} onPress={handleCreateAndJoinLeague}>
+                                <Text style={styles.buttonText}>Create and Join League</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </ScrollView>
-            </View>
-        </SafeAreaView>
+                </View>
+            </SafeAreaView>
         </GestureHandlerRootView>
     );
 };

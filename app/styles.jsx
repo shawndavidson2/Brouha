@@ -256,6 +256,19 @@ export default styles = StyleSheet.create({
     addButtonText: {
         fontSize: 14,
     },
+    button: {
+        backgroundColor: '#8b2326', // Gold color
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
 });
 // <Text style={styles.title}>{`${sheetName}`}</Text>
 // <Text style={styles.sectionTitle}>Game:</Text>
