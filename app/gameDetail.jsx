@@ -23,6 +23,7 @@ const GameDetail = () => {
 
     const lineupCache = useLineupCache();
     const picks = lineupCache[weekNum] || [];
+    const pickIds = picks.map(pick => pick.$id);
 
     const router = useRouter();
 
@@ -59,6 +60,7 @@ const GameDetail = () => {
 
     const fetchGameDetails = async () => {
         try {
+            console.log("Fetching game details")
             const fileUrl = 'https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/66997754d6c51b09cbb4/view?project=667edab40004ed4257b4&mode=admin';
             const response = await fetch(fileUrl);
             const blob = await response.blob();
@@ -134,6 +136,7 @@ const GameDetail = () => {
                 setLoadingScreen(true);
                 const newPick = await updatePick(pick, pts, user.$id);
                 picks.push(newPick);
+                pickIds.push(newPick.$id)
                 setSelectedPicks(prevState => {
                     const newState = { ...prevState, [index]: newPick.$id };
                     saveSelectedPicks(newState);
@@ -143,9 +146,9 @@ const GameDetail = () => {
                 setLoadingScreen(false);
 
                 let weeklyLineup, updatedUser;
-                updatedUser, weeklyLineup = await updateWeeklyLineup(weekNum, picks, pts);
+                updatedUser, weeklyLineup = await updateWeeklyLineup(weekNum, pickIds, pts);
                 if (!weeklyLineup) {
-                    weeklyLineup, updatedUser = await createWeeklyLineup([newPick.$id], pts, 0, weekNum);
+                    weeklyLineup, updatedUser = await createWeeklyLineup([newPick.$id], weekNum);
                 }
 
                 // setUser(updatedUser);
