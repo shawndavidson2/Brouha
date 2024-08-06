@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getAllWeeklyLineups } from '../lib/appwrite';
+import { getAllWeeklyLineups, getPicksByIds } from '../lib/appwrite';
 import { useGlobalContext } from './GlobalProvider';
-import styles from '../app/styles';
 import Loading from '../components/Loading';
 
 const LineupContext = createContext();
@@ -9,41 +8,51 @@ const LineupContext = createContext();
 export const LineupProvider = ({ children }) => {
     const [lineupCache, setLineupCache] = useState({});
     const [isInitialized, setIsInitialized] = useState(false);
+    const [error, setError] = useState(null);
 
     const { weekNum } = useGlobalContext();
 
     useEffect(() => {
-        const fetchAllLineups = async () => {
+        const fetchLineupsIfNeeded = async () => {
+            if (lineupCache[weekNum]) {
+                setIsInitialized(true);
+                return; // Data for this week already cached, no need to fetch again
+            }
+
             try {
                 const allLineups = await getAllWeeklyLineups();
                 if (allLineups) {
-                    const lineupCache = allLineups.reduce((acc, lineup) => {
-                        acc[lineup.weekNumber] = lineup.picks;
-                        return acc;
-                    }, {});
-                    setLineupCache(lineupCache);
+                    const newCache = { ...lineupCache };
+
+                    for (const lineup of allLineups) {
+                        if (!newCache[lineup.weekNumber]) {
+                            const picks = await getPicksByIds(lineup.picks);
+                            newCache[lineup.weekNumber] = picks;
+                        }
+                    }
+
+                    setLineupCache(newCache);
                 }
             } catch (error) {
                 console.error('Failed to fetch all weekly lineups:', error);
+                setError(error);
             } finally {
                 setIsInitialized(true);
             }
         };
 
-        fetchAllLineups();
-    }, [weekNum]);
+        fetchLineupsIfNeeded();
+    }, [weekNum, lineupCache]);
 
     if (!isInitialized) {
-        return (
-            <Loading />
-        );
-    } else {
-        return (
-            <LineupContext.Provider value={lineupCache}>
-                {children}
-            </LineupContext.Provider>
-        );
+        return <Loading />;
     }
+
+    return (
+        <LineupContext.Provider value={lineupCache}>
+            {children}
+        </LineupContext.Provider>
+    );
 };
 
 export const useLineupCache = () => useContext(LineupContext);
