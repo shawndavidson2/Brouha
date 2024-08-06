@@ -146,9 +146,9 @@ const GameDetail = () => {
                 setLoadingScreen(false);
 
                 let weeklyLineup, updatedUser;
-                updatedUser, weeklyLineup = await updateWeeklyLineup(weekNum, pickIds, pts);
+                weeklyLineup = await updateWeeklyLineup(user.$id, weekNum, pickIds, pts);
                 if (!weeklyLineup) {
-                    weeklyLineup, updatedUser = await createWeeklyLineup(pickIds, weekNum);
+                    weeklyLineup, updatedUser = await createWeeklyLineup(user, pickIds, weekNum);
                 }
 
                 // setUser(updatedUser);
