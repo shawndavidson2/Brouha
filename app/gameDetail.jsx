@@ -13,7 +13,7 @@ import { useRouter } from 'expo-router';
 import Loading from '../components/Loading';
 
 const GameDetail = () => {
-    const { sheetName1, sheetName2, date, time } = useLocalSearchParams();
+    const { sheetName1, sheetName2, date, time, fileUrl } = useLocalSearchParams();
     const { weekNum, user, setUser } = useGlobalContext();
     const [sheetName, setSheetName] = useState(sheetName1);
     const [details, setDetails] = useState([]);
@@ -60,7 +60,7 @@ const GameDetail = () => {
 
     const fetchGameDetails = async () => {
         try {
-            const fileUrl = 'https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/66997754d6c51b09cbb4/view?project=667edab40004ed4257b4&mode=admin';
+            //const fileUrl = 'https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/66997754d6c51b09cbb4/view?project=667edab40004ed4257b4&mode=admin';
             const response = await fetch(fileUrl);
             const blob = await response.blob();
 

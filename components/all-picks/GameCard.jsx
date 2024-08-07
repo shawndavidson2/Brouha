@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import getImageSource from './getImageSource';
 import { useRouter } from 'expo-router';
 
-const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder }) => {
+const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder, fileUrl }) => {
     const router = useRouter();
 
     const handlePress = () => {
@@ -15,7 +15,7 @@ const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder }) => {
         const sheetName2 = `${homeTeam} vs ${awayTeam}`;
         router.push({
             pathname: '/gameDetail',
-            params: { sheetName1, sheetName2, date, time },
+            params: { sheetName1, sheetName2, date, time, fileUrl },
         });
     };
 

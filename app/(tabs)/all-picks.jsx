@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet, RefreshControl, ActivityIndicator} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GameCard from '../../components/all-picks/GameCard'; // Adjust the path as needed
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -45,10 +45,10 @@ const excelDateToJSDate = (serial) => {
 const AllPicks = () => {
     const [data, setData] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [fileUrl, setFileUrl] = useState('https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/66997754d6c51b09cbb4/view?project=667edab40004ed4257b4&mode=admin')
 
     const fetchFile = async () => {
         try {
-            const fileUrl = 'https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/66997754d6c51b09cbb4/view?project=667edab40004ed4257b4&mode=admin';
             const response = await fetch(fileUrl);
             const blob = await response.blob();
 
@@ -119,6 +119,7 @@ const AllPicks = () => {
                                 awayTeam={row['Matchup'].split('vs')[0]} // Adjust based on actual data structure
                                 spread={row['HomeTeam (Spread)']} // Adjust based on actual data structure
                                 overUnder={row['Matchup Over']} // Adjust based on actual data structure
+                                fileUrl={fileUrl}
                             />
                         ))
                     }
