@@ -45,7 +45,7 @@ const excelDateToJSDate = (serial) => {
 const AllPicks = () => {
     const [data, setData] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-    const [fileUrl, setFileUrl] = useState('https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/66997754d6c51b09cbb4/view?project=667edab40004ed4257b4&mode=admin')
+    const [fileUrl, setFileUrl] = useState('https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/66b2d7941a6b9a8fb8ae/view?project=667edab40004ed4257b4&mode=admin')
 
     const fetchFile = async () => {
         try {
