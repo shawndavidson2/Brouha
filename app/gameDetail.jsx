@@ -133,7 +133,7 @@ const GameDetail = () => {
         } else {
             try {
                 setLoadingScreen(true);
-                const newPick = await updatePick(pick, pts, user.$id);
+                const newPick = await updatePick(pick, pts, user.$id, weekNum);
                 picks.push(newPick);
                 pickIds.push(newPick.$id)
                 setSelectedPicks(prevState => {
