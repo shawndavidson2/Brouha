@@ -39,7 +39,7 @@ const usePickLineup = (initialWeekNum = 0) => {
     };
 
     const goToPreviousWeek = () => {
-        setCycleWeekNum(prevWeek => Math.max(prevWeek - 1, 0));
+        setCycleWeekNum(prevWeek => Math.max(prevWeek - 1, 1));
     };
 
     const goToNextWeek = () => {

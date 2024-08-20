@@ -11,7 +11,7 @@ const ProfileLineup = () => {
     const { user, weekNum } = useGlobalContext();
 
     const userWeeks = weekNum;
-    const weeks = Array.from({ length: weekNum + 1 }, (_, i) => i);
+    const weeks = Array.from({ length: weekNum }, (_, i) => i + 1);
     weeks.reverse();
 
     const toggleWeek = (week) => {
