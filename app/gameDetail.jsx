@@ -27,6 +27,10 @@ const GameDetail = () => {
 
     const router = useRouter();
 
+    const status = sheetName
+    const title = "__EMPTY_1"
+    const points = "__EMPTY_2"
+
     useEffect(() => {
         fetchGameDetails();
     }, []);
@@ -39,8 +43,9 @@ const GameDetail = () => {
 
                 if (createStatus) {
                     details.map((detail, index) => {
+
                         if (index > 0) {
-                            createPick(detail[sheetName], Math.round(detail["__EMPTY"]), "pending", sheetName, date, time, weekNum).then(res => {
+                            createPick(detail[title], Math.round(detail[points]), detail[status], sheetName, date, time, weekNum).then(res => {
                                 picksArr.push(res)
                             })
                         }
@@ -104,7 +109,7 @@ const GameDetail = () => {
         }
     };
 
-    const calculateFontSize = (text, width) => {
+    const calculateFontSize = (detail, text, width) => {
         const maxFontSize = 22;
         const minFontSize = 15;
         const scale = width / (text.length * 10);
@@ -127,7 +132,7 @@ const GameDetail = () => {
         }
     };
 
-    const addNewPick = async (index, pick, pts) => {
+    const addNewPick = async (index, pick, pts, statusLetter) => {
         if (picks.length >= 4) {
             Alert.alert("You are already at your maximum number of picks for the week!");
         } else {
@@ -197,15 +202,15 @@ const GameDetail = () => {
                             details.map((detail, index) => (
                                 index > 0 && (
                                     <View key={index} style={styles.detailContainer}>
-                                        <Text style={[styles.detailText, styles.pickColumn, { fontSize: calculateFontSize(detail[sheetName], 150) }]}>
-                                            {detail[sheetName]}
+                                        <Text style={[styles.detailText, styles.pickColumn, { fontSize: calculateFontSize(detail, detail[title], 150) }]}>
+                                            {detail[title]}
                                         </Text>
-                                        <Text style={[styles.detailText, styles.ptsColumn, { fontSize: calculateFontSize(String(detail['__EMPTY']), 100) }]}>
-                                            {Math.round(detail['__EMPTY'])}
+                                        <Text style={[styles.detailText, styles.ptsColumn, { fontSize: calculateFontSize(detail, String(detail[points]), 100) }]}>
+                                            {Math.round(detail[points])}
                                         </Text>
                                         <TouchableOpacity
                                             style={styles.addButton}
-                                            onPress={() => handleAddToPL(index, detail[sheetName], Math.round(detail['__EMPTY']))}
+                                            onPress={() => handleAddToPL(index, detail[title], Math.round(detail[points]), detail[status])}
                                             disabled={loading} // Disable button based on global loading state
                                         >
                                             <View style={styles.buttonContent}>
