@@ -47,8 +47,8 @@ export default async ({ req, res, log, error }) => {
             if (jsonPick[sheetName] !== "P") {
               const matchedPick = picks.find(pick => pick["pick-title"] === jsonPick["__EMPTY_1"]);
               if (matchedPick && jsonPick[sheetName] !== matchedPick["status"]) {
-                matchedPick["status"] = jsonPick[sheetName];
-                log("Changed pick: " + matchedPick["pick-title"] + " to " + jsonPick[sheetName])
+                //matchedPick["status"] = jsonPick[sheetName];
+                log("Changed pick: " + matchedPick["pick-title"] + " from " + matchedPick["status"] + " to " + jsonPick[sheetName])
                 await updatePickStatus(jsonPick[sheetName], matchedPick.$id);
               }
             }
