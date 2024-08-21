@@ -9,13 +9,14 @@ const FormField = ({
     placeholder,
     handleChangeText,
     otherStyles,
+    titleStyle,
     ...props
 }) => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
         <View className={`space-y-2 ${otherStyles}`}>
-            <Text className="text-base font-pmedium">{title}</Text>
+            <Text style={titleStyle} className={`text-base font-pmedium`}>{title}</Text>
 
             <View className="w-full h-16 px-4 bg-white rounded-2xl border-2 border-gray-400 focus:border-black flex flex-row items-center">
                 <TextInput

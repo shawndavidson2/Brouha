@@ -47,14 +47,14 @@ const SignUp = () => {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <View className="w-full  h-full px-5 my-6">
-                <Text className="text-5xl mt-2 text-bold font-bold text-center">
+            <View className="w-full  h-full px-5 my-6 color-white">
+                <Text style={{ color: '#DBB978' }} className="text-5xl mt-2 text-bold font-bold text-center color-white">
                     Brouha
                 </Text>
-                <Text className="text-2xl text-bold mt-8 font-bold text-center">
+                <Text style={{ color: '#DBB978' }} className="text-2xl text-bold mt-8 font-bold text-center color-white">
                     Create an account
                 </Text>
-                <Text className=" text-bold mt-5 text-center">
+                <Text style={{ color: '#DBB978' }} className=" text-bold mt-5 text-center color-white">
                     Enter your username and personal account info
                 </Text>
                 <FormField
@@ -63,6 +63,7 @@ const SignUp = () => {
                     placeholder="Make your username"
                     handleChangeText={(e) => setForm({ ...form, username: e })}
                     otherStyles="mt-7"
+                    titleStyle={{ color: '#DBB978' }}
                 />
                 <FormField
                     title="Email"
@@ -71,6 +72,7 @@ const SignUp = () => {
                     handleChangeText={(e) => setForm({ ...form, email: e })}
                     otherStyles="mt-7"
                     keyboardType="email-address"
+                    titleStyle={{ color: '#DBB978' }}
                 />
 
                 <FormField
@@ -79,6 +81,7 @@ const SignUp = () => {
                     placeholder="Type your password"
                     handleChangeText={(e) => setForm({ ...form, password: e })}
                     otherStyles="mt-7"
+                    titleStyle={{ color: '#DBB978' }}
                 />
 
                 <View className="flex-row items-center mt-5 ml-3">
@@ -87,7 +90,7 @@ const SignUp = () => {
                         onValueChange={setChecked}
                         color={isChecked ? '#4630EB' : undefined}
                     />
-                    <Text className="text-lg font-pregular ml-2">
+                    <Text style={{ color: '#DBB978' }} className="text-lg font-pregular ml-2 color-white">
                         I agree to the terms of service
                     </Text>
                 </View>
@@ -99,13 +102,13 @@ const SignUp = () => {
                     isLoading={isSubmitting}
                 />
                 <View className="justify-center pt-5 flex-row gap-2">
-                    <Text className="text-lg font-pregular">
+                    <Text style={{ color: '#DBB978' }} className="text-lg font-pregular color-white">
                         Already have an account?
                     </Text>
-                    <Link href="./sign-in" className="text-lg font-psemibold text-red-600">Log In</Link>
+                    <Link href="./sign-in" className="text-lg font-psemibold text-red-600" >Log In</Link>
                 </View>
             </View>
-        </SafeAreaView>
+        </SafeAreaView >
     )
 }
 

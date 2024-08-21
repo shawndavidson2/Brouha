@@ -44,16 +44,16 @@ const SignIn = () => {
     }
 
     return (
-        <SafeAreaView >
+        <SafeAreaView style={styles.safeArea}>
             <ScrollView>
-                <View className="w-full  h-full px-5 my-6">
-                    <Text className="text-5xl mt-12 text-bold font-bold text-center">
+                <View className="w-full  h-full px-5 my-6 color-white">
+                    <Text style={{ color: '#DBB978' }} className="text-5xl mt-12 text-bold font-bold text-center color-white">
                         Brouha
                     </Text>
-                    <Text className="text-2xl text-bold mt-10 font-bold text-center">
+                    <Text style={{ color: '#DBB978' }} className="text-2xl text-bold mt-10 font-bold text-center color-white">
                         Welcome Back!
                     </Text>
-                    <Text className="text-xl text-bold mt-5 text-center">
+                    <Text style={{ color: '#DBB978' }} className="text-xl text-bold mt-5 text-center color-white">
                         Go ahead and log in below
                     </Text>
                     <FormField
@@ -63,6 +63,7 @@ const SignIn = () => {
                         handleChangeText={(e) => setForm({ ...form, email: e })}
                         otherStyles="mt-7"
                         keyboardType="email-address"
+                        titleStyle={{ color: '#DBB978' }}
                     />
 
                     <FormField
@@ -71,6 +72,7 @@ const SignIn = () => {
                         placeholder="Type your password"
                         handleChangeText={(e) => setForm({ ...form, password: e })}
                         otherStyles="mt-7"
+                        titleStyle={{ color: '#DBB978' }}
                     />
 
                     <CustomButton
@@ -80,7 +82,7 @@ const SignIn = () => {
                         isLoading={isSubmitting}
                     />
                     <View className="justify-center pt-5 flex-row gap-2">
-                        <Text className="text-lg font-pregular">
+                        <Text style={{ color: '#DBB978' }} className="text-lg font-pregular color-white">
                             Don't have an account?
                         </Text>
                         <Link href="./sign-up" className="text-lg font-psemibold text-red-600">Sign up</Link>
