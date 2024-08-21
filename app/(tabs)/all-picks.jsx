@@ -76,7 +76,7 @@ const AllPicks = () => {
 
     const fetchFile = async () => {
         try {
-            const response = await fetch(url);
+            const response = await fetch(fileUrl);
             const blob = await response.blob();
 
             const reader = new FileReader();
