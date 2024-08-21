@@ -37,8 +37,10 @@ const GlobalProvider = ({ children }) => {
         };
 
         const updateWeekNum = async () => {
+            setIsLoading(true);
+
             // Hardcoded start date for Week 1 (July 15, 2024 at midnight)
-            const startWeek1 = new Date('2024-07-22T00:00:00');
+            const startWeek1 = new Date('2024-08-20T00:00:00');
 
             // Get the current date and time
             const currentDate = new Date();
@@ -57,6 +59,7 @@ const GlobalProvider = ({ children }) => {
             if (needsWeekClearing) {
                 await resetWeekPoints();
             }
+            setIsLoading(false);
         };
 
         initialize();
