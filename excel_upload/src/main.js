@@ -77,67 +77,67 @@ export default async ({ req, res, log, error }) => {
   });
 };
 
-export const test = async () => {
-  try {
-    const fileId = req.body.$id;
-    const fileName = req.body.name;
-    const bucketId = req.body.bucketId;
+// export const test = async () => {
+//   try {
+//     const fileId = req.body.$id;
+//     const fileName = req.body.name;
+//     const bucketId = req.body.bucketId;
 
-    const week = await getWeekNum();
-    const weekNum = week["weekNum"]
+//     const week = await getWeekNum();
+//     const weekNum = week["weekNum"]
 
-    const excelWeekNum = parseInt(fileName.match(/\d+/)[0], 10);
+//     const excelWeekNum = parseInt(fileName.match(/\d+/)[0], 10);
 
-    if (excelWeekNum !== weekNum) {
-      console.log("Updated file: " + fileName + " is not current week: " + weekNum);
-      return;
-    }
+//     if (excelWeekNum !== weekNum) {
+//       console.log("Updated file: " + fileName + " is not current week: " + weekNum);
+//       return;
+//     }
 
-    const picks = await getPicksByWeek(weekNum)
+//     const picks = await getPicksByWeek(weekNum)
 
 
-    const fileUrl = 'https://cloud.appwrite.io/v1/storage/buckets/' + bucketId + '/files/' + fileId + '/view?project=667edab40004ed4257b4&mode=admin';
-    const response = await fetch(fileUrl);
+//     const fileUrl = 'https://cloud.appwrite.io/v1/storage/buckets/' + bucketId + '/files/' + fileId + '/view?project=667edab40004ed4257b4&mode=admin';
+//     const response = await fetch(fileUrl);
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`);
-    }
+//     if (!response.ok) {
+//       throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`);
+//     }
 
-    // Convert the response to an ArrayBuffer
-    const arrayBuffer = await response.arrayBuffer();
+//     // Convert the response to an ArrayBuffer
+//     const arrayBuffer = await response.arrayBuffer();
 
-    // Use XLSX to parse the ArrayBuffer
-    const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
+//     // Use XLSX to parse the ArrayBuffer
+//     const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
 
-    // Loop through each sheet name
-    for (const sheetName of workbook.SheetNames) {
-      // Check if the sheet name contains "vs"
-      if (sheetName.toLowerCase().includes("vs")) {
-        const worksheet = workbook.Sheets[sheetName];
+//     // Loop through each sheet name
+//     for (const sheetName of workbook.SheetNames) {
+//       // Check if the sheet name contains "vs"
+//       if (sheetName.toLowerCase().includes("vs")) {
+//         const worksheet = workbook.Sheets[sheetName];
 
-        if (worksheet) {
-          // Convert the sheet to JSON format
-          const json = XLSX.utils.sheet_to_json(worksheet);
-          //console.log(`Data from sheet "${sheetName}":`, json);
+//         if (worksheet) {
+//           // Convert the sheet to JSON format
+//           const json = XLSX.utils.sheet_to_json(worksheet);
+//           //console.log(`Data from sheet "${sheetName}":`, json);
 
-          // Process or return the json as needed
-          for (const jsonPick of json) {
-            if (jsonPick[sheetName] !== "P") {
-              const matchedPick = picks.find(pick => pick["pick-title"] === jsonPick["__EMPTY_1"]);
-              if (matchedPick && jsonPick[sheetName] !== matchedPick["status"]) {
-                matchedPick["status"] = jsonPick[sheetName];
-                // await updatePickStatus(jsonPick[sheetName], matchedPick.$id);
-              }
-            }
-          }
-        } else {
-          console.error(`No data found in the sheet "${sheetName}"`);
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Error fetching game details:', error);
-  }
-};
+//           // Process or return the json as needed
+//           for (const jsonPick of json) {
+//             if (jsonPick[sheetName] !== "P") {
+//               const matchedPick = picks.find(pick => pick["pick-title"] === jsonPick["__EMPTY_1"]);
+//               if (matchedPick && jsonPick[sheetName] !== matchedPick["status"]) {
+//                 matchedPick["status"] = jsonPick[sheetName];
+//                 // await updatePickStatus(jsonPick[sheetName], matchedPick.$id);
+//               }
+//             }
+//           }
+//         } else {
+//           console.error(`No data found in the sheet "${sheetName}"`);
+//         }
+//       }
+//     }
+//   } catch (error) {
+//     console.error('Error fetching game details:', error);
+//   }
+// };
 
-test();
+// test();
