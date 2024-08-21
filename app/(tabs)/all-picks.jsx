@@ -6,6 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Client, Storage } from 'react-native-appwrite';
 import * as XLSX from 'xlsx';
 import Loading from '../../components/Loading';
+import { getAllFilenamesFromStorage } from '../../lib/appwrite';
+import { useGlobalContext } from '../../context/GlobalProvider';
 
 const client = new Client();
 client.setEndpoint('https://cloud.appwrite.io/v1').setProject('667edab40004ed4257b4');
@@ -43,13 +45,20 @@ const excelDateToJSDate = (serial) => {
 };
 
 const AllPicks = () => {
+    const { weekNum } = useGlobalContext();
     const [data, setData] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-    const [fileUrl, setFileUrl] = useState('https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/66c4bb05d31fc5e2d2a8/view?project=667edab40004ed4257b4&mode=admin')
+    const [fileUrl, setFileUrl] = useState('')
 
     const fetchFile = async () => {
         try {
-            const response = await fetch(fileUrl);
+            const fileNames = await getAllFilenamesFromStorage();
+            const id = fileNames.files.find(file => file.name === `Matchup Data WK${weekNum}.xlsx`).$id;
+
+            const url = 'https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/' + id + '/view?project=667edab40004ed4257b4&mode=admin'
+            setFileUrl(url)
+
+            const response = await fetch(url);
             const blob = await response.blob();
 
             const reader = new FileReader();
