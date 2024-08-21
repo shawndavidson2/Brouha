@@ -32,6 +32,8 @@ export const LineupProvider = ({ children }) => {
                     }
 
                     setLineupCache(newCache);
+                } else {
+                    console.log("no lineups")
                 }
             } catch (error) {
                 console.error('Failed to fetch all weekly lineups:', error);
