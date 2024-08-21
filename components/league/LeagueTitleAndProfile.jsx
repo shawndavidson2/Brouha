@@ -10,32 +10,49 @@ const LeagueTitleAndProfile = ({ currentUser, leagueTitle, weekNum }) => {
 
     return (
         <View style={{ width: '100%', paddingVertical: 20 }}>
-            <View style={{ 
+            <View style={{
                 flexDirection: 'row',
-             }}>
+                alignItems: 'center', // Align items in the center vertically
+                justifyContent: 'space-between', // Ensure even spacing between items
+            }}>
                 <View
                     style={{
-                        flexDirection: 'column',
-                        // alignItems: 'center',
-                        // justifyContent: 'space-around',
+                        flex: 1, // Take up the remaining space after the profile button
                     }}
                 >
-                    <Text style={{ fontSize: 30, fontWeight: 'bold' }}>{leagueTitle}</Text>
-                    <Text className="mt-2" style={{ fontSize: 18, fontWeight: 'medium' }}>Week {weekNum}</Text>
+                    <Text
+                        style={{
+                            fontSize: 30,
+                            fontWeight: 'bold',
+                            flexShrink: 1, // Allow text to shrink to fit within available space
+                        }}
+                        numberOfLines={1} // Truncate text if it's too long
+                    >
+                        {leagueTitle}
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 18,
+                            fontWeight: 'medium',
+                            marginTop: 2,
+                        }}
+                    >
+                        Week {weekNum}
+                    </Text>
                 </View>
                 <TouchableOpacity onPress={profile}
                     style={{
                         flexDirection: 'column',
                         alignItems: 'center',
-                        paddingLeft: 120,
-                        justifyContent: 'space-around',
+                        justifyContent: 'center',
+                        marginLeft: 10, // Add some spacing between the title and profile button
                     }}
                 >
                     <Image
                         source={icons.profile}
                         resizeMode="contain"
-                        style={{ 
-                            width: 40, 
+                        style={{
+                            width: 40,
                             height: 40,
                             tintColor: '#8b2326'
                         }}
@@ -50,6 +67,7 @@ const LeagueTitleAndProfile = ({ currentUser, leagueTitle, weekNum }) => {
                 </TouchableOpacity>
             </View>
         </View>
+
     );
 };
 
