@@ -1,6 +1,6 @@
 import { Client } from 'node-appwrite';
 import * as XLSX from 'xlsx';
-import { getPicksByWeek, updatePickStatus } from './db.js';
+import { getPicksByWeek, updatePickStatus, getWeekNum } from './db.js';
 
 
 const req = { "bodyRaw": "{\"$id\":\"66c4bb05d31fc5e2d2a8\",\"bucketId\":\"667edd29003dd0cf6445\",\"$createdAt\":\"2024-08-20T16:49:14.433+00:00\",\"$updatedAt\":\"2024-08-20T16:49:14.433+00:00\",\"$permissions\":[],\"name\":\"Matchup Data WK1.xlsx\",\"signature\":\"04b7352b4c23334bdf0eebb9feff4b51\",\"mimeType\":\"application\\/vnd.openxmlformats-officedocument.spreadsheetml.sheet\",\"sizeOriginal\":25522,\"chunksTotal\":1,\"chunksUploaded\":1}", "body": { "$id": "66c4bb05d31fc5e2d2a8", "bucketId": "667edd29003dd0cf6445", "$createdAt": "2024-08-20T16:49:14.433+00:00", "$updatedAt": "2024-08-20T16:49:14.433+00:00", "$permissions": [], "name": "Matchup Data WK1.xlsx", "signature": "04b7352b4c23334bdf0eebb9feff4b51", "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "sizeOriginal": 25522, "chunksTotal": 1, "chunksUploaded": 1 }, "headers": { "host": "66c4c90a8c89d:3000", "user-agent": "Appwrite/1.5.10", "content-type": "application/json", "x-appwrite-trigger": "event", "x-appwrite-event": "buckets.667edd29003dd0cf6445.files.66c4bb05d31fc5e2d2a8.create", "connection": "keep-alive", "content-length": "386" }, "method": "POST", "host": "66c4c90a8c89d", "scheme": "http", "query": {}, "queryString": "", "port": 3000, "url": "http://66c4c90a8c89d:3000/", "path": "/" }
@@ -14,6 +14,19 @@ export default async ({ req, res, log, error }) => {
     const fileName = req.body.name;
     const bucketId = req.body.bucketId;
 
+    const week = await getWeekNum();
+    const weekNum = week["weekNum"]
+
+    const excelWeekNum = parseInt(fileName.match(/\d+/)[0], 10);
+
+    if (excelWeekNum !== weekNum) {
+      log("Updated file: " + fileName + " is not current week: " + weekNum);
+      return;
+    }
+
+    const picks = await getPicksByWeek(weekNum)
+
+
     const fileUrl = 'https://cloud.appwrite.io/v1/storage/buckets/' + bucketId + '/files/' + fileId + '/view?project=667edab40004ed4257b4&mode=admin';
     const response = await fetch(fileUrl);
 
@@ -26,10 +39,6 @@ export default async ({ req, res, log, error }) => {
 
     // Use XLSX to parse the ArrayBuffer
     const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
-
-    const weekNum = parseInt(fileName.match(/\d+/)[0], 10);
-    //const weekNum = 5;
-    const picks = await getPicksByWeek(weekNum)
 
     // Loop through each sheet name
     for (const sheetName of workbook.SheetNames) {
@@ -75,6 +84,19 @@ export const test = async () => {
     const fileName = req.body.name;
     const bucketId = req.body.bucketId;
 
+    const week = await getWeekNum();
+    const weekNum = week["weekNum"]
+
+    const excelWeekNum = parseInt(fileName.match(/\d+/)[0], 10);
+
+    if (excelWeekNum !== weekNum) {
+      console.log("Updated file: " + fileName + " is not current week: " + weekNum);
+      return;
+    }
+
+    const picks = await getPicksByWeek(weekNum)
+
+
     const fileUrl = 'https://cloud.appwrite.io/v1/storage/buckets/' + bucketId + '/files/' + fileId + '/view?project=667edab40004ed4257b4&mode=admin';
     const response = await fetch(fileUrl);
 
@@ -87,11 +109,6 @@ export const test = async () => {
 
     // Use XLSX to parse the ArrayBuffer
     const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
-
-    //const weekNum = parseInt(fileName.match(/\d+/)[0], 10);
-    const weekNum = 5;
-    const picks = await getPicksByWeek(weekNum)
-    //console.log(picks)
 
     // Loop through each sheet name
     for (const sheetName of workbook.SheetNames) {
@@ -110,7 +127,7 @@ export const test = async () => {
               const matchedPick = picks.find(pick => pick["pick-title"] === jsonPick["__EMPTY_1"]);
               if (matchedPick && jsonPick[sheetName] !== matchedPick["status"]) {
                 matchedPick["status"] = jsonPick[sheetName];
-                await updatePickStatus(jsonPick[sheetName], matchedPick.$id);
+                // await updatePickStatus(jsonPick[sheetName], matchedPick.$id);
               }
             }
           }

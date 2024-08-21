@@ -11,6 +11,7 @@ const appwriteConfig = {
     weeklyLineupCollectionId: '66849fe200344a0e6da9',
     gameCollectionId: '66ad3e97000d65a8be9b',
     pickCollectionId: '6684a04a000e85542756',
+    weekCollectionId: '66b0de5400218e0d26c8',
     storageId: '667edd29003dd0cf6445'
 };
 
@@ -52,6 +53,20 @@ export const updatePickStatus = async (statusLetter, pickId) => {
         );
     } catch (error) {
         console.error(`Failed to update pick status for ${pickId}:`, error);
+        throw error;
+    }
+};
+
+export const getWeekNum = async () => {
+    try {
+        const week = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.weekCollectionId
+        );
+
+        return week.documents[0];
+    } catch (error) {
+        console.error('Failed to retrieve picks by week:', error);
         throw error;
     }
 };
