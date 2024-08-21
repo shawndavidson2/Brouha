@@ -88,10 +88,16 @@ const SignUp = () => {
                     <Checkbox
                         value={isChecked}
                         onValueChange={setChecked}
-                        color={isChecked ? '#4630EB' : undefined}
+                        color={isChecked ? '#DC2626' : undefined}
                     />
                     <Text style={{ color: '#DBB978' }} className="text-lg font-pregular ml-2 color-white">
-                        I agree to the terms of service
+                        I agree to the{' '}
+                        <Text
+                            onPress={() => { }}
+                            style={{ color: '#DBB978', textDecorationLine: 'underline' }}
+                        >
+                            terms of service
+                        </Text>
                     </Text>
                 </View>
 
