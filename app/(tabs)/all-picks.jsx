@@ -50,14 +50,32 @@ const AllPicks = () => {
     const [refreshing, setRefreshing] = useState(false);
     const [fileUrl, setFileUrl] = useState('')
 
+    useEffect(() => {
+        const fetchFileUrl = async () => {
+            try {
+                const fileNames = await getAllFilenamesFromStorage();
+                const file = fileNames.files.find(file => file.name === `Matchup Data WK${weekNum}.xlsx`);
+
+                if (!file || !file.$id) {
+                    throw new Error('File ID not found');
+                }
+
+                const id = file.$id;
+
+                const url = `https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/${id}/view?project=667edab40004ed4257b4&mode=admin`;
+                setFileUrl(url);
+            } catch (error) {
+                console.error('Error fetching file URL:', error);
+            }
+        };
+
+        fetchFileUrl(); // Call the async function
+
+    }, [weekNum]); // Add weekNum to the dependency array
+
+
     const fetchFile = async () => {
         try {
-            const fileNames = await getAllFilenamesFromStorage();
-            const id = fileNames.files.find(file => file.name === `Matchup Data WK${weekNum}.xlsx`).$id;
-
-            const url = 'https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/' + id + '/view?project=667edab40004ed4257b4&mode=admin'
-            setFileUrl(url)
-
             const response = await fetch(url);
             const blob = await response.blob();
 
