@@ -27,8 +27,8 @@ export default async ({ req, res, log, error }) => {
     // Use XLSX to parse the ArrayBuffer
     const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
 
-    //const weekNum = parseInt(fileName.match(/\d+/)[0], 10);
-    const weekNum = 5;
+    const weekNum = parseInt(fileName.match(/\d+/)[0], 10);
+    //const weekNum = 5;
     const picks = await getPicksByWeek(weekNum)
 
     // Loop through each sheet name
@@ -102,7 +102,7 @@ export const test = async () => {
         if (worksheet) {
           // Convert the sheet to JSON format
           const json = XLSX.utils.sheet_to_json(worksheet);
-          console.log(`Data from sheet "${sheetName}":`, json);
+          //console.log(`Data from sheet "${sheetName}":`, json);
 
           // Process or return the json as needed
           for (const jsonPick of json) {
