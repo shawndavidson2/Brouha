@@ -14,6 +14,27 @@ client.setEndpoint('https://cloud.appwrite.io/v1').setProject('667edab40004ed425
 
 const storage = new Storage(client);
 
+const parseDateTime = (date, time) => {
+    try {
+        // Parse the date and time strings into a Date object
+        const [month, day, year] = date.trim().split('/');
+        let [hour, minute] = time.trim().split(':');
+        const period = time.trim().slice(-2); // AM or PM
+
+        hour = parseInt(hour, 10);
+        minute = parseInt(minute.slice(0, 2), 10);
+
+        // Adjust for AM/PM
+        if (period === 'PM' && hour < 12) hour += 12;
+        if (period === 'AM' && hour === 12) hour = 0;
+
+        return new Date(year, month - 1, day, hour, minute);
+    } catch (error) {
+        console.error('Error parsing date and time:', date, time, error);
+        return null;
+    }
+};
+
 const excelDateToJSDate = (serial) => {
     const utc_days = Math.floor(serial - 25569 + 1); // Add 1 to correct the date offset
     const utc_value = utc_days * 86400;
@@ -137,18 +158,37 @@ const AllPicks = () => {
                     }
                 >
                     {
-                        data.map((row, index) => (
-                            <GameCard
-                                key={index}
-                                date={row['Game-Date'].split(',')[0]} // Adjust based on actual data structure
-                                time={row['Game-Date'].split(',')[1]} // Adjust based on actual data structure
-                                homeTeam={row['Matchup'].split('vs')[1]} // Adjust based on actual data structure
-                                awayTeam={row['Matchup'].split('vs')[0]} // Adjust based on actual data structure
-                                spread={row['HomeTeam (Spread)']} // Adjust based on actual data structure
-                                overUnder={row['Matchup Over']} // Adjust based on actual data structure
-                                fileUrl={fileUrl}
-                            />
-                        ))
+                        data.length > 0 ? (
+                            data
+                                .filter((row) => {
+                                    const [date, time] = row['Game-Date'].split(',');
+                                    if (!date || !time) {
+                                        console.error('Invalid date or time:', row['Game-Date']);
+                                        return false; // Skip invalid entries
+                                    }
+
+                                    const gameDateTime = parseDateTime(date, time);
+                                    const currentTime = new Date();
+
+                                    //console.log('Game DateTime:', gameDateTime, 'Current Time:', currentTime);
+
+                                    return gameDateTime && gameDateTime > currentTime; // Only include future games
+                                })
+                                .map((row, index) => (
+                                    <GameCard
+                                        key={index}
+                                        date={row['Game-Date'].split(',')[0]} // Adjust based on actual data structure
+                                        time={row['Game-Date'].split(',')[1]} // Adjust based on actual data structure
+                                        homeTeam={row['Matchup'].split('vs')[1]} // Adjust based on actual data structure
+                                        awayTeam={row['Matchup'].split('vs')[0]} // Adjust based on actual data structure
+                                        spread={row['HomeTeam (Spread)']} // Adjust based on actual data structure
+                                        overUnder={row['Matchup Over']} // Adjust based on actual data structure
+                                        fileUrl={fileUrl}
+                                    />
+                                ))
+                        ) : (
+                            <Text style={styles.noDataText}>No upcoming games available.</Text>
+                        )
                     }
                 </ScrollView>
             </View>
