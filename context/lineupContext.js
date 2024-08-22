@@ -14,6 +14,7 @@ export const LineupProvider = ({ children }) => {
 
     useEffect(() => {
         const fetchLineupsIfNeeded = async () => {
+            console.log("FETCHING LINEUPS")
             if (lineupCache[weekNum]) {
                 setIsInitialized(true);
                 return; // Data for this week already cached, no need to fetch again
@@ -44,7 +45,7 @@ export const LineupProvider = ({ children }) => {
         };
 
         fetchLineupsIfNeeded();
-    }, [weekNum, lineupCache]);
+    }, [weekNum]);
 
     if (!isInitialized) {
         return <Loading />;
