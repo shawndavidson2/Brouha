@@ -11,6 +11,7 @@ import { updateWeeklyLineup, createGame } from '../lib/appwrite';
 import { useLineupCache } from '../context/lineupContext';
 import { useRouter } from 'expo-router';
 import Loading from '../components/Loading';
+import { useRefresh } from '../context/RefreshContext';
 
 const GameDetail = () => {
     const { sheetName1, sheetName2, date, time, fileUrl } = useLocalSearchParams();
@@ -20,6 +21,7 @@ const GameDetail = () => {
     const [selectedPicks, setSelectedPicks] = useState({});
     const [loading, setLoading] = useState(false); // Global loading state
     const [loadingScreen, setLoadingScreen] = useState(false); // Global loading state
+    const { triggerRefresh } = useRefresh();
 
     const lineupCache = useLineupCache();
     const picks = lineupCache[weekNum] || [];
@@ -154,6 +156,7 @@ const GameDetail = () => {
                 weeklyLineup = await updateWeeklyLineup(user.$id, weekNum, pickIds, pts);
                 if (!weeklyLineup) {
                     weeklyLineup, updatedUser = await createWeeklyLineup(user, pickIds, weekNum);
+                    triggerRefresh();
                 }
 
                 // setUser(updatedUser);
