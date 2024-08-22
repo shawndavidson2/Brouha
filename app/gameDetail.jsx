@@ -14,7 +14,7 @@ import Loading from '../components/Loading';
 
 const GameDetail = () => {
     const { sheetName1, sheetName2, date, time, fileUrl } = useLocalSearchParams();
-    const { weekNum, user, setUser } = useGlobalContext();
+    const { weekNum, user, setUser, refreshPicks, setRefreshPicks } = useGlobalContext();
     const [sheetName, setSheetName] = useState(sheetName1);
     const [details, setDetails] = useState([]);
     const [selectedPicks, setSelectedPicks] = useState({});
@@ -129,6 +129,7 @@ const GameDetail = () => {
             //else await deleteExistingPick(index);
 
             setLoading(false); // Reset global loading state
+            setRefreshPicks(true);
         }
     };
 

@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { router } from 'expo-router';
 
 const PickLineup = () => {
-    const { weekNum } = useGlobalContext();
+    const { weekNum, refreshPicks, setRefreshPicks } = useGlobalContext();
     const {
         cycleWeekNum,
         picks,
@@ -21,9 +21,14 @@ const PickLineup = () => {
         deletePickFromPL, // Assuming you have a function to delete a pick
     } = usePickLineup(weekNum);
 
-    // useEffect(() => {
-    //     router.replace('./pick-lineup')
-    // }, [])
+    useEffect(() => {
+        if (refreshPicks) {
+            // Re-fetch or update your picks here
+
+            // After refreshing, reset the flag
+            setRefreshPicks(false);
+        }
+    }, [refreshPicks]);
 
 
     const renderRightActions = (pick, progress, dragX, onDelete) => {

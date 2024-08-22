@@ -12,6 +12,7 @@ const GlobalProvider = ({ children }) => {
     const [league, setLeague] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isInitialized, setIsInitialized] = useState(false);
+    const [refreshPicks, setRefreshPicks] = useState(false);
 
     useEffect(() => {
         const initialize = async () => {
@@ -79,6 +80,8 @@ const GlobalProvider = ({ children }) => {
                 isLoading,
                 weekNum,
                 isInitialized,
+                refreshPicks,
+                setRefreshPicks
             }}
         >
             {children}
