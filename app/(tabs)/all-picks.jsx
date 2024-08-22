@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, ScrollView, StyleSheet, RefreshControl, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GameCard from '../../components/all-picks/GameCard'; // Adjust the path as needed
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Client, Storage } from 'react-native-appwrite';
 import * as XLSX from 'xlsx';
-import Loading from '../../components/Loading';
 import { getAllFilenamesFromStorage } from '../../lib/appwrite';
 import { useGlobalContext } from '../../context/GlobalProvider';
 
@@ -16,7 +15,6 @@ const storage = new Storage(client);
 
 const parseDateTime = (date, time) => {
     try {
-        // Parse the date and time strings into a Date object
         const [month, day, year] = date.trim().split('/');
         let [hour, minute] = time.trim().split(':');
         const period = time.trim().slice(-2); // AM or PM
@@ -24,7 +22,6 @@ const parseDateTime = (date, time) => {
         hour = parseInt(hour, 10);
         minute = parseInt(minute.slice(0, 2), 10);
 
-        // Adjust for AM/PM
         if (period === 'PM' && hour < 12) hour += 12;
         if (period === 'AM' && hour === 12) hour = 0;
 
@@ -36,7 +33,7 @@ const parseDateTime = (date, time) => {
 };
 
 const excelDateToJSDate = (serial) => {
-    const utc_days = Math.floor(serial - 25569 + 1); // Add 1 to correct the date offset
+    const utc_days = Math.floor(serial - 25569 + 1);
     const utc_value = utc_days * 86400;
     const date_info = new Date(utc_value * 1000);
 
@@ -51,14 +48,12 @@ const excelDateToJSDate = (serial) => {
 
     const date = new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
 
-    // Format the date to "M/D/YYYY h:mm:ss AM/PM"
     const formattedDate = date.toLocaleString('en-US', {
         month: 'numeric',
         day: 'numeric',
         year: 'numeric',
         hour: 'numeric',
         minute: 'numeric',
-        //second: 'numeric',
         hour12: true
     });
 
@@ -69,34 +64,29 @@ const AllPicks = () => {
     const { weekNum } = useGlobalContext();
     const [data, setData] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-    const [fileUrl, setFileUrl] = useState('')
+    const [fileUrl, setFileUrl] = useState('');
 
-    useEffect(() => {
-        const fetchFileUrl = async () => {
-            try {
-                const fileNames = await getAllFilenamesFromStorage();
-                const file = fileNames.files.find(file => file.name === `Matchup Data WK${weekNum}.xlsx`);
+    const fetchFileUrl = async () => {
+        try {
+            const fileNames = await getAllFilenamesFromStorage();
+            const file = fileNames.files.find(file => file.name === `Matchup Data WK${weekNum}.xlsx`);
 
-                if (!file || !file.$id) {
-                    throw new Error('File ID not found');
-                }
-
-                const id = file.$id;
-
-                const url = `https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/${id}/view?project=667edab40004ed4257b4&mode=admin`;
-                setFileUrl(url);
-            } catch (error) {
-                console.error('Error fetching file URL:', error);
+            if (!file || !file.$id) {
+                throw new Error('File ID not found');
             }
-        };
 
-        fetchFileUrl(); // Call the async function
+            const id = file.$id;
 
-    }, [weekNum]); // Add weekNum to the dependency array
-
+            const url = `https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/${id}/view?project=667edab40004ed4257b4&mode=admin`;
+            setFileUrl(url);
+        } catch (error) {
+            console.error('Error fetching file URL:', error);
+        }
+    };
 
     const fetchFile = async () => {
         try {
+            if (!fileUrl) return; // Ensure fileUrl is set
             const response = await fetch(fileUrl);
             const blob = await response.blob();
 
@@ -108,7 +98,6 @@ const AllPicks = () => {
                 const worksheet = workbook.Sheets[sheetName];
                 let json = XLSX.utils.sheet_to_json(worksheet);
 
-                // Convert Excel date serial numbers to formatted JS Dates
                 json = json.map(row => {
                     Object.keys(row).forEach(key => {
                         if (typeof row[key] === 'number' && row[key] > 40000 && row[key] < 50000) {
@@ -119,7 +108,7 @@ const AllPicks = () => {
                 });
 
                 await AsyncStorage.setItem('excelData', JSON.stringify(json));
-                setData(json); // Set the data state with the new data
+                setData(json);
             };
 
             reader.readAsArrayBuffer(blob);
@@ -128,10 +117,16 @@ const AllPicks = () => {
         }
     };
 
-    const onRefresh = useCallback(() => {
+    const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        fetchFile().then(() => setRefreshing(false));
+        await fetchFileUrl();
+        await fetchFile();
+        setRefreshing(false);
     }, []);
+
+    useEffect(() => {
+        fetchFileUrl().then(fetchFile);
+    }, [weekNum]);
 
     useEffect(() => {
         loadCachedData();
@@ -164,25 +159,23 @@ const AllPicks = () => {
                                     const [date, time] = row['Game-Date'].split(',');
                                     if (!date || !time) {
                                         console.error('Invalid date or time:', row['Game-Date']);
-                                        return false; // Skip invalid entries
+                                        return false;
                                     }
 
                                     const gameDateTime = parseDateTime(date, time);
                                     const currentTime = new Date();
 
-                                    //console.log('Game DateTime:', gameDateTime, 'Current Time:', currentTime);
-
-                                    return gameDateTime && gameDateTime > currentTime; // Only include future games
+                                    return gameDateTime && gameDateTime > currentTime;
                                 })
                                 .map((row, index) => (
                                     <GameCard
                                         key={index}
-                                        date={row['Game-Date'].split(',')[0]} // Adjust based on actual data structure
-                                        time={row['Game-Date'].split(',')[1]} // Adjust based on actual data structure
-                                        homeTeam={row['Matchup'].split('vs')[1]} // Adjust based on actual data structure
-                                        awayTeam={row['Matchup'].split('vs')[0]} // Adjust based on actual data structure
-                                        spread={row['HomeTeam (Spread)']} // Adjust based on actual data structure
-                                        overUnder={row['Matchup Over']} // Adjust based on actual data structure
+                                        date={row['Game-Date'].split(',')[0]}
+                                        time={row['Game-Date'].split(',')[1]}
+                                        homeTeam={row['Matchup'].split('vs')[1]}
+                                        awayTeam={row['Matchup'].split('vs')[0]}
+                                        spread={row['HomeTeam (Spread)']}
+                                        overUnder={row['Matchup Over']}
                                         fileUrl={fileUrl}
                                     />
                                 ))
@@ -202,11 +195,6 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#343434',
     },
-    card: {
-        flex: 1,
-        padding: 10,
-        backgroundColor: '#343434',
-    },
     safeArea: {
         flex: 1,
         backgroundColor: '#343434',
@@ -215,6 +203,12 @@ const styles = StyleSheet.create({
         padding: 0,
         paddingHorizontal: 10,
         flex: 1,
+    },
+    noDataText: {
+        color: '#fff',
+        fontSize: 18,
+        textAlign: 'center',
+        marginTop: 20,
     }
 });
 
