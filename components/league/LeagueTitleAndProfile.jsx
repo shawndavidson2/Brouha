@@ -25,6 +25,7 @@ const LeagueTitleAndProfile = ({ currentUser, leagueTitle, weekNum }) => {
                             fontSize: 30,
                             fontWeight: 'bold',
                             flexShrink: 1, // Allow text to shrink to fit within available space
+                            color: '#8b2326',
                         }}
                         numberOfLines={1} // Truncate text if it's too long
                     >
