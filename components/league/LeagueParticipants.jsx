@@ -1,83 +1,108 @@
 import { View, Text, StyleSheet } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { getTotalPointsEarned } from '../../lib/appwrite';
+import React from 'react';
 import { useGlobalContext } from '../../context/GlobalProvider';
 
 const LeagueParticipants = () => {
-
     const { league, user } = useGlobalContext();
 
-    if (user) {
-        const leagueMembers = league.users.map(member =>
-            member.username === user.username ? user : member);
+    if (!user || !league) {
+        return null; // Handle the case where user or league is not available
+    }
 
-        // Sort league members by weekPoints in descending order
-        const sortedMembers = [...leagueMembers].sort((a, b) => b.weekPoints - a.weekPoints);
+    const leagueMembers = league.users.map(member =>
+        member.username === user.username ? user : member
+    );
 
-        // Split the sorted members into contributors and participants
-        const contributors = sortedMembers.slice(0, 5);
-        const participants = sortedMembers.slice(5);
+    // Sort league members by weekPoints in descending order
+    const sortedMembers = [...leagueMembers].sort((a, b) => b.weekPoints - a.weekPoints);
 
-        return (
-            <View style={styles.container}>
-                <View style={styles.headerRow}>
-                    <Text style={styles.header}>League Contributors</Text>
-                    <Text style={styles.header}>Points</Text>
-                </View>
-                <View style={styles.section}>
-                    {contributors.map((contributor, index) => (
-                        <View key={contributor.$id} style={styles.row}>
-                            <Text style={styles.memberText}>{index + 1}. {contributor.username}</Text>
-                            <Text style={styles.pointsText}>{contributor.weekPoints ?? 'Loading...'}</Text>
-                        </View>
-                    ))}
-                </View>
-                {participants.length > 0 && (
-                    <View style={styles.section}>
-                        <Text style={styles.header}>League Participants</Text>
+    // Split the sorted members into contributors and participants
+    const contributors = sortedMembers.slice(0, 5);
+    const participants = sortedMembers.slice(5);
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.sectionHeader}>League Contributors</Text>
+            <View style={styles.participantsContainer}>
+                {contributors.map((contributor, index) => (
+                    <View key={contributor.$id} style={[styles.participantRow, index === 0 && styles.firstPlace]}>
+                        <Text style={styles.rank}>{index + 1}</Text>
+                        <Text style={styles.memberText}>{contributor.username}</Text>
+                        <Text style={styles.pointsText}>{contributor.weekPoints ?? 'Loading...'}</Text>
+                    </View>
+                ))}
+            </View>
+
+            {participants.length > 0 && (
+                <>
+                    <Text style={styles.sectionHeader}>League Participants</Text>
+                    <View style={styles.participantsContainer}>
                         {participants.map((participant, index) => (
-                            <View key={participant.$id} style={styles.row}>
-                                <Text style={styles.memberText}>{index + 1 + contributors.length}. {participant.username}</Text>
+                            <View key={participant.$id} style={styles.participantRow}>
+                                <Text style={styles.rank}>{index + 1 + contributors.length}</Text>
+                                <Text style={styles.memberText}>{participant.username}</Text>
                                 <Text style={styles.pointsText}>{participant.weekPoints ?? 'Loading...'}</Text>
                             </View>
                         ))}
                     </View>
-                )}
-            </View>
-        );
-    }
+                </>
+            )}
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'column',
-        width: '90%',
-        marginTop: 30,
+        padding: 20,
+        backgroundColor: '#fefcf9',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 3,
     },
-    headerRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 10,
-    },
-    section: {
-        marginBottom: 20,
-    },
-    header: {
+    sectionHeader: {
         fontSize: 22,
         fontWeight: 'bold',
+        color: '#8b2326',
+        marginBottom: 10,
     },
-    row: {
+    participantsContainer: {
+        marginBottom: 20,
+    },
+    participantRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 10,
+        alignItems: 'center',
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    },
+    firstPlace: {
+        backgroundColor: '#DBB978',
+        borderRadius: 5,
+        paddingVertical: 12,
+    },
+    rank: {
+        width: 30,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 18,
+        color: '#343434',
     },
     memberText: {
-        marginLeft: 20,
-        fontSize: 20,
+        flex: 1,
+        fontSize: 18,
+        color: '#343434',
+        marginLeft: 10,
     },
     pointsText: {
-        fontSize: 20,
-        textAlign: 'center',
+        width: 80,
+        textAlign: 'right',
+        fontWeight: 'bold',
+        fontSize: 18,
+        color: '#343434',
     },
 });
 
