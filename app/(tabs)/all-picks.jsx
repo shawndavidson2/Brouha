@@ -77,17 +77,19 @@ const AllPicks = () => {
 
             const id = file.$id;
 
-            const url = `https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/${id}/view?project=667edab40004ed4257b4&mode=admin`;
+            const url = `https://cloud.appwrite.io/v1/storage/buckets/667edd29003dd0cf6445/files/${id}/view?project=667edab40004ed4257b4&mode=admin&timestamp=${new Date().getTime()}`;
             setFileUrl(url);
+            return url;
         } catch (error) {
             console.error('Error fetching file URL:', error);
         }
     };
 
-    const fetchFile = async () => {
+    const fetchFile = async (url) => {
         try {
-            if (!fileUrl) return; // Ensure fileUrl is set
-            const response = await fetch(fileUrl);
+            console.log("START", url)
+            if (!url) return; // Ensure fileUrl is set
+            const response = await fetch(url);
             const blob = await response.blob();
 
             const reader = new FileReader();
@@ -112,6 +114,7 @@ const AllPicks = () => {
             };
 
             reader.readAsArrayBuffer(blob);
+            console.log("END")
         } catch (error) {
             console.error('Error fetching file:', error);
         }
@@ -119,17 +122,16 @@ const AllPicks = () => {
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        await fetchFileUrl();
-        await fetchFile();
+        fetchFileUrl().then((res) => { fetchFile(res) });
         setRefreshing(false);
     }, []);
 
     useEffect(() => {
         fetchFileUrl().then(fetchFile);
-    }, [weekNum]);
+    }, []);
 
     useEffect(() => {
-        //loadCachedData();
+        loadCachedData();
     }, []);
 
     const loadCachedData = async () => {
