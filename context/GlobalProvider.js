@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getCurrentUser, checkAndUpdateWeekNum, resetWeekPoints } from "../lib/appwrite";
+import { getCurrentUser, checkAndUpdateWeekNum, resetWeek } from "../lib/appwrite";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -58,7 +58,7 @@ const GlobalProvider = ({ children }) => {
 
             const needsWeekClearing = await checkAndUpdateWeekNum(currentWeekNum)
             if (needsWeekClearing) {
-                await resetWeekPoints();
+                await resetWeek(currentWeekNum);
             }
             setIsLoading(false);
         };
