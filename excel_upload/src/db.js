@@ -26,20 +26,37 @@ const databases = new Databases(client);
 
 export const getPicksByWeek = async (week) => {
     try {
-        const picks = await databases.listDocuments(
-            appwriteConfig.databaseId,
-            appwriteConfig.pickCollectionId,
-            [
-                Query.equal('week', week)
-            ]
-        );
+        let allPicks = [];
+        let offset = 0;
+        const limit = 1000; // Set to maximum allowed limit (100)
 
-        return picks.documents;
+        while (true) {
+            const picks = await databases.listDocuments(
+                appwriteConfig.databaseId,
+                appwriteConfig.pickCollectionId,
+                [
+                    Query.equal('week', week),
+                    Query.limit(limit),
+                    Query.offset(offset)
+                ]
+            );
+
+            allPicks = allPicks.concat(picks.documents);
+
+            if (picks.documents.length < limit) {
+                break; // No more documents to fetch
+            }
+
+            offset += limit; // Move to the next batch
+        }
+
+        return allPicks;
     } catch (error) {
         console.error('Failed to retrieve picks by week:', error);
         throw error;
     }
 };
+
 
 export const updatePickStatus = async (statusLetter, pickId) => {
     try {
