@@ -77,7 +77,6 @@ const GameDetail = () => {
                 const workbook = XLSX.read(data, { type: 'array' });
                 setSheetName(workbook.Sheets[sheetName1] ? sheetName1 : sheetName2);
                 const worksheet = workbook.Sheets[sheetName];
-                console.log(sheetName)
                 if (worksheet) {
                     const json = XLSX.utils.sheet_to_json(worksheet);
                     setDetails(json);
@@ -95,7 +94,7 @@ const GameDetail = () => {
 
     const loadSelectedPicks = async () => {
         try {
-            const storedPicks = await AsyncStorage.getItem(`selectedPicks_${user.$id}`);
+            const storedPicks = await AsyncStorage.getItem(`selectedPicks_${user.$id}_${sheetName}`);
             if (storedPicks) {
                 setSelectedPicks(JSON.parse(storedPicks));
             }
@@ -106,7 +105,7 @@ const GameDetail = () => {
 
     const saveSelectedPicks = async (picks) => {
         try {
-            await AsyncStorage.setItem(`selectedPicks_${user.$id}`, JSON.stringify(picks));
+            await AsyncStorage.setItem(`selectedPicks_${user.$id}_${sheetName}`, JSON.stringify(picks));
         } catch (error) {
             console.error('Error saving selected picks to storage:', error);
         }
