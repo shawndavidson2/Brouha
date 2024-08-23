@@ -129,7 +129,7 @@ const AllPicks = () => {
     }, [weekNum]);
 
     useEffect(() => {
-        loadCachedData();
+        //loadCachedData();
     }, []);
 
     const loadCachedData = async () => {

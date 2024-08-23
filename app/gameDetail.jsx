@@ -29,7 +29,7 @@ const GameDetail = () => {
 
     const router = useRouter();
 
-    const status = "sheetName"
+    const status = sheetName
     const title = "__EMPTY"
     const points = "__EMPTY_1"
 
@@ -77,6 +77,7 @@ const GameDetail = () => {
                 const workbook = XLSX.read(data, { type: 'array' });
                 setSheetName(workbook.Sheets[sheetName1] ? sheetName1 : sheetName2);
                 const worksheet = workbook.Sheets[sheetName];
+                console.log(sheetName)
                 if (worksheet) {
                     const json = XLSX.utils.sheet_to_json(worksheet);
                     setDetails(json);
