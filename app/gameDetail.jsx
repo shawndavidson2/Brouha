@@ -39,6 +39,7 @@ const GameDetail = () => {
 
     useEffect(() => {
         const processDetails = async () => {
+            setLoading(true);
             const picksArr = []
             if (details.length > 0) {
                 const createStatus = await createGame(sheetName, weekNum); // Adjust parameters as needed
@@ -56,6 +57,7 @@ const GameDetail = () => {
 
             }
             await loadSelectedPicks();
+            setLoading(false);
         };
 
         processDetails();
