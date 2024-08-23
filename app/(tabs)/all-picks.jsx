@@ -156,7 +156,7 @@ const AllPicks = () => {
                         data.length > 0 ? (
                             data
                                 .filter((row) => {
-                                    const [date, time] = row['Game-Date'].split(',');
+                                    const [date, time] = row['Game-Date'].split(' ');
                                     if (!date || !time) {
                                         console.error('Invalid date or time:', row['Game-Date']);
                                         return false;
@@ -170,8 +170,8 @@ const AllPicks = () => {
                                 .map((row, index) => (
                                     <GameCard
                                         key={index}
-                                        date={row['Game-Date'].split(',')[0]}
-                                        time={row['Game-Date'].split(',')[1]}
+                                        date={row['Game-Date'].split(' ')[0]}
+                                        time={row['Game-Date'].split(' ')[1]}
                                         homeTeam={row['Matchup'].split('vs')[1]}
                                         awayTeam={row['Matchup'].split('vs')[0]}
                                         spread={row['HomeTeam (Spread)']}

@@ -29,9 +29,9 @@ const GameDetail = () => {
 
     const router = useRouter();
 
-    const status = sheetName
-    const title = "__EMPTY_1"
-    const points = "__EMPTY_2"
+    const status = "sheetName"
+    const title = "__EMPTY"
+    const points = "__EMPTY_1"
 
     useEffect(() => {
         fetchGameDetails();
@@ -46,7 +46,7 @@ const GameDetail = () => {
                 if (createStatus) {
                     details.map((detail, index) => {
 
-                        if (index > 0) {
+                        if (index > 1) {
                             createPick(detail[title], Math.round(detail[points]), detail[status], sheetName, date, time, weekNum).then(res => {
                                 picksArr.push(res)
                             })
@@ -112,10 +112,11 @@ const GameDetail = () => {
     };
 
     const calculateFontSize = (detail, text, width) => {
-        const maxFontSize = 22;
-        const minFontSize = 15;
-        const scale = width / (text.length * 10);
-        return Math.max(Math.min(maxFontSize, scale), minFontSize);
+        // const maxFontSize = 22;
+        // const minFontSize = 15;
+        // const scale = width / (text.length * 10);
+        // return Math.max(Math.min(maxFontSize, scale), minFontSize);
+        return 15;
     };
 
     const handleAddToPL = async (index, pick, pts) => {
@@ -204,7 +205,7 @@ const GameDetail = () => {
                     >
                         {details.length ? (
                             details.map((detail, index) => (
-                                index > 0 && (
+                                index > 1 && (
                                     <View key={index} style={styles.detailContainer}>
                                         <Text style={[styles.detailText, styles.pickColumn, { fontSize: calculateFontSize(detail, detail[title], 150) }]}>
                                             {detail[title]}
