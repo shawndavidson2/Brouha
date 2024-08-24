@@ -14,24 +14,33 @@
     },
     "ios": {
       "supportsTablet": true,
-      "package": "com.brouha.Brouha"
+      "bundleIdentifier": "com.shawndavidson.Brouha"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/icon.png"
     },
     "plugins": [
       "expo-router"
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a2fd11bb-c3f8-47cb-85bd-b60c070d635b"
+      }
+    },
+    "owner": "brouha"
   }
 }
