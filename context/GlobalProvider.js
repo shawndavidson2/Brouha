@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getCurrentUser, checkAndUpdateWeekNum, resetWeek } from "../lib/appwrite";
+import { getCurrentUser, checkAndUpdateWeekNum, resetWeek, checkOrCreateWeeklyLineup } from "../lib/appwrite";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -16,6 +16,7 @@ const GlobalProvider = ({ children }) => {
 
     useEffect(() => {
         const initialize = async () => {
+            setIsLoading(true);
             try {
                 const currentUser = await getCurrentUser();
                 if (currentUser) {
@@ -29,6 +30,7 @@ const GlobalProvider = ({ children }) => {
                     setIsLoggedIn(false);
                     setUser(null);
                 }
+                return currentUser;
             } catch (error) {
                 console.log(error);
             } finally {
@@ -38,7 +40,6 @@ const GlobalProvider = ({ children }) => {
         };
 
         const updateWeekNum = async () => {
-            setIsLoading(true);
 
             // Hardcoded start date for Week 1 (July 15, 2024 at midnight)
             const startWeek1 = new Date('2024-08-20T00:00:00');
@@ -60,11 +61,17 @@ const GlobalProvider = ({ children }) => {
             if (needsWeekClearing) {
                 await resetWeek(currentWeekNum);
             }
+            console.log(currentWeekNum)
+            return currentWeekNum;
+
+        };
+
+        const checkforWeeklyLineup = async (week) => {
+            await checkOrCreateWeeklyLineup(week)
             setIsLoading(false);
         };
 
-        initialize();
-        updateWeekNum();
+        initialize().then((user) => { updateWeekNum().then((week) => { checkforWeeklyLineup(week) }) })
 
     }, []);
 
