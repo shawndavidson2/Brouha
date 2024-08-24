@@ -67,7 +67,7 @@ const GlobalProvider = ({ children }) => {
         };
 
         const checkforWeeklyLineup = async (week) => {
-            await checkOrCreateWeeklyLineup(week)
+            //await checkOrCreateWeeklyLineup(week)
             setIsLoading(false);
         };
 

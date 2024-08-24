@@ -159,7 +159,7 @@ const GameDetail = () => {
                 weeklyLineup = await updateWeeklyLineup(user.$id, weekNum, pickIds, pts);
                 if (!weeklyLineup) {
                     weeklyLineup, updatedUser = await createWeeklyLineup(user, pickIds, weekNum);
-                    //triggerRefresh();
+                    triggerRefresh();
                 }
 
                 // setUser(updatedUser);
