@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 
 const usePickLineup = (initialWeekNum = 0) => {
-    const { user, setUser, league, setLeague, weekNum } = useGlobalContext();
+    const { user, setUser, league, setLeague, weekNum, refreshPicks } = useGlobalContext();
     const [cycleWeekNum, setCycleWeekNum] = useState(initialWeekNum);
     const lineupCache = useLineupCache();
     const [totalPotentialPoints, setTotalPotentialPoints] = useState(0);
@@ -26,7 +26,7 @@ const usePickLineup = (initialWeekNum = 0) => {
 
     useEffect(() => {
         setTotalPotentialPoints(picks.reduce((total, pick) => total + pick["potential-points"], 0));
-    }, [picks, totalPointsEarned]);
+    }, [picks, totalPointsEarned, refreshPicks]);
 
     const renderStatusIcon = (status) => {
         if (status === 'won') {
