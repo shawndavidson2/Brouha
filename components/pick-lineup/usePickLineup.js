@@ -49,7 +49,7 @@ const usePickLineup = (initialWeekNum = 0) => {
         });
     };
 
-    const deletePickFromPL = async (pick, pickId, sheetName) => {
+    const deletePickFromPL = async (pick, pickId, sheetName, swiped = true) => {
         console.log(sheetName)
         try {
             // Update the lineup cache by removing the pick
@@ -68,7 +68,7 @@ const usePickLineup = (initialWeekNum = 0) => {
             }
 
             await AsyncStorage.setItem(`selectedPicks_${user.$id}_${sheetName}`, JSON.stringify(newSelectedPicks));
-            router.replace('./pick-lineup')
+            if (swiped) router.replace('./pick-lineup');
             await removePickFromWeeklyLineup(pickId, user.$id, weekNum, pick["potential-points"]);
 
         } catch (error) {

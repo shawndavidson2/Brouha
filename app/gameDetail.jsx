@@ -12,6 +12,7 @@ import { useLineupCache } from '../context/lineupContext';
 import { useRouter } from 'expo-router';
 import Loading from '../components/Loading';
 import { useRefresh } from '../context/RefreshContext';
+import usePickLineup from '../components/pick-lineup/usePickLineup'
 
 const GameDetail = () => {
     const { sheetName1, sheetName2, date, time, fileUrl } = useLocalSearchParams();
@@ -21,6 +22,7 @@ const GameDetail = () => {
     const [selectedPicks, setSelectedPicks] = useState({});
     const [loading, setLoading] = useState(false); // Global loading state
     const [loadingScreen, setLoadingScreen] = useState(false); // Global loading state
+    const [deletion, setDeletion] = useState(false);
     const { triggerRefresh } = useRefresh();
 
     const lineupCache = useLineupCache();
@@ -33,9 +35,13 @@ const GameDetail = () => {
     const title = "__EMPTY"
     const points = "__EMPTY_1"
 
+    const {
+        deletePickFromPL
+    } = usePickLineup(weekNum);
+
     useEffect(() => {
         fetchGameDetails();
-    }, []);
+    }, [deletion]);
 
     useEffect(() => {
         const processDetails = async () => {
@@ -131,7 +137,7 @@ const GameDetail = () => {
             const isSelected = selectedPicks[index];
 
             if (!isSelected) await addNewPick(index, pick, pts);
-            //else await deleteExistingPick(index);
+            else await deleteExistingPick(pick);
 
             setLoading(false); // Reset global loading state
             setRefreshPicks(true);
@@ -169,19 +175,16 @@ const GameDetail = () => {
         }
     };
 
-    const deleteExistingPick = async (index) => {
+    const deleteExistingPick = async (pickTitle) => {
         try {
-            //picks.splice(picks.findIndex(pick => pick.$id === selectedPicks[index]), 1);
-            //await deletePick(selectedPicks[index]);
-
-            setSelectedPicks(prevState => {
-                const newState = { ...prevState };
-                delete newState[index];
-                saveSelectedPicks(newState);
-                return newState;
-            });
+            const pick = picks.find(pickA => pickTitle == pickA['pick-title']);
+            deletePickFromPL(pick, pick.$id, sheetName, false)
+            lineupCache[weekNum] = picks.filter(pickA => pickA.$id !== pick.$id)
+            setDeletion(!deletion)
+            //router.back();
+            //router.replace("./gameDetail")
         } catch (error) {
-            console.error('Error deleting pick:', error, selectedPicks[index]);
+            console.error('Error deleting pick:', error, pick);
         }
     };
 
