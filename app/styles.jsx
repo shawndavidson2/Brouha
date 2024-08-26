@@ -28,6 +28,7 @@ export default styles = StyleSheet.create({
     },
     current: {
         backgroundColor: '#DBB978',
+        borderRadius: 7,
     },
     rank: {
         width: 40,
@@ -42,6 +43,7 @@ export default styles = StyleSheet.create({
         width: 80,
         textAlign: 'right',
         fontWeight: 'bold',
+        marginRight: 10,
     },
     tabContainer: {
         flexDirection: 'row',

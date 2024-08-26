@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
     firstPlace: {
         backgroundColor: '#DBB978',
-        borderRadius: 5,
+        borderRadius: 7,
         paddingVertical: 12,
     },
     rank: {
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18,
         color: '#343434',
+        marginRight: 10,
     },
 });
 
