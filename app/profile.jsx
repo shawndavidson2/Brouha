@@ -39,21 +39,15 @@ const Profile = () => {
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
                 <ScrollView contentContainerStyle={{ height: '100%' }} >
-                    <View className="w-full flex justify-center items-center mt-6 px-4">
-                        <TouchableOpacity className="flex w-full items-start mb-0 mt-0" >
-                            <Text onPress={goBack} style={{ fontSize: 18 }}>Back</Text>
+                    <View className="w-full flex flex-row justify-between items-center mt-6 px-4 mb-2">
+                        <TouchableOpacity onPress={goBack} className="mb-0 mt-0">
+                            <Text style={{ fontSize: 18 }}>Back</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={logout}
-                            className="flex w-full items-end mb-0"
-                        >
-                            <Image
-                                source={icons.logout}
-                                resizeMode="contain"
-                                className="w-6 h-6"
-                            />
+                        <TouchableOpacity onPress={logout} className="mb-0">
+                            <Text className="text-base text-red-500">Logout</Text>
                         </TouchableOpacity>
                     </View>
+
 
                     <View className="pt-0">
                         <Text className="text-center pt-0" style={{ fontSize: 35, fontWeight: 'bold' }}>{user?.username ? user.username : ""}</Text>
