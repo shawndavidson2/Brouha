@@ -24,36 +24,37 @@ client
 
 const databases = new Databases(client);
 
-export const resetWeek = async (weekNum, log, error) => {
-    log("hello")
+export const resetWeek = async (weekNum) => {
+    //log("hello")
     try {
         // Reset weekPoints for each user
         const users = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.userCollectionId);
         for (const user of users.documents) {
-            log(user.username + " reseting from " + user.weekPoints)
+            //log(user.username + " reseting from " + user.weekPoints)
             await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.userCollectionId, user.$id, {
                 weekPoints: 0
             });
 
-            await checkOrCreateWeeklyLineup(weekNum, user.$id, log, error)
+            await checkOrCreateWeeklyLineup(weekNum, user.$id)
         }
 
         // Reset weekly-total-points for each league
         const leagues = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.leagueCollectionId);
         for (const league of leagues.documents) {
-            log(league.name + " reseting from " + league["weekly-total-points"])
+            //log(league.name + " reseting from " + league["weekly-total-points"])
             await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.leagueCollectionId, league.$id, {
                 'weekly-total-points': 0
             });
         }
 
-        log("Week points for users and leagues have been reset.");
-    } catch (e) {
-        error("Error resetting week points:", e);
+        //log("Week points for users and leagues have been reset.");
+    } catch (error) {
+        //error("Error resetting week points:", e);
+        return;
     }
 };
 
-export const checkOrCreateWeeklyLineup = async (weekNumber, userId = null, log, error) => {
+export const checkOrCreateWeeklyLineup = async (weekNumber, userId = null) => {
     try {
         let userIdentifier = userId;
 
@@ -105,8 +106,8 @@ export const checkOrCreateWeeklyLineup = async (weekNumber, userId = null, log, 
 
 
         return newLineup;
-    } catch (e) {
-        error("Error in checkOrCreateWeeklyLineup:", error);
+    } catch (error) {
+        //error("Error in checkOrCreateWeeklyLineup:", error);
         return;
     }
 };

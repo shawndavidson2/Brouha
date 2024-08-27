@@ -6,7 +6,7 @@ import { resetWeek } from './db.js';
 export default async ({ req, res, log, error }) => {
   const weekNum = req.body["weekNum"];
   log(weekNum)
-  resetWeek(weekNum, log, error)
+  resetWeek(weekNum)
   log("done!")
 
   // `res.json()` is a handy helper for sending JSON
