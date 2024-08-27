@@ -7,6 +7,7 @@ import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 import { useGlobalContext } from '../../context/GlobalProvider';
 import { useEffect } from 'react';
 import { router } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
 const PickLineup = () => {
     const { weekNum, refreshPicks, setRefreshPicks } = useGlobalContext();
@@ -84,6 +85,7 @@ const PickLineup = () => {
                         <Text style={styles.earnedPointsText}>{totalPointsEarned} pts</Text>
                     </View>
                 </View>
+                <StatusBar style="light" />
             </SafeAreaView>
         </GestureHandlerRootView>
     );

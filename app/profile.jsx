@@ -8,6 +8,7 @@ import { signOut } from '../lib/appwrite'
 import { router } from 'expo-router'
 import styles from './styles'
 import ProfileLineup from '../components/pick-lineup/ProfileLineup'
+import { StatusBar } from 'expo-status-bar'
 
 const Profile = () => {
     const { user, setUser, setIsLoggedIn, league } = useGlobalContext();
@@ -61,6 +62,7 @@ const Profile = () => {
                     <ProfileLineup />
                 </ScrollView>
             </View>
+            <StatusBar style="light" />
         </SafeAreaView>
     )
 }

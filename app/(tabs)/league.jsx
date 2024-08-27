@@ -13,6 +13,7 @@ import { UpdateUserStats } from '../../components/UpdateUserStats';
 import { useLineupCache } from '../../context/lineupContext';
 import { useRefresh } from '../../context/RefreshContext';
 import Loading from '../../components/Loading';
+import { StatusBar } from 'expo-status-bar';
 
 const League = () => {
     const { user, setUser, league, setLeague, weekNum, isInitialized: isGlobalInitialized } = useGlobalContext();
@@ -68,6 +69,7 @@ const League = () => {
                         }
                     />
                 </View>
+                <StatusBar style="dark" />
             </SafeAreaView>
         );
     } else {
@@ -86,6 +88,7 @@ const League = () => {
                     />
                     <JoinLeagueButton joinLeague={joinLeague} />
                 </View>
+                <StatusBar style="dark" />
             </SafeAreaView>
         );
     }

@@ -4,6 +4,7 @@ import styles from '../styles';
 import { getAllUsers, getAllLeagues, updateLeagueAttributes, getAllUsersForLeaderboard, getAllLeaguesForLeaderboard } from '../../lib/appwrite';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../../context/GlobalProvider';
+import { StatusBar } from 'expo-status-bar';
 
 const Leaderboards = () => {
     const [selectedTab, setSelectedTab] = useState('users');
@@ -71,6 +72,7 @@ const Leaderboards = () => {
                     </TouchableOpacity>
                 </View>
             </View>
+            <StatusBar style="light" />
         </SafeAreaView>
     );
 };

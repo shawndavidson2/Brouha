@@ -7,6 +7,7 @@ import { Client, Storage } from 'react-native-appwrite';
 import * as XLSX from 'xlsx';
 import { getAllFilenamesFromStorage } from '../../lib/appwrite';
 import { useGlobalContext } from '../../context/GlobalProvider';
+import { StatusBar } from 'expo-status-bar';
 
 const client = new Client();
 client.setEndpoint('https://cloud.appwrite.io/v1').setProject('667edab40004ed4257b4');
@@ -187,6 +188,7 @@ const AllPicks = () => {
                     }
                 </ScrollView>
             </View>
+            <StatusBar style="light" />
         </SafeAreaView>
     );
 };
