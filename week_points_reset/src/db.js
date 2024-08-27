@@ -1,5 +1,5 @@
 // Using the Appwrite Node.js SDK
-import { Client, Databases, Query } from 'node-appwrite';
+import { Client, Databases, Query, ID } from 'node-appwrite';
 
 // Configuration settings
 const appwriteConfig = {
@@ -51,7 +51,7 @@ export const resetWeek = async (weekNum) => {
             leaguesArray.push(league.name + ": " + league['weekly-total-points'])
         }
 
-        return usersArray, leaguesArray
+        return [usersArray, leaguesArray]
 
         //log("Week points for users and leagues have been reset.");
     } catch (error) {
