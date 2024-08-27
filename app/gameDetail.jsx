@@ -102,7 +102,8 @@ const GameDetail = () => {
 
     const loadSelectedPicks = async () => {
         try {
-            const storedPicks = await AsyncStorage.getItem(`selectedPicks_${user.$id}_${sheetName}`);
+
+            const storedPicks = await AsyncStorage.getItem(`selectedPicks_${user.$id}_${sheetName}_${date}`);
             if (storedPicks) {
                 setSelectedPicks(JSON.parse(storedPicks));
             }
@@ -113,7 +114,7 @@ const GameDetail = () => {
 
     const saveSelectedPicks = async (picks) => {
         try {
-            await AsyncStorage.setItem(`selectedPicks_${user.$id}_${sheetName}`, JSON.stringify(picks));
+            await AsyncStorage.setItem(`selectedPicks_${user.$id}_${sheetName}_${date}`, JSON.stringify(picks));
         } catch (error) {
             console.error('Error saving selected picks to storage:', error);
         }
@@ -178,7 +179,7 @@ const GameDetail = () => {
     const deleteExistingPick = async (pickTitle) => {
         try {
             const pick = picks.find(pickA => pickTitle == pickA['pick-title']);
-            deletePickFromPL(pick, pick.$id, sheetName, false)
+            deletePickFromPL(pick, pick.$id, sheetName, date, false)
             lineupCache[weekNum] = picks.filter(pickA => pickA.$id !== pick.$id)
             setDeletion(!deletion)
             //router.back();
