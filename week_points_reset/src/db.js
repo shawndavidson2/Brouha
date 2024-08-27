@@ -35,7 +35,7 @@ export const resetWeek = async (weekNum) => {
                 weekPoints: 0
             });
 
-            usersArray.push(user.username)
+            usersArray.push(user.username + ": " + user.weekPoints)
 
             await checkOrCreateWeeklyLineup(weekNum, user.$id)
         }
@@ -48,7 +48,7 @@ export const resetWeek = async (weekNum) => {
                 'weekly-total-points': 0
             });
 
-            leaguesArray.push(league.name)
+            leaguesArray.push(league.name + ": " + league['weekly-total-points'])
         }
 
         return usersArray, leaguesArray
