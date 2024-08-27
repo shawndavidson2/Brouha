@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         color: '#8b2326',
         textAlign: 'center',
         marginBottom: 5,
-        fontFamily: 'RobotoSlab-bold'
+        fontFamily: 'RobotoSlab-Bold'
     },
     weekText: {
         fontSize: 20,

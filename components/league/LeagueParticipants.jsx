@@ -102,18 +102,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 26
     },
     rank: {
-        fontSize: 22,
+        fontSize: 20,
         marginRight: 8,
         fontFamily: 'RobotoSlab-Regular'
     },
     memberText: {
-        fontSize: 22,
+        fontSize: 20,
         flex: 1,
         color: '#333',
         fontFamily: 'RobotoSlab-Regular'
     },
     pointsText: {
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: 'medium',
         textAlign: 'center',
         fontFamily: 'RobotoSlab-SemiBold'
