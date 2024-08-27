@@ -24,7 +24,7 @@ client
 
 const databases = new Databases(client);
 
-export const resetWeek = async (weekNum, log, error) => {
+export const resetWeek = async ({ weekNum, log, error }) => {
     try {
         // Reset weekPoints for each user
         const users = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.userCollectionId);
