@@ -13,11 +13,13 @@ export default styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 8,
         elevation: 3,
+        fontFamily: 'RobotoSlab-Regular'
     },
     title: {
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 8,
+        fontFamily: 'RobotoSlab-Regular'
     },
     leaderboardItem: {
         flexDirection: 'row',
@@ -25,25 +27,30 @@ export default styles = StyleSheet.create({
         paddingVertical: 8,
         borderBottomWidth: 1,
         borderBottomColor: '#eee',
+        fontFamily: 'RobotoSlab-Regular'
     },
     current: {
         backgroundColor: '#DBB978',
         borderRadius: 7,
+        fontFamily: 'RobotoSlab-Regular'
     },
     rank: {
         width: 40,
         textAlign: 'center',
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
     },
     name: {
         flex: 1,
         textAlign: 'left',
+        fontFamily: 'RobotoSlab-Regular'
     },
     points: {
         width: 80,
         textAlign: 'right',
         fontWeight: 'bold',
         marginRight: 10,
+        fontFamily: 'RobotoSlab-Regular'
     },
     tabContainer: {
         flexDirection: 'row',
@@ -64,6 +71,7 @@ export default styles = StyleSheet.create({
     tabText: {
         fontSize: 16,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
     },
     container: {
         flex: 1,
@@ -78,6 +86,7 @@ export default styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
+        fontFamily: 'RobotoSlab-Bold'
     },
     weekNavigation: {
         flexDirection: 'row',
@@ -88,6 +97,7 @@ export default styles = StyleSheet.create({
     subHeader: {
         fontSize: 18,
         textAlign: 'center',
+        fontFamily: 'RobotoSlab-Regular'
     },
     scrollView: {
         flex: 1,
@@ -105,13 +115,16 @@ export default styles = StyleSheet.create({
     },
     pickText: {
         fontSize: 16,
+        fontFamily: 'RobotoSlab-Regular'
     },
     gameText: {
         fontSize: 14,
         color: '#555',
+        fontFamily: 'RobotoSlab-Regular'
     },
     pointsText: {
         fontSize: 16,
+        fontFamily: 'RobotoSlab-Regular'
     },
     statusIcon: {
         marginLeft: 10,
@@ -124,15 +137,18 @@ export default styles = StyleSheet.create({
     totalText: {
         fontSize: 16,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
     },
     totalPointsText: {
         fontSize: 16,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
     },
     earnedPointsText: {
         fontSize: 16,
         fontWeight: 'bold',
         color: 'green',
+        fontFamily: 'RobotoSlab-Regular'
     },
     deleteButton: {
         backgroundColor: 'red',
@@ -144,6 +160,7 @@ export default styles = StyleSheet.create({
     deleteButtonText: {
         color: 'white',
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
     },
     safeArea: {
         flex: 1,
@@ -154,6 +171,7 @@ export default styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#343434',
+        fontFamily: 'RobotoSlab-Regular'
     },
     input: {
         height: 40,
@@ -164,23 +182,28 @@ export default styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         backgroundColor: '#fff',
+        fontFamily: 'RobotoSlab-Regular'
     },
     backButton: {
         marginBottom: 10,
+        fontFamily: 'RobotoSlab-Regular'
     },
     backButtonText: {
         fontSize: 18,
+        fontFamily: 'RobotoSlab-Regular'
     },
     title: {
         textAlign: 'center',
         fontSize: 30,
         fontWeight: 'bold',
         marginBottom: 20,
+        fontFamily: 'RobotoSlab-Regular'
     },
     sectionTitle: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 10,
+        fontFamily: 'RobotoSlab-Regular'
     },
     headerContainer: {
         flexDirection: 'row',
@@ -199,11 +222,13 @@ export default styles = StyleSheet.create({
         color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
     },
     headerTextPts: {
         color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
     },
     headerPick: {
         flexDirection: 'row',
@@ -233,6 +258,7 @@ export default styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
         flex: 1,
+        fontFamily: 'RobotoSlab-Regular'
     },
     pickColumn: {
         flex: 3,
@@ -242,7 +268,8 @@ export default styles = StyleSheet.create({
     ptsColumn: {
         flex: 1,
         textAlign: 'center',
-        marginRight: 20
+        marginRight: 20,
+        fontFamily: 'RobotoSlab-Regular'
     },
     addButton: {
         paddingVertical: 5,
@@ -257,6 +284,7 @@ export default styles = StyleSheet.create({
     },
     addButtonText: {
         fontSize: 14,
+        fontFamily: 'RobotoSlab-Regular'
     },
     button: {
         backgroundColor: '#8b2326', // Gold color
@@ -270,6 +298,7 @@ export default styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
     },
 });
 // <Text style={styles.title}>{`${sheetName}`}</Text>

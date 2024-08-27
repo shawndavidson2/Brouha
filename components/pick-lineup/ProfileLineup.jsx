@@ -105,13 +105,16 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
+        fontFamily: 'RobotoSlab-Regular'
     },
     pickText: {
         fontSize: 16,
         flex: 1,
+        fontFamily: 'RobotoSlab-Regular'
     },
     pointsText: {
         fontSize: 16,
+        fontFamily: 'RobotoSlab-Regular'
     },
     statusIcon: {
         marginLeft: 10,
@@ -124,15 +127,18 @@ const styles = StyleSheet.create({
     totalText: {
         fontSize: 16,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
     },
     totalPointsText: {
         fontSize: 16,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
     },
     earnedPointsText: {
         fontSize: 16,
         fontWeight: 'bold',
         color: 'green',
+        fontFamily: 'RobotoSlab-Regular'
     },
     weekSummary: {
         flexDirection: 'row',
@@ -141,9 +147,11 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
+        fontFamily: 'RobotoSlab-Regular'
     },
     weekText: {
         fontSize: 18,
+        fontFamily: 'RobotoSlab-Regular'
     },
 });
 

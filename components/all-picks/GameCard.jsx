@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     },
     vsText: {
         fontSize: 18,
+        fontFamily: 'RobotoSlab-Regular'
     },
     dateTimeContainer: {
         flexDirection: 'column',
@@ -67,9 +68,11 @@ const styles = StyleSheet.create({
     },
     dateText: {
         fontSize: 14,
+        fontFamily: 'RobotoSlab-Regular'
     },
     timeText: {
         fontSize: 14,
+        fontFamily: 'RobotoSlab-Regular'
     },
     spreadContainer: {
         flexDirection: 'column',
@@ -78,11 +81,13 @@ const styles = StyleSheet.create({
     spreadText: {
         fontSize: 20,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Bold'
     },
     overUnderText: {
         marginTop: 10,
         fontSize: 20,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Bold'
     },
     button: {
         borderWidth: 2,
@@ -94,6 +99,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 14,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Bold'
     },
 });
 

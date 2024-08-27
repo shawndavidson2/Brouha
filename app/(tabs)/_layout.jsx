@@ -12,14 +12,14 @@ const TabIcon = ({ icon, color, name, focused }) => {
                 tintColor={color}
                 className="w-6 h-6"
             />
-            <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{color}}> {name}</Text>
+            <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{ color }}> {name}</Text>
         </View>
     )
 }
 
 const TabsLayout = () => {
     return (
-        <View style={{flex:1, backgroundColor: "#343434"}}>
+        <View style={{ flex: 1, backgroundColor: "#343434" }}>
             <Tabs
                 screenOptions={{
                     tabBarShowLabel: false,
@@ -59,6 +59,7 @@ const TabsLayout = () => {
                                 color={color}
                                 name="Pick Lineup"
                                 focused={focused}
+
                             />
                         )
 

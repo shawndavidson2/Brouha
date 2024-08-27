@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
         marginTop: 20,
+        fontFamily: 'RobotoSlab-Regular'
     }
 });
 

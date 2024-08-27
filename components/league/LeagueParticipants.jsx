@@ -75,12 +75,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 4,
         color: '#333',
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
+        fontFamily: 'RobotoSlab-bold'
     },
     sectionSubHeader: {
         fontSize: 14,
         marginBottom: 5,
         color: '#656769',
+        fontFamily: 'RobotoSlab-Regular'
     },
     participantsContainer: {
 
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 16,
+        paddingVertical: 14,
         paddingHorizontal: 30,
         borderRadius: 7,
     },
@@ -102,19 +104,19 @@ const styles = StyleSheet.create({
     rank: {
         fontSize: 22,
         marginRight: 8,
+        fontFamily: 'RobotoSlab-Regular'
     },
     memberText: {
         fontSize: 22,
         flex: 1,
         color: '#333',
+        fontFamily: 'RobotoSlab-Regular'
     },
     pointsText: {
         fontSize: 22,
         fontWeight: 'medium',
         textAlign: 'center',
-    },
-    firstPlace: {
-        backgroundColor: '#ffd700', // Bright gold for first place (optional)
+        fontFamily: 'RobotoSlab-SemiBold'
     },
 });
 

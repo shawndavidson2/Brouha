@@ -13,6 +13,9 @@ import * as Font from 'expo-font';
 const loadFonts = () => {
     return Font.loadAsync({
         'RobotoSlab-Regular': require('../assets/fonts/RobotoSlab-Regular.ttf'),
+        'RobotoSlab-Bold': require('../assets/fonts/RobotoSlab-Bold.ttf'),
+        'RobotoSlab-SemiBold': require('../assets/fonts/RobotoSlab-SemiBold.ttf'),
+        'RobotoSlab-ExtraBold': require('../assets/fonts/RobotoSlab-ExtraBold.ttf'),
     });
 };
 

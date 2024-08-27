@@ -48,10 +48,12 @@ const styles = StyleSheet.create({
     statLabel: {
         fontSize: 17,
         fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-bold'
     },
     statValue: {
         fontSize: 20,
         marginTop: 5,
+        fontFamily: 'RobotoSlab-Regular'
     },
     divider: {
         borderLeftWidth: 3, // Thicker line

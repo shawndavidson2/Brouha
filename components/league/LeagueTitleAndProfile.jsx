@@ -51,12 +51,14 @@ const styles = StyleSheet.create({
         color: '#8b2326',
         textAlign: 'center',
         marginBottom: 5,
+        fontFamily: 'RobotoSlab-bold'
     },
     weekText: {
         fontSize: 20,
         fontWeight: 'medium',
         marginTop: 2,
         textAlign: 'center',
+        fontFamily: 'RobotoSlab-Regular'
     },
     profileButton: {
         position: 'absolute',

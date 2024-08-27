@@ -1,16 +1,12 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useLocalSearchParams } from 'expo-router'
-import styles from './styles'
 import { useGlobalContext } from '../context/GlobalProvider'
-import { TouchableOpacity, StyleSheet } from 'react-native'
-import { icons } from '../constants'
-import { Image } from 'react-native'
+import { TouchableOpacity, ScrollView, Image } from 'react-native'
 import { signOut } from '../lib/appwrite'
-import { useState, useEffect } from 'react'
 import { router } from 'expo-router'
-import { ScrollView } from 'react-native'
+import styles from './styles'
 import ProfileLineup from '../components/pick-lineup/ProfileLineup'
 
 const Profile = () => {
@@ -37,35 +33,35 @@ const Profile = () => {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <View style={styles.container}>
-                <ScrollView contentContainerStyle={{ height: '100%' }} >
-                    <View className="w-full flex flex-row justify-between items-center mt-6 px-4 mb-2">
-                        <TouchableOpacity onPress={goBack} className="mb-0 mt-0">
-                            <Text style={{ fontSize: 18 }}>Back</Text>
+            <View style={styless.container}>
+                <ScrollView contentContainerStyle={{ height: '100%' }}>
+                    <View style={styless.headerContainer}>
+                        <TouchableOpacity onPress={goBack}>
+                            <Text style={styless.backText}>Back</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={logout} className="mb-0">
-                            <Text className="text-base text-red-500">Logout</Text>
+                        <TouchableOpacity onPress={logout}>
+                            <Text style={styless.logoutText}>Logout</Text>
                         </TouchableOpacity>
                     </View>
 
-
-                    <View className="pt-0">
-                        <Text className="text-center pt-0" style={{ fontSize: 35, fontWeight: 'bold' }}>{user?.username ? user.username : ""}</Text>
-                        <Text className="text-center font-medium mt-2" style={{ fontSize: 16 }}>League: {leagueName}</Text>
+                    <View style={styless.profileInfo}>
+                        <Text style={styless.usernameText}>{user?.username ? user.username : ""}</Text>
+                        <Text style={styless.leagueText}>League: {leagueName}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginTop: 25 }}>
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={{ fontSize: 26, marginTop: 5 }}>{user?.rankCategory ? user.rankCategory : ""}</Text>
+
+                    <View style={styless.statsContainer}>
+                        <View style={styless.statItem}>
+                            <Text style={styless.statText}>{user?.rankCategory ? user.rankCategory : ""}</Text>
                         </View>
-                        <View style={{ alignItems: 'center', borderLeftWidth: 1, borderLeftColor: 'black', height: '100%', marginHorizontal: 0 }} />
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={{ fontSize: 26, marginTop: 5 }}>{user?.totalPoints >= 0 ? user.totalPoints : ""}  Points</Text>
+                        <View style={styless.divider} />
+                        <View style={styless.statItem}>
+                            <Text style={styless.statText}>{user?.totalPoints >= 0 ? user.totalPoints : ""} Points</Text>
                         </View>
                     </View>
                     <ProfileLineup />
-                </ScrollView >
-            </View >
-        </SafeAreaView >
+                </ScrollView>
+            </View>
+        </SafeAreaView>
     )
 }
 
@@ -80,81 +76,60 @@ const styless = StyleSheet.create({
         borderTopWidth: 20,
         justifyContent: 'center',
     },
-    header: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    weekNavigation: {
+    headerContainer: {
+        width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
+        marginTop: 6,
+        paddingHorizontal: 4,
+        marginBottom: 2,
     },
-    subHeader: {
+    backText: {
         fontSize: 18,
-        textAlign: 'center',
+        fontFamily: 'RobotoSlab-Regular'
     },
-    scrollView: {
-        flex: 1,
+    logoutText: {
+        fontSize: 16,
+        color: 'red',
+        fontFamily: 'RobotoSlab-Regular'
     },
-    pickItem: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+    profileInfo: {
+        paddingTop: 15,
         alignItems: 'center',
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
+        fontFamily: 'RobotoSlab-Regular'
     },
-    pickDetails: {
-        flex: 1,
+    usernameText: {
+        fontSize: 35,
+        fontFamily: 'RobotoSlab-ExtraBold'
     },
-    pickText: {
+    leagueText: {
         fontSize: 16,
+        fontWeight: '500',
+        marginTop: 2,
+        fontFamily: 'RobotoSlab-Regular'
     },
-    gameText: {
-        fontSize: 14,
-        color: '#555',
-    },
-    pointsText: {
-        fontSize: 16,
-    },
-    statusIcon: {
-        marginLeft: 10,
-    },
-    totalContainer: {
+    statsContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 10,
+        justifyContent: 'space-around',
+        width: '100%',
+        marginTop: 25,
     },
-    totalText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    totalPointsText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    earnedPointsText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: 'green',
-    },
-    deleteButton: {
-        backgroundColor: 'red',
-        justifyContent: 'center',
+    statItem: {
         alignItems: 'center',
-        width: 75,
+        fontFamily: 'RobotoSlab-Regular'
+    },
+    statText: {
+        fontSize: 26,
+        marginTop: 5,
+        fontFamily: 'RobotoSlab-Regular'
+    },
+    divider: {
+        alignItems: 'center',
+        borderLeftWidth: 1,
+        borderLeftColor: 'black',
         height: '100%',
-    },
-    deleteButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-    safeArea: {
-        flex: 1,
-        backgroundColor: '#343434',
     },
 });
 
-export default Profile
+export default Profile;
