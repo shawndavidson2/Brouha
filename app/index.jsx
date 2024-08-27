@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../context/GlobalProvider';
 import SignIn from './(auth)/sign-in';
 import { symbolName } from 'typescript';
+import { useEffect } from 'react';
 import styles from './styles';
 import Loading from '../components/Loading';
 import * as Font from 'expo-font';

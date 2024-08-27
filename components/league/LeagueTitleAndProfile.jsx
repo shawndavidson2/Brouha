@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import React from 'react';
 import { icons } from '../../constants';
 import { router } from 'expo-router';
@@ -9,67 +9,66 @@ const LeagueTitleAndProfile = ({ currentUser, leagueTitle, weekNum }) => {
     };
 
     return (
-        <View style={{ width: '100%', paddingVertical: 20 }}>
-            <View style={{
-                flexDirection: 'row',
-                alignItems: 'center', // Align items in the center vertically
-                justifyContent: 'space-between', // Ensure even spacing between items
-            }}>
-                <View
-                    style={{
-                        flex: 1, // Take up the remaining space after the profile button
-                    }}
-                >
-                    <Text
-                        style={{
-                            fontSize: 30,
-                            fontWeight: 'bold',
-                            flexShrink: 1, // Allow text to shrink to fit within available space
-                            color: '#8b2326',
-                        }}
-                        numberOfLines={1} // Truncate text if it's too long
-                    >
+        <View style={styles.container}>
+            <View style={styles.row}>
+                <View style={styles.titleContainer}>
+                    <Text style={styles.leagueTitle} numberOfLines={1}>
                         {leagueTitle}
                     </Text>
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            fontWeight: 'medium',
-                            marginTop: 2,
-                        }}
-                    >
+                    <Text style={styles.weekText}>
                         Week {weekNum}
                     </Text>
                 </View>
-                <TouchableOpacity onPress={profile}
-                    style={{
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginLeft: 10, // Add some spacing between the title and profile button
-                    }}
-                >
+                <TouchableOpacity onPress={profile} style={styles.profileButton}>
                     <Image
                         source={icons.profile}
                         resizeMode="contain"
-                        style={{
-                            width: 40,
-                            height: 40,
-                            tintColor: '#8b2326'
-                        }}
+                        style={styles.profileImage}
                     />
-                    <Text
-                        style={{
-                            color: '#8b2326',
-                            fontSize: 16,
-                            fontWeight: 'bold'
-                        }}
-                    >Profile</Text>
                 </TouchableOpacity>
             </View>
         </View>
-
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        width: '100%',
+        paddingVertical: 20,
+        position: 'relative',
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center', // Center the title and week number
+    },
+    titleContainer: {
+        alignItems: 'center',
+    },
+    leagueTitle: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: '#8b2326',
+        textAlign: 'center',
+        marginBottom: 5,
+    },
+    weekText: {
+        fontSize: 20,
+        fontWeight: 'medium',
+        marginTop: 2,
+        textAlign: 'center',
+    },
+    profileButton: {
+        position: 'absolute',
+        right: 20,
+        top: '35%',
+        transform: [{ translateY: -16.5 }], // Vertically center the button
+    },
+    profileImage: {
+        width: 33,
+        height: 33,
+        tintColor: '#8b2326',
+    },
+});
 
 export default LeagueTitleAndProfile;

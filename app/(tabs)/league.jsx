@@ -49,8 +49,8 @@ const League = () => {
 
     if (league) {
         return (
-            <SafeAreaView key={refreshKey} style={styles.safeArea}>
-                <View style={styles.container}>
+            <SafeAreaView key={refreshKey} style={styless.safeArea}>
+                <View style={styless.leagueBackground}>
                     <FlatList
                         ListHeaderComponent={() => (
                             <>
@@ -67,14 +67,13 @@ const League = () => {
                             <RefreshControl refreshing={loading} onRefresh={onRefresh} />
                         }
                     />
-                    <JoinLeagueButton joinLeague={joinLeague} />
                 </View>
             </SafeAreaView>
         );
     } else {
         return (
-            <SafeAreaView key={refreshKey} style={styles.safeArea}>
-                <View style={styles.container}>
+            <SafeAreaView key={refreshKey} style={styless.safeArea}>
+                <View style={styless.leagueBackground}>
                     <FlatList
                         ListHeaderComponent={() => (
                             <>
@@ -97,3 +96,13 @@ const League = () => {
 }
 
 export default League;
+
+const styless = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: 'white',
+    },
+    leagueBackground: {
+        flex: 1,
+    },
+});

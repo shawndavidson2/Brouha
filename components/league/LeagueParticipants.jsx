@@ -23,10 +23,17 @@ const LeagueParticipants = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.sectionHeader}>League Contributors</Text>
+            <Text style={styles.sectionSubHeader}>Top 5 scores add up to total</Text>
             <View style={styles.participantsContainer}>
                 {contributors.map((contributor, index) => (
-                    <View key={contributor.$id} style={[styles.participantRow, index === 0 && styles.firstPlace]}>
-                        <Text style={styles.rank}>{index + 1}</Text>
+                    <View
+                        key={contributor.$id}
+                        style={[
+                            styles.participantRow,
+                            contributor.username === user.username && styles.currentUser,
+                        ]}
+                    >
+                        <Text style={styles.rank}>{index + 1}.</Text>
                         <Text style={styles.memberText}>{contributor.username}</Text>
                         <Text style={styles.pointsText}>{contributor.weekPoints ?? 'Loading...'}</Text>
                     </View>
@@ -38,8 +45,14 @@ const LeagueParticipants = () => {
                     <Text style={styles.sectionHeader}>League Participants</Text>
                     <View style={styles.participantsContainer}>
                         {participants.map((participant, index) => (
-                            <View key={participant.$id} style={styles.participantRow}>
-                                <Text style={styles.rank}>{index + 1 + contributors.length}</Text>
+                            <View
+                                key={participant.$id}
+                                style={[
+                                    styles.participantRow,
+                                    participant.username === user.username && styles.currentUser,
+                                ]}
+                            >
+                                <Text style={styles.rank}>{index + 1 + contributors.length}.</Text>
                                 <Text style={styles.memberText}>{participant.username}</Text>
                                 <Text style={styles.pointsText}>{participant.weekPoints ?? 'Loading...'}</Text>
                             </View>
@@ -53,57 +66,55 @@ const LeagueParticipants = () => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
-        backgroundColor: '#fefcf9',
+        padding: 16,
         borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        elevation: 3,
     },
     sectionHeader: {
         fontSize: 22,
         fontWeight: 'bold',
-        color: '#8b2326',
-        marginBottom: 10,
+        marginBottom: 4,
+        color: '#333',
+        textDecorationLine: 'underline'
+    },
+    sectionSubHeader: {
+        fontSize: 14,
+        fontWeight: 'light',
+        marginBottom: 5,
+        color: '#333',
     },
     participantsContainer: {
-        marginBottom: 20,
+
     },
     participantRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
-    },
-    firstPlace: {
-        backgroundColor: '#DBB978',
+        paddingVertical: 16,
+        paddingHorizontal: 30,
         borderRadius: 7,
-        paddingVertical: 12,
+    },
+    currentUser: {
+        backgroundColor: '#DBB978', // Gold highlight for the current user
+        borderColor: 'gray',       // Black border
+        borderWidth: 3,             // Bold border
+        paddingHorizontal: 26
     },
     rank: {
-        width: 30,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 18,
-        color: '#343434',
+        fontSize: 22,
+        marginRight: 8,
     },
     memberText: {
+        fontSize: 22,
         flex: 1,
-        fontSize: 18,
-        color: '#343434',
-        marginLeft: 10,
+        color: '#333',
     },
     pointsText: {
-        width: 80,
-        textAlign: 'right',
-        fontWeight: 'bold',
-        fontSize: 18,
-        color: '#343434',
-        marginRight: 10,
+        fontSize: 22,
+        fontWeight: 'medium',
+        textAlign: 'center',
+    },
+    firstPlace: {
+        backgroundColor: '#ffd700', // Bright gold for first place (optional)
     },
 });
 
