@@ -25,7 +25,7 @@ client
 const databases = new Databases(client);
 
 export const resetWeek = async (weekNum) => {
-    //log("hello")
+    let usersArray = [], leaguesArray = []
     try {
         // Reset weekPoints for each user
         const users = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.userCollectionId);
@@ -34,6 +34,8 @@ export const resetWeek = async (weekNum) => {
             await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.userCollectionId, user.$id, {
                 weekPoints: 0
             });
+
+            usersArray.push(user.username)
 
             await checkOrCreateWeeklyLineup(weekNum, user.$id)
         }
@@ -45,7 +47,11 @@ export const resetWeek = async (weekNum) => {
             await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.leagueCollectionId, league.$id, {
                 'weekly-total-points': 0
             });
+
+            leaguesArray.push(league.name)
         }
+
+        return usersArray, leaguesArray
 
         //log("Week points for users and leagues have been reset.");
     } catch (error) {
@@ -102,9 +108,6 @@ export const checkOrCreateWeeklyLineup = async (weekNumber, userId = null) => {
                 "weekly-lineup": [...(existingLineup.documents.length > 0 ? existingLineup.documents[0]["weekly-lineup"] : []), newLineup.$id]
             }
         );
-
-
-
         return newLineup;
     } catch (error) {
         //error("Error in checkOrCreateWeeklyLineup:", error);
