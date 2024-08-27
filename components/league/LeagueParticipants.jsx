@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 16,
         borderRadius: 10,
+        marginHorizontal: 20,
     },
     sectionHeader: {
         fontSize: 22,
@@ -78,9 +79,8 @@ const styles = StyleSheet.create({
     },
     sectionSubHeader: {
         fontSize: 14,
-        fontWeight: 'light',
         marginBottom: 5,
-        color: '#333',
+        color: '#656769',
     },
     participantsContainer: {
 
