@@ -33,7 +33,8 @@ export const resetWeek = async (weekNum) => {
             await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.userCollectionId, user.$id, {
                 weekPoints: 0
             });
-            await createWeeklyLineup(user, [], weekNum)
+
+            await checkOrCreateWeeklyLineup(weekNum, user.$id)
         }
 
         // Reset weekly-total-points for each league
@@ -51,32 +52,58 @@ export const resetWeek = async (weekNum) => {
     }
 };
 
-export const createWeeklyLineup = async (user, picks, weekNumber) => {
+export const checkOrCreateWeeklyLineup = async (weekNumber, userId = null) => {
     try {
-        const newWeeklyLineup = await databases.createDocument(
+        let userIdentifier = userId;
+
+        // If no userId is provided, fetch the current user's ID
+        if (!userId) {
+            const currentUser = await getCurrentUser();
+            if (!currentUser) { return; }
+            userIdentifier = currentUser.$id;
+        }
+
+        // Check if the user already has a lineup for the specified week
+        const existingLineup = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.weeklyLineupCollectionId,
+            [
+                Query.equal('user', userIdentifier),
+                Query.equal('weekNumber', weekNumber)
+            ]
+        );
+
+        // If a lineup exists, return it
+        if (existingLineup.documents.length > 0) {
+            return existingLineup.documents[0];
+        }
+
+        // If no lineup exists, create a new one
+        const newLineup = await databases.createDocument(
             appwriteConfig.databaseId,
             appwriteConfig.weeklyLineupCollectionId,
             ID.unique(),
             {
-                picks: picks, // Assuming picks is an array of pick IDs or objects
-                user: user.$id,
+                picks: [], // Initialize with an empty array of picks
+                user: userIdentifier,
                 totalPotentialPoints: 0,
                 weekNumber: weekNumber
             }
         );
 
-        const updatedUser = await databases.updateDocument(
+        // Update the user's "weekly-lineup" field with the new lineup ID
+        await databases.updateDocument(
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId,
-            user.$id,
+            userIdentifier,
             {
-                "weekly-lineup": [...user["weekly-lineup"], newWeeklyLineup.$id]
+                "weekly-lineup": [...(existingLineup.documents.length > 0 ? existingLineup.documents[0]["weekly-lineup"] : []), newLineup.$id]
             }
         );
 
-        return { newWeeklyLineup, updatedUser };
+        return newLineup;
     } catch (error) {
-        console.error(error);
-        throw new Error(error);
+        console.log("Error in checkOrCreateWeeklyLineup:", error);
+        return;
     }
 };
