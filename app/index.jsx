@@ -7,17 +7,30 @@ import SignIn from './(auth)/sign-in';
 import { symbolName } from 'typescript';
 import styles from './styles';
 import Loading from '../components/Loading';
+import * as Font from 'expo-font';
+
+const loadFonts = () => {
+    return Font.loadAsync({
+        'RobotoSlab-Regular': require('../assets/fonts/RobotoSlab-Regular.ttf'),
+    });
+};
+
+
 
 const index = () => {
     const { isLoading, isLoggedIn } = useGlobalContext();
 
     if (!isLoading && isLoggedIn) return <Redirect href="./league" />
 
+    useEffect(() => {
+        loadFonts();
+    }, []);
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={{ height: '100%' }}>
                 {isLoading ? (
-                    <Loading/>
+                    <Loading />
                 ) : (
                     <SignIn />
                 )}
