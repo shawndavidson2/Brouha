@@ -24,35 +24,35 @@ client
 
 const databases = new Databases(client);
 
-export const resetWeek = async (weekNum) => {
+export const resetWeek = async (weekNum, log, error) => {
     try {
         // Reset weekPoints for each user
         const users = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.userCollectionId);
         for (const user of users.documents) {
-            console.log(user.username)
+            log(user.username + " reseting from " + user.weekPoints)
             await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.userCollectionId, user.$id, {
                 weekPoints: 0
             });
 
-            await checkOrCreateWeeklyLineup(weekNum, user.$id)
+            await checkOrCreateWeeklyLineup(weekNum, user.$id, log, error)
         }
 
         // Reset weekly-total-points for each league
         const leagues = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.leagueCollectionId);
         for (const league of leagues.documents) {
+            log(league.name + " reseting from " + league["weekly-total-points"])
             await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.leagueCollectionId, league.$id, {
                 'weekly-total-points': 0
             });
         }
 
-        console.log("Week points for users and leagues have been reset.");
-    } catch (error) {
-        console.error("Error resetting week points:", error);
-        throw error;
+        log("Week points for users and leagues have been reset.");
+    } catch (e) {
+        error("Error resetting week points:", e);
     }
 };
 
-export const checkOrCreateWeeklyLineup = async (weekNumber, userId = null) => {
+export const checkOrCreateWeeklyLineup = async (weekNumber, userId = null, log, error) => {
     try {
         let userIdentifier = userId;
 
@@ -101,9 +101,11 @@ export const checkOrCreateWeeklyLineup = async (weekNumber, userId = null) => {
             }
         );
 
+
+
         return newLineup;
-    } catch (error) {
-        console.log("Error in checkOrCreateWeeklyLineup:", error);
+    } catch (e) {
+        error("Error in checkOrCreateWeeklyLineup:", error);
         return;
     }
 };
