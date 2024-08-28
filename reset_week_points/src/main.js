@@ -4,7 +4,12 @@ import { resetWeek } from './db.js'
 // This is your Appwrite function
 // It's executed each time we get a request
 export default async ({ req, res, log, error }) => {
-  const weekNum = req.bodyRaw["weekNum"];
+  // Parse the JSON string into a JavaScript object
+  const parsedReq = JSON.parse(req);
+
+  // Access the weekNum property
+  const weekNum = parsedReq.weekNum;
+
   log("Updated to weekNum:", weekNum)
   const [usersArray, leaguesArray] = await resetWeek(weekNum)
   log(usersArray, leaguesArray)
