@@ -24,7 +24,7 @@ client
 
 const databases = new Databases(client);
 
-export const resetWeek = async (weekNum) => {
+export const resetWeek = async (weekNum, error) => {
     let usersArray = [], leaguesArray = []
     try {
         // Reset weekPoints for each user
@@ -37,7 +37,7 @@ export const resetWeek = async (weekNum) => {
 
             usersArray.push(user.username + ": " + user.weekPoints)
 
-            await checkOrCreateWeeklyLineup(weekNum, user.$id)
+            await checkOrCreateWeeklyLineup(weekNum, error, user.$id)
         }
 
         // Reset weekly-total-points for each league
@@ -56,11 +56,11 @@ export const resetWeek = async (weekNum) => {
         //log("Week points for users and leagues have been reset.");
     } catch (error) {
         //error("Error resetting week points:", e);
-        return;
+        return error;
     }
 };
 
-export const checkOrCreateWeeklyLineup = async (weekNumber, userId = null) => {
+export const checkOrCreateWeeklyLineup = async (weekNumber, error, userId = null) => {
     try {
         let userIdentifier = userId;
 
@@ -109,8 +109,8 @@ export const checkOrCreateWeeklyLineup = async (weekNumber, userId = null) => {
             }
         );
         return newLineup;
-    } catch (error) {
-        //error("Error in checkOrCreateWeeklyLineup:", error);
+    } catch (e) {
+        error("Error in checkOrCreateWeeklyLineup: " + e);
         return;
     }
 };

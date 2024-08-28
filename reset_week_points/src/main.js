@@ -10,8 +10,8 @@ export default async ({ req, res, log, error }) => {
   log(req.body.weekNum)
   const weekNum = req.body.weekNum;
 
-  log("Updated to weekNum:", weekNum)
-  const [usersArray, leaguesArray] = await resetWeek(weekNum)
+  log("Updated to weekNum: " + weekNum)
+  const [usersArray, leaguesArray] = await resetWeek(weekNum, error)
   log(usersArray, leaguesArray)
 
   // `res.json()` is a handy helper for sending JSON
