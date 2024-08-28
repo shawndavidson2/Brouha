@@ -6,7 +6,7 @@ import { resetWeek } from './db.js';
 export default async ({ req, res, log, error }) => {
   const weekNum = req.body["weekNum"];
 
-  log(weekNum)
+  log("Updated to weekNum:", weekNum)
   const [usersArray, leaguesArray] = await resetWeek(weekNum)
   log(usersArray, leaguesArray)
 
