@@ -1,5 +1,5 @@
 import { Client } from 'node-appwrite';
-import { resetWeek } from '../../reset_week_pointsdb.js';
+import { resetWeek } from './db.js'
 
 // This is your Appwrite function
 // It's executed each time we get a request
