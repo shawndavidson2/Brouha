@@ -4,6 +4,7 @@ import { resetWeek } from './db.js'
 // This is your Appwrite function
 // It's executed each time we get a request
 export default async ({ req, res, log, error }) => {
+  log(req)
   const weekNum = req.body.weekNum;
 
   log("Updated to weekNum:", weekNum)
