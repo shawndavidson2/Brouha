@@ -1,6 +1,6 @@
 import { View, Text, Alert, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-import { createAndJoinLeague, searchLeagues, joinLeague } from '../lib/appwrite';
+import { createAndJoinLeague, searchLeagues, joinLeague, isLeagueNameUnique } from '../lib/appwrite';
 import { router } from 'expo-router';
 import { useGlobalContext } from '../context/GlobalProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -26,6 +26,13 @@ const JoinLeague = () => {
             if (user.league) {
                 Alert.alert("Error", "You are already in a league!")
             } else {
+                // Check if the league name is unique
+                const isUnique = await isLeagueNameUnique(leagueName);
+                if (!isUnique) {
+                    Alert.alert('Error', 'League name already exists. Please choose a different name.');
+                    return;
+                }
+
                 const { newLeague, updatedUser } = await createAndJoinLeague(leagueName);
                 Alert.alert('Success', `League '${newLeague.name}' created and joined!`);
                 setUser(updatedUser);
