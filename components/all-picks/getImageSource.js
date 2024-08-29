@@ -33,7 +33,9 @@ const teamImageMap = {
     'SF': images.SF,
     'TB': images.TB,
     'TEN': images.TEN,
-    'WAS': images.WAS
+    'WAS': images.WAS,
+    'OSU': images.OhioState,
+    'Akron': images.Akron,
 };
 
 const getImageSource = (teamName) => {
