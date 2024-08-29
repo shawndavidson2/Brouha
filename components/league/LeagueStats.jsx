@@ -2,9 +2,14 @@ import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 
 const LeagueStats = ({ rank, weekPoints, totalPoints, weekNum }) => {
+
     const formatNumber = (num) => {
-        return num.toLocaleString();
+        return num ? num.toLocaleString() : 0;
     };
+
+    // if (rank === null || weekPoints === null || totalPoints === null) {
+    //     return null;
+    // }
 
     return (
         <View style={styles.outerContainer}>
