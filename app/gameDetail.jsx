@@ -121,6 +121,16 @@ const GameDetail = () => {
     };
 
     const calculateFontSize = (detail, text, width) => {
+
+        if (width === 100) {
+            const num = Math.round(text)
+            if (num > 9999) return 13.5
+            else return 15
+        }
+        else if (width === 150) {
+            if (text.length > 15) return 13.5
+            else return 15
+        }
         // const maxFontSize = 22;
         // const minFontSize = 15;
         // const scale = width / (text.length * 10);
