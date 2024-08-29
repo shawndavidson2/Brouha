@@ -30,8 +30,10 @@ import SF from '../assets/images/SF.png'
 import TB from '../assets/images/TB.png'
 import TEN from '../assets/images/TEN.png'
 import WAS from '../assets/images/WAS.png'
+import OhioState from '../assets/images/OhioState.png'
+import Akron from '../assets/images/Akron.png'
 
 export default {
     BAL, KC, ARI, ATL, BUF, CAR, CHI, CIN, CLE, DAL, DEN, DET, GB, HOU, IND,
-    JAX, LAC, LAR, LV, MIA, MIN, NE, NO, NYG, NYJ, PHI, PIT, SEA, SF, TB, TEN, WAS
+    JAX, LAC, LAR, LV, MIA, MIN, NE, NO, NYG, NYJ, PHI, PIT, SEA, SF, TB, TEN, WAS, OhioState, Akron
 };

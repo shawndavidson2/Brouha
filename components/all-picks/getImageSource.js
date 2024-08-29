@@ -39,6 +39,7 @@ const teamImageMap = {
 };
 
 const getImageSource = (teamName) => {
+    console.log(teamName.trim() === 'OSU')
     return teamImageMap[teamName.trim()] || images.empty;
 };
 
