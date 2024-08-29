@@ -52,9 +52,9 @@ export default async ({ req, res, log, error }) => {
             //log(sheetName)
             // Process or return the json as needed
             for (const jsonPick of json) {
-              const jsonPickStatus = jsonPick[sheetName] === "P" ? "pending" : jsonPick[sheetName] === "W" ? "won" : "lost"
+              const jsonPickStatus = jsonPick[sheetName] === "L" ? "lost" : jsonPick[sheetName] === "W" ? "won" : "pending"
               //log(jsonPick[sheetName])
-              if (jsonPick[sheetName] !== "P") {
+              if (jsonPick[sheetName] === "W" && jsonPick[sheetName] === "L") {
                 const matchedPick = picks.find(pick => pick["pick-title"] === jsonPick["__EMPTY"]);
                 if (matchedPick && jsonPickStatus !== matchedPick["status"]) {
                   //matchedPick["status"] = jsonPick[sheetName];
