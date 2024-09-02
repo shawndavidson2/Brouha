@@ -41,8 +41,8 @@ const GlobalProvider = ({ children }) => {
 
         const updateWeekNum = async () => {
 
-            // Hardcoded start date for Week 1 (July 15, 2024 at midnight)
-            const startWeek1 = new Date('2024-08-20T00:00:00');
+            // Hardcoded start date for Week 1 (September 3, 2024 at midnight)
+            const startWeek1 = new Date('2024-09-03T00:00:00');
 
             // Get the current date and time
             const currentDate = new Date();
@@ -52,7 +52,8 @@ const GlobalProvider = ({ children }) => {
             const weeksSinceStart = Math.floor((currentDate - startWeek1) / millisecondsPerWeek);
 
             // Calculate the current week number
-            const currentWeekNum = 1 + weeksSinceStart; // Week 1 started on July 15, 2024
+            let currentWeekNum = 1 + weeksSinceStart;
+            if (currentWeekNum < 1) currentWeekNum = 1;
 
             console.log('Current Week Number:', currentWeekNum);
             setWeekNum(currentWeekNum)
