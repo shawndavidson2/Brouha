@@ -49,12 +49,12 @@ export default async ({ req, res, log, error }) => {
             const json = XLSX.utils.sheet_to_json(worksheet);
             //console.log(`Data from sheet "${sheetName}":`, json);
 
-            //log(sheetName)
+            log(sheetName)
             // Process or return the json as needed
             for (const jsonPick of json) {
               const jsonPickStatus = jsonPick[sheetName] === "L" ? "lost" : jsonPick[sheetName] === "W" ? "won" : "pending"
               //log(jsonPick[sheetName])
-              if (jsonPick[sheetName] === "W" && jsonPick[sheetName] === "L") {
+              if (jsonPick[sheetName] === "W" || jsonPick[sheetName] === "L") {
                 const matchedPick = picks.find(pick => pick["pick-title"] === jsonPick["__EMPTY"]);
                 if (matchedPick && jsonPickStatus !== matchedPick["status"]) {
                   //matchedPick["status"] = jsonPick[sheetName];
