@@ -44,8 +44,10 @@ export const resetWeek = async (weekNum, error) => {
         const leagues = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.leagueCollectionId);
         for (const league of leagues.documents) {
             //log(league.name + " reseting from " + league["weekly-total-points"])
+            const leagueTotalPoints = league["cumulative-total-points"]
             await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.leagueCollectionId, league.$id, {
-                'weekly-total-points': 0
+                'previous-week-points': leagueTotalPoints,
+                'weekly-total-points': 0,
             });
 
             leaguesArray.push(league.name + ": " + league['weekly-total-points'])
