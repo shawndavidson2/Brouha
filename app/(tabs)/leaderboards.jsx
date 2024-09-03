@@ -17,14 +17,14 @@ const Leaderboards = () => {
         // Load all users
         const fetchUsers = async () => {
             const users = await getAllUsersForLeaderboard();
-            const sortedUsers = users.sort((a, b) => b.weekPoints - a.weekPoints);
+            const sortedUsers = users.sort((a, b) => b.totalPoints - a.totalPoints);
             setUserLeaders(sortedUsers);
         };
 
         // Load all leagues
         const fetchLeagues = async () => {
             const leagues = await getAllLeaguesForLeaderboard();
-            const sortedLeagues = leagues.sort((a, b) => b['weekly-total-points'] - a['weekly-total-points']);
+            const sortedLeagues = leagues.sort((a, b) => b['cumulative-total-points'] - a['cumulative-total-points']);
             sortedLeagues.forEach((league, index) => {
                 updateLeagueAttributes(league, { rank: index + 1 });
             });
@@ -43,7 +43,7 @@ const Leaderboards = () => {
             <View key={item.$id} style={[styles.leaderboardItem, (isCurrentUser || isCurrentLeague) && styles.current]}>
                 <Text style={styles.rank}>{index + 1}</Text>
                 <Text style={styles.name}>{item.username || item.name}</Text>
-                <Text style={styles.points}>{item['weekly-total-points'] != null ? item['weekly-total-points'] : item.weekPoints}</Text>
+                <Text style={styles.points}>{item['cumulative-total-points'] != null ? item['cumulative-total-points'] : item.totalPoints}</Text>
             </View>
         );
     };
