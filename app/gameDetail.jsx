@@ -156,7 +156,7 @@ const GameDetail = () => {
     };
 
     const addNewPick = async (index, pick, pts, statusLetter) => {
-        if (picks.length >= 4) {
+        if (picks.length >= 5) {
             Alert.alert("You are already at your maximum number of picks for the week!");
         } else {
             try {
