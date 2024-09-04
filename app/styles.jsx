@@ -86,7 +86,7 @@ export default styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        fontFamily: 'RobotoSlab-Bold'
+        fontFamily: 'RobotoSlab-Bold',
     },
     weekNavigation: {
         flexDirection: 'row',
@@ -182,7 +182,7 @@ export default styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         backgroundColor: '#fff',
-        fontFamily: 'RobotoSlab-Regular'
+        fontFamily: 'RobotoSlab-Regular',
     },
     backButton: {
         marginBottom: 10,
@@ -190,7 +190,16 @@ export default styles = StyleSheet.create({
     },
     backButtonText: {
         fontSize: 18,
-        fontFamily: 'RobotoSlab-Regular'
+        marginBottom: 10,
+        fontFamily: 'RobotoSlab-Regular',
+        color: 'black', // Adjust color to match design
+        textAlign: 'left'
+    },
+    description: {
+        fontSize: 14,
+        color: 'gray',
+        textAlign: 'center',
+        marginBottom: 20
     },
     title: {
         textAlign: 'center',
@@ -287,8 +296,8 @@ export default styles = StyleSheet.create({
         fontFamily: 'RobotoSlab-Regular'
     },
     button: {
-        backgroundColor: '#8b2326', // Gold color
-        paddingVertical: 10,
+        backgroundColor: '#8b2326', // Adjusted color
+        paddingVertical: 15,
         paddingHorizontal: 20,
         borderRadius: 5,
         alignItems: 'center',
@@ -298,8 +307,36 @@ export default styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
-        fontFamily: 'RobotoSlab-Regular'
+        fontFamily: 'RobotoSlab-Regular',
     },
+    leagueItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+        marginVertical: 5,
+        borderRadius: 8,
+        backgroundColor: '#f9f9f9',
+        borderColor: '#ddd',
+        borderWidth: 1,
+    },
+    selectedLeague: {
+        backgroundColor: '#DBB978',
+    },
+    unselectedLeague: {
+        backgroundColor: '#fff',
+    },
+    leagueName: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    leaguePoints: {
+        fontSize: 16,
+        color: '#666',
+    },
+
 });
 // <Text style={styles.title}>{`${sheetName}`}</Text>
 // <Text style={styles.sectionTitle}>Game:</Text>

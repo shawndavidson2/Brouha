@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getCurrentUser, checkAndUpdateWeekNum, resetWeek, checkOrCreateWeeklyLineup, getAllUsersForLeaderboard, getAllLeaguesForLeaderboard } from "../lib/appwrite";
+import { getCurrentUser, checkAndUpdateWeekNum, resetWeek, checkOrCreateWeeklyLineup, getAllUsersForLeaderboard, getAllLeaguesForLeaderboard, updateLeagueAttributes } from "../lib/appwrite";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -71,11 +71,14 @@ const GlobalProvider = ({ children }) => {
         };
 
         const getLeaderboardData = async (week) => {
-
             setIsLoading(false);
 
             const leagues = await getAllLeaguesForLeaderboard();
-            setLeagues(leagues);
+            const sortedLeagues = leagues.sort((a, b) => b['cumulative-total-points'] - a['cumulative-total-points']);
+            sortedLeagues.forEach((league, index) => {
+                updateLeagueAttributes(league, { rank: index + 1 });
+            });
+            setLeagues(sortedLeagues);
 
             const users = await getAllUsersForLeaderboard();
             setUsers(users);

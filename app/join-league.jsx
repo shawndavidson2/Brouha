@@ -1,20 +1,41 @@
 import { View, Text, Alert, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-import { createAndJoinLeague, searchLeagues, joinLeague, isLeagueNameUnique } from '../lib/appwrite';
+import { createAndJoinLeague, searchLeagues, joinLeague, isLeagueNameUnique, getAllLeaguesForLeaderboard } from '../lib/appwrite';
 import { router } from 'expo-router';
 import { useGlobalContext } from '../context/GlobalProvider';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './styles';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useRefresh } from '../context/RefreshContext';
 
 const JoinLeague = () => {
-    const { user, setUser, league, setLeague, setIsLoggedIn } = useGlobalContext();
+    const { user, setUser, setLeague, setIsLoggedIn } = useGlobalContext();
+    const { triggerRefresh } = useRefresh();
     const [leagueName, setLeagueName] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [allLeagues, setAllLeagues] = useState([]); // Store all leagues
     const [selectedLeague, setSelectedLeague] = useState(null);
+    const [viewMode, setViewMode] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const goBack = () => {
-        router.back();
+        if (viewMode === null) {
+            router.back();
+        }
+        setViewMode(null);
+    };
+
+    const fetchAllLeagues = async () => {
+        setLoading(true);
+        try {
+            const leagues = await getAllLeaguesForLeaderboard();
+            setAllLeagues(leagues);
+            setSearchResults(leagues); // Initially display all leagues
+        } catch (error) {
+            Alert.alert('Error', error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleCreateAndJoinLeague = async () => {
@@ -23,31 +44,32 @@ const JoinLeague = () => {
             return;
         }
         try {
-            if (user.league) {
-                Alert.alert("Error", "You are already in a league!")
-            } else {
-                // Check if the league name is unique
-                const isUnique = await isLeagueNameUnique(leagueName);
-                if (!isUnique) {
-                    Alert.alert('Error', 'League name already exists. Please choose a different name.');
-                    return;
-                }
-
-                const { newLeague, updatedUser } = await createAndJoinLeague(leagueName);
-                Alert.alert('Success', `League '${newLeague.name}' created and joined!`);
-                setUser(updatedUser);
-                setIsLoggedIn(true);
-                setLeague(newLeague);
-                router.replace('./league')
+            const isUnique = await isLeagueNameUnique(leagueName.trim());
+            if (!isUnique) {
+                Alert.alert('Error', 'League name already exists. Please choose a different name.');
+                return;
             }
+            setLoading(true);
+            const { newLeague, updatedUser } = await createAndJoinLeague(leagueName.trim());
+            Alert.alert('Success', `League '${newLeague.name}' created and joined!`);
+            setUser(updatedUser);
+            setIsLoggedIn(true);
+            setLeague(newLeague);
+            triggerRefresh();
         } catch (error) {
             Alert.alert('Error', error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleSearchLeagues = async () => {
+        if (leagueName.trim() === '') {
+            setSearchResults(allLeagues); // Show all leagues if search is empty
+            return;
+        }
         try {
-            const leagues = await searchLeagues(leagueName);
+            const leagues = await searchLeagues(leagueName.trim());
             setSearchResults(leagues);
         } catch (error) {
             Alert.alert('Error', error.message);
@@ -56,38 +78,69 @@ const JoinLeague = () => {
 
     const handleJoinLeague = async (leagueId) => {
         try {
-            if (user.league) {
-                Alert.alert("Error", "You are already in a league!")
-            } else {
-                const { updatedUser, updatedLeague } = await joinLeague(leagueId);
-                Alert.alert('Success', `Joined league '${updatedLeague.name}' successfully!`);
-                setUser(updatedUser);
-                setIsLoggedIn(true);
-                setLeague(updatedLeague);
-                router.replace('./league')
-            }
+            setLoading(true);
+            const { updatedUser, updatedLeague } = await joinLeague(leagueId);
+            Alert.alert('Success', `Joined league '${updatedLeague.name}' successfully!`);
+            setUser(updatedUser);
+            setIsLoggedIn(true);
+            setLeague(updatedLeague);
+            setLoading(false);
+            router.replace('./league');
         } catch (error) {
             Alert.alert('Error', error.message);
         }
+    };
+
+    const getHeaderText = () => {
+        if (viewMode === 'create') return 'Create a New League';
+        if (viewMode === 'join') return 'Join an Existing League';
+        return 'Join or Create a League';
     };
 
     return (
         <GestureHandlerRootView>
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.container}>
-                    <View style={{ height: '100%' }}>
-                        <View className="w-full flex justify-center items-center mt-6 px-4">
-                            <TouchableOpacity className="flex w-full items-start mb-0 mt-0">
-                                <Text onPress={goBack} style={{ fontSize: 18 }}>Back</Text>
+                    <TouchableOpacity onPress={goBack}>
+                        <Text style={styles.backButtonText}>Back</Text>
+                    </TouchableOpacity>
+
+                    <Text style={[styles.header, { marginTop: 40 }]}>{getHeaderText()}</Text>
+                    <Text style={styles.description}>Choose to either join an existing league or create a new one</Text>
+
+                    {viewMode === null ? (
+                        <>
+                            <TouchableOpacity style={[styles.button, { paddingVertical: 15 }]} onPress={() => { setViewMode('join'); fetchAllLeagues(); }}>
+                                <Text style={styles.buttonText}>Join an Existing League</Text>
                             </TouchableOpacity>
-                            <View className="pt-0 mt-20">
-                                <Text style={styles.header}>Join or Create a League</Text>
-                            </View>
+
+                            <Text style={{ fontSize: 24, textAlign: 'center', marginVertical: 10, fontFamily: 'RobotoSlab-Bold' }}>OR</Text>
+
+                            <TouchableOpacity style={[styles.button, { paddingVertical: 15 }]} onPress={() => setViewMode('create')}>
+                                <Text style={styles.buttonText}>Create a New League</Text>
+                            </TouchableOpacity>
+                        </>
+                    ) : viewMode === 'create' ? (
+                        <>
                             <TextInput
-                                style={styles.input}
+                                style={[styles.input, { alignSelf: 'center', width: '80%' }]}
                                 placeholder="Enter league name"
                                 value={leagueName}
                                 onChangeText={setLeagueName}
+                                placeholderTextColor="#555"
+                            />
+                            <TouchableOpacity style={styles.button} onPress={handleCreateAndJoinLeague} disabled={loading}>
+                                <Text style={styles.buttonText}>Create and Join League</Text>
+                            </TouchableOpacity>
+                        </>
+                    ) : (
+                        <>
+                            <TextInput
+                                style={[styles.input, { alignSelf: 'center', width: '80%' }]}
+                                placeholder="Search leagues"
+                                value={leagueName}
+                                onChangeText={setLeagueName}
+                                placeholderTextColor="#555"
                             />
                             <TouchableOpacity style={styles.button} onPress={handleSearchLeagues}>
                                 <Text style={styles.buttonText}>Search Leagues</Text>
@@ -97,22 +150,24 @@ const JoinLeague = () => {
                                     data={searchResults}
                                     keyExtractor={(item) => item.$id}
                                     renderItem={({ item }) => (
-                                        <TouchableOpacity onPress={() => setSelectedLeague(item.$id)}>
-                                            <Text style={{ padding: 10, backgroundColor: selectedLeague === item.$id ? '#DBB978' : 'white' }}>
-                                                {item.name}
-                                            </Text>
+                                        <TouchableOpacity
+                                            onPress={() => setSelectedLeague(item.$id)}
+                                            style={[
+                                                styles.leagueItem,
+                                                selectedLeague === item.$id ? styles.selectedLeague : styles.unselectedLeague
+                                            ]}
+                                        >
+                                            <Text style={styles.leagueName}>{item.name}</Text>
+                                            <Text style={styles.leaguePoints}>{item['numUsers']} users</Text>
                                         </TouchableOpacity>
                                     )}
                                 />
                             )}
-                            <TouchableOpacity style={styles.button} onPress={() => handleJoinLeague(selectedLeague)} disabled={!selectedLeague}>
+                            <TouchableOpacity style={styles.button} onPress={() => handleJoinLeague(selectedLeague)} disabled={!selectedLeague || loading}>
                                 <Text style={styles.buttonText}>Join Selected League</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.button} onPress={handleCreateAndJoinLeague}>
-                                <Text style={styles.buttonText}>Create and Join League</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                        </>
+                    )}
                 </View>
             </SafeAreaView>
         </GestureHandlerRootView>
