@@ -28,7 +28,7 @@ export const getPicksByWeek = async (week) => {
     try {
         let allPicks = [];
         let offset = 0;
-        const limit = 1000; // Set to maximum allowed limit (100)
+        const limit = 10000; // Set to maximum allowed limit
 
         while (true) {
             const picks = await databases.listDocuments(

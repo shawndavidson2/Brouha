@@ -1,39 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import styles from '../styles';
-import { getAllUsers, getAllLeagues, updateLeagueAttributes, getAllUsersForLeaderboard, getAllLeaguesForLeaderboard } from '../../lib/appwrite';
+import { getAllUsers, getAllLeagues, updateLeagueAttributes } from '../../lib/appwrite';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../../context/GlobalProvider';
 import { StatusBar } from 'expo-status-bar';
+import Loading from '../../components/Loading';
 
 const Leaderboards = () => {
     const [selectedTab, setSelectedTab] = useState('users');
     const [userLeaders, setUserLeaders] = useState([]);
     const [leagueLeaders, setLeagueLeaders] = useState([]);
 
-    const { user, league } = useGlobalContext();
+    const { user, league, users, leagues, leaderboardLoading } = useGlobalContext();
 
     useEffect(() => {
         // Load all users
         const fetchUsers = async () => {
-            const users = await getAllUsersForLeaderboard();
+            //const users = await getAllUsersForLeaderboard();
             const sortedUsers = users.sort((a, b) => b.totalPoints - a.totalPoints);
             setUserLeaders(sortedUsers);
         };
 
         // Load all leagues
         const fetchLeagues = async () => {
-            const leagues = await getAllLeaguesForLeaderboard();
+            //const leagues = await getAllLeaguesForLeaderboard();
             const sortedLeagues = leagues.sort((a, b) => b['cumulative-total-points'] - a['cumulative-total-points']);
             sortedLeagues.forEach((league, index) => {
                 updateLeagueAttributes(league, { rank: index + 1 });
             });
             setLeagueLeaders(sortedLeagues);
         };
-
-        fetchUsers();
-        fetchLeagues();
-    }, []);
+        if (!leaderboardLoading) {
+            fetchUsers();
+            fetchLeagues();
+        }
+    }, [leaderboardLoading]);
 
     const renderLeaderboardItem = (item, index) => {
         let isCurrentUser = item.username === user?.username;
@@ -47,6 +49,10 @@ const Leaderboards = () => {
             </View>
         );
     };
+
+    if (leaderboardLoading) {
+        return <Loading />
+    }
 
     return (
         <SafeAreaView style={styles.safeArea}>

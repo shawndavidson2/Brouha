@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getCurrentUser, checkAndUpdateWeekNum, resetWeek, checkOrCreateWeeklyLineup } from "../lib/appwrite";
+import { getCurrentUser, checkAndUpdateWeekNum, resetWeek, checkOrCreateWeeklyLineup, getAllUsersForLeaderboard, getAllLeaguesForLeaderboard } from "../lib/appwrite";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -13,6 +13,9 @@ const GlobalProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isInitialized, setIsInitialized] = useState(false);
     const [refreshPicks, setRefreshPicks] = useState(false);
+    const [users, setUsers] = useState();
+    const [leagues, setLeagues] = useState();
+    const [leaderboardLoading, setLeaderboardLoading] = useState(true);
 
     useEffect(() => {
         const initialize = async () => {
@@ -67,11 +70,20 @@ const GlobalProvider = ({ children }) => {
 
         };
 
-        const checkforWeeklyLineup = async (week) => {
+        const getLeaderboardData = async (week) => {
+
             setIsLoading(false);
+
+            const leagues = await getAllLeaguesForLeaderboard();
+            setLeagues(leagues);
+
+            const users = await getAllUsersForLeaderboard();
+            setUsers(users);
+
+            setLeaderboardLoading(false);
         };
 
-        initialize().then((user) => { updateWeekNum().then((week) => { checkforWeeklyLineup(week) }) })
+        initialize().then((user) => { updateWeekNum().then((week) => { getLeaderboardData(week) }) })
 
     }, []);
 
@@ -88,7 +100,10 @@ const GlobalProvider = ({ children }) => {
                 weekNum,
                 isInitialized,
                 refreshPicks,
-                setRefreshPicks
+                setRefreshPicks,
+                users,
+                leagues,
+                leaderboardLoading
             }}
         >
             {children}
