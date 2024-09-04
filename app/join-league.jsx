@@ -1,5 +1,5 @@
 import { View, Text, Alert, TextInput, FlatList, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createAndJoinLeague, searchLeagues, joinLeague, isLeagueNameUnique, getAllLeaguesForLeaderboard } from '../lib/appwrite';
 import { router } from 'expo-router';
 import { useGlobalContext } from '../context/GlobalProvider';
@@ -18,24 +18,28 @@ const JoinLeague = () => {
     const [viewMode, setViewMode] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        const fetchLeagues = async () => {
+            setLoading(true);
+            try {
+                const leagues = await getAllLeaguesForLeaderboard();
+                setAllLeagues(leagues);
+                setSearchResults(leagues); // Initially display all leagues
+            } catch (error) {
+                Alert.alert('Error', error.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchLeagues();
+    }, []);
+
     const goBack = () => {
         if (viewMode === null) {
             router.back();
         }
         setViewMode(null);
-    };
-
-    const fetchAllLeagues = async () => {
-        setLoading(true);
-        try {
-            const leagues = await getAllLeaguesForLeaderboard();
-            setAllLeagues(leagues);
-            setSearchResults(leagues); // Initially display all leagues
-        } catch (error) {
-            Alert.alert('Error', error.message);
-        } finally {
-            setLoading(false);
-        }
     };
 
     const handleCreateAndJoinLeague = async () => {
@@ -110,7 +114,7 @@ const JoinLeague = () => {
 
                     {viewMode === null ? (
                         <>
-                            <TouchableOpacity style={[styles.button, { paddingVertical: 15 }]} onPress={() => { setViewMode('join'); fetchAllLeagues(); }}>
+                            <TouchableOpacity style={[styles.button, { paddingVertical: 15 }]} onPress={() => { setViewMode('join'); }}>
                                 <Text style={styles.buttonText}>Join an Existing League</Text>
                             </TouchableOpacity>
 
