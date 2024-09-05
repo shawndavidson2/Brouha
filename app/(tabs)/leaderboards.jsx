@@ -22,7 +22,6 @@ const Leaderboards = () => {
 
         // Load all leagues
         const fetchLeagues = async () => {
-            //const sortedLeagues = leagues.sort((a, b) => b['cumulative-total-points'] - a['cumulative-total-points']);
             setLeagueLeaders(leagues);
         };
 
@@ -47,15 +46,35 @@ const Leaderboards = () => {
         });
     };
 
+    // Function to handle pressing a league item
+    const handleLeaguePress = (league) => {
+        console.log('League clicked:', league.name);  // For now, just log the league name
+        // You can navigate or perform other actions here in the future
+    };
+
     const renderLeaderboardItem = (item) => {
         let isCurrentUser = item.username === user?.username;
         let isCurrentLeague = item.name === league?.name;
 
+        // If it's a league, make it clickable
+        if (selectedTab === 'leagues') {
+            return (
+                <TouchableOpacity key={item.$id} onPress={() => handleLeaguePress(item)}>
+                    <View style={[styles.leaderboardItem, isCurrentLeague && styles.current]}>
+                        <Text style={styles.rank}>{item.rank}</Text>
+                        <Text style={styles.name}>{item.name}</Text>
+                        <Text style={styles.points}>{item['cumulative-total-points']}</Text>
+                    </View>
+                </TouchableOpacity>
+            );
+        }
+
+        // Otherwise, just render the user leaderboard item
         return (
-            <View key={item.$id} style={[styles.leaderboardItem, (isCurrentUser || isCurrentLeague) && styles.current]}>
+            <View key={item.$id} style={[styles.leaderboardItem, isCurrentUser && styles.current]}>
                 <Text style={styles.rank}>{item.rank}</Text>
-                <Text style={styles.name}>{item.username || item.name}</Text>
-                <Text style={styles.points}>{item['cumulative-total-points'] != null ? item['cumulative-total-points'] : item.totalPoints}</Text>
+                <Text style={styles.name}>{item.username}</Text>
+                <Text style={styles.points}>{item.totalPoints}</Text>
             </View>
         );
     };
