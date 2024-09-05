@@ -1,17 +1,27 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { useLocalSearchParams } from 'expo-router'
-import { useGlobalContext } from '../context/GlobalProvider'
-import { TouchableOpacity, ScrollView, Image } from 'react-native'
-import { signOut } from '../lib/appwrite'
-import { router } from 'expo-router'
-import styles from './styles'
-import ProfileLineup from '../components/pick-lineup/ProfileLineup'
-import { StatusBar } from 'expo-status-bar'
+import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocalSearchParams } from 'expo-router';
+import { useGlobalContext } from '../context/GlobalProvider';
+import { TouchableOpacity, ScrollView } from 'react-native';
+import { signOut } from '../lib/appwrite';
+import { useRouter } from 'expo-router';
+import styles from './styles';
+import ProfileLineup from '../components/pick-lineup/ProfileLineup';
+import { StatusBar } from 'expo-status-bar';
 
 const Profile = () => {
-    const { user, setUser, setIsLoggedIn, league } = useGlobalContext();
+    const router = useRouter();
+
+    const { user: globalUser, setUser, setIsLoggedIn, league: globalLeague } = useGlobalContext();
+    const { leagueUser } = useLocalSearchParams();
+
+    const parsedLeagueUser = leagueUser ? JSON.parse(leagueUser) : null;
+
+    // Use either the passed user/league or fallback to the global context
+    const [user, setUserState] = useState(parsedLeagueUser || globalUser);
+    const [league, setLeagueState] = useState(globalLeague);
+
 
     const [leagueName, setLeagueName] = useState("No League Yet");
 
@@ -19,7 +29,7 @@ const Profile = () => {
         if (user && league) {
             setLeagueName(league.name);
         }
-    }, [user]);
+    }, [user, league]);
 
     const goBack = () => {
         router.back();
@@ -40,31 +50,33 @@ const Profile = () => {
                         <TouchableOpacity onPress={goBack}>
                             <Text style={styless.backText}>Back</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={logout}>
-                            <Text style={styless.logoutText}>Logout</Text>
-                        </TouchableOpacity>
+                        {!parsedLeagueUser && (
+                            <TouchableOpacity onPress={logout}>
+                                <Text style={styless.logoutText}>Logout</Text>
+                            </TouchableOpacity>
+                        )}
                     </View>
 
                     <View style={styless.profileInfo}>
-                        <Text style={styless.usernameText}>{user?.username ? user.username : ""}</Text>
+                        <Text style={styless.usernameText}>{user?.username ? user.username : "Unknown User"}</Text>
                         <Text style={styless.leagueText}>League: {leagueName}</Text>
                     </View>
 
                     <View style={styless.statsContainer}>
                         <View style={styless.statItem}>
-                            <Text style={styless.statText}>{user?.rankCategory ? user.rankCategory : ""}</Text>
+                            <Text style={styless.statText}>{user?.rankCategory ? user.rankCategory : "No Rank"}</Text>
                         </View>
                         <View style={styless.divider} />
                         <View style={styless.statItem}>
-                            <Text style={styless.statText}>{user?.totalPoints >= 0 ? user.totalPoints : ""} Points</Text>
+                            <Text style={styless.statText}>{user?.totalPoints >= 0 ? user.totalPoints : 0} Points</Text>
                         </View>
                     </View>
-                    <ProfileLineup />
+                    <ProfileLineup user={user.$id} />
                 </ScrollView>
             </View>
             <StatusBar style="light" />
         </SafeAreaView>
-    )
+    );
 }
 
 const styless = StyleSheet.create({

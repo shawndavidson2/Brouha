@@ -10,7 +10,7 @@ import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 const PickLineup = () => {
-    const { weekNum, refreshPicks, setRefreshPicks } = useGlobalContext();
+    const { user, weekNum, refreshPicks, setRefreshPicks } = useGlobalContext();
     const {
         cycleWeekNum,
         picks,
@@ -20,7 +20,7 @@ const PickLineup = () => {
         goToPreviousWeek,
         goToNextWeek,
         deletePickFromPL, // Assuming you have a function to delete a pick
-    } = usePickLineup(weekNum);
+    } = usePickLineup(weekNum, user.$id);
 
     useEffect(() => {
         if (refreshPicks) {

@@ -1,9 +1,12 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useGlobalContext } from '../../context/GlobalProvider';
+import { useRouter } from 'expo-router';
 
 const LeagueParticipants = () => {
     const { league, user } = useGlobalContext();
+
+    const router = useRouter();
 
     if (!user || !league) {
         return null; // Handle the case where user or league is not available
@@ -20,23 +23,31 @@ const LeagueParticipants = () => {
     const contributors = sortedMembers.slice(0, 5);
     const participants = sortedMembers.slice(5);
 
+    const handleUserPress = (leagueUser) => {
+        router.push({
+            pathname: '../profile',
+            params: { leagueUser: JSON.stringify(leagueUser) },  // Convert to a string
+        });
+    };
+
     return (
         <View style={styles.container}>
             <Text style={styles.sectionHeader}>League Contributors</Text>
             <Text style={styles.sectionSubHeader}>Top 5 scores add up to total</Text>
             <View style={styles.participantsContainer}>
                 {contributors.map((contributor, index) => (
-                    <View
+                    <TouchableOpacity
                         key={contributor.$id}
                         style={[
                             styles.participantRow,
                             contributor.username === user.username && styles.currentUser,
                         ]}
+                        onPress={() => handleUserPress(contributor)} // Handle click event
                     >
                         <Text style={styles.rank}>{index + 1}.</Text>
                         <Text style={styles.memberText}>{contributor.username}</Text>
                         <Text style={styles.pointsText}>{contributor.weekPoints ?? 'Loading...'}</Text>
-                    </View>
+                    </TouchableOpacity>
                 ))}
             </View>
 
@@ -45,17 +56,18 @@ const LeagueParticipants = () => {
                     <Text style={styles.sectionHeader}>League Participants</Text>
                     <View style={styles.participantsContainer}>
                         {participants.map((participant, index) => (
-                            <View
+                            <TouchableOpacity
                                 key={participant.$id}
                                 style={[
                                     styles.participantRow,
                                     participant.username === user.username && styles.currentUser,
                                 ]}
+                                onPress={() => handleUserPress(participant)} // Handle click event
                             >
                                 <Text style={styles.rank}>{index + 1 + contributors.length}.</Text>
                                 <Text style={styles.memberText}>{participant.username}</Text>
                                 <Text style={styles.pointsText}>{participant.weekPoints ?? 'Loading...'}</Text>
-                            </View>
+                            </TouchableOpacity>
                         ))}
                     </View>
                 </>
@@ -84,9 +96,7 @@ const styles = StyleSheet.create({
         color: '#656769',
         fontFamily: 'RobotoSlab-Regular'
     },
-    participantsContainer: {
-
-    },
+    participantsContainer: {},
     participantRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',

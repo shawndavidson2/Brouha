@@ -5,10 +5,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import usePickLineup from '../../components/pick-lineup/usePickLineup';
 import { useGlobalContext } from '../../context/GlobalProvider';
 
-const ProfileLineup = () => {
+const ProfileLineup = (userId) => {
     const [expandedWeek, setExpandedWeek] = useState(null);
 
-    const { user, weekNum } = useGlobalContext();
+    const { weekNum } = useGlobalContext();
 
     const userWeeks = weekNum;
     const weeks = Array.from({ length: weekNum }, (_, i) => i + 1);
@@ -33,7 +33,7 @@ const ProfileLineup = () => {
                                 <FontAwesome name={expandedWeek === week ? "angle-up" : "angle-down"} size={24} />
                             </TouchableOpacity>
                             {expandedWeek === week && (
-                                <WeekDetails week={week} />
+                                <WeekDetails week={week} userId={userId} />
                             )}
                         </View>
                     ))}
@@ -43,8 +43,8 @@ const ProfileLineup = () => {
     );
 };
 
-const WeekDetails = ({ week }) => {
-    const { picks, totalPointsEarned, totalPotentialPoints, renderStatusIcon } = usePickLineup(week);
+const WeekDetails = ({ week, userId }) => {
+    const { picks, totalPointsEarned, totalPotentialPoints, renderStatusIcon } = usePickLineup(week, userId.user);
 
     return (
         <View style={styles.weekDetails}>

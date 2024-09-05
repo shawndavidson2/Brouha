@@ -3,17 +3,64 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 import { updatePickAttributes } from '../../lib/appwrite';
 import { FontAwesome } from '@expo/vector-icons';
 import { useLineupCache } from '../../context/lineupContext';
-import { removePickFromWeeklyLineup } from '../../lib/appwrite';
+import { removePickFromWeeklyLineup, getAllWeeklyLineups, getPicksByIds } from '../../lib/appwrite';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 
-const usePickLineup = (initialWeekNum = 0) => {
+const usePickLineup = (initialWeekNum = 0, userId = null) => {
     const { user, setUser, league, setLeague, weekNum, refreshPicks } = useGlobalContext();
     const [cycleWeekNum, setCycleWeekNum] = useState(initialWeekNum);
     const lineupCache = useLineupCache();
     const [totalPotentialPoints, setTotalPotentialPoints] = useState(0);
+    const [picks, setPicks] = useState([]); // Initialize state for picks
 
-    const picks = lineupCache[cycleWeekNum] || [];
+    // Function to fetch lineups if needed
+    const fetchLineups = async () => {
+        try {
+            // Fetch all weekly lineups
+            console.log("1")
+            const allLineups = await getAllWeeklyLineups(userId);
+
+            if (allLineups) {
+                const lineupsWithPicks = [];
+
+                // Iterate over each lineup and fetch the picks
+                for (const lineup of allLineups) {
+                    const picks = await getPicksByIds(lineup.picks);
+                    lineupsWithPicks.push({
+                        weekNumber: lineup.weekNumber,
+                        picks,
+                    });
+                }
+                console.log("2")
+                return lineupsWithPicks;
+            } else {
+                console.log("No lineups available");
+                return [];
+            }
+        } catch (error) {
+            console.error('Failed to fetch all weekly lineups:', error);
+            return [];
+        }
+    };
+
+    // Effect to load picks depending on the user
+    useEffect(() => {
+        const loadPicks = async () => {
+            if (userId === user.$id) {
+                // If the user matches, load picks from cache
+                const cachedPicks = lineupCache[cycleWeekNum] || [];
+                setPicks(cachedPicks);
+            } else {
+                // Fetch picks from the server for the specific user
+                const fetchedLineups = await fetchLineups();
+                const currentWeekLineup = fetchedLineups.find(lineup => lineup.weekNumber === cycleWeekNum);
+                setPicks(currentWeekLineup ? currentWeekLineup.picks : []);
+            }
+        };
+
+        loadPicks();
+    }, [cycleWeekNum, userId, user, lineupCache]);
 
     const totalPointsEarned = useMemo(() => {
         return picks.reduce((total, pick) => {
@@ -44,7 +91,6 @@ const usePickLineup = (initialWeekNum = 0) => {
 
     const goToNextWeek = () => {
         setCycleWeekNum(prevWeek => {
-            //const maxWeeks = user["weekly-lineup"] ? user["weekly-lineup"].length - 1 : 0;
             return Math.min(prevWeek + 1, weekNum);
         });
     };
