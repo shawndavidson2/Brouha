@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../../context/GlobalProvider';
 import { StatusBar } from 'expo-status-bar';
 import Loading from '../../components/Loading';
+import { router } from 'expo-router';
 
 const Leaderboards = () => {
     const [selectedTab, setSelectedTab] = useState('users');
@@ -47,9 +48,16 @@ const Leaderboards = () => {
     };
 
     // Function to handle pressing a league item
-    const handleLeaguePress = (league) => {
-        console.log('League clicked:', league.name);  // For now, just log the league name
-        // You can navigate or perform other actions here in the future
+    const handleLeaguePress = (clickedLeague) => {
+        if (clickedLeague.name === league.name) {
+            router.push('/league')
+        } else {
+            router.push({
+                pathname: '/LeagueScreen',
+                params: { passedLeague: JSON.stringify(clickedLeague) },  // Convert to a string
+            });
+        }
+
     };
 
     const renderLeaderboardItem = (item) => {

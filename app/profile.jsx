@@ -14,13 +14,14 @@ const Profile = () => {
     const router = useRouter();
 
     const { user: globalUser, setUser, setIsLoggedIn, league: globalLeague } = useGlobalContext();
-    const { leagueUser } = useLocalSearchParams();
+    const { leagueUser, passedLeague } = useLocalSearchParams();
 
     const parsedLeagueUser = leagueUser ? JSON.parse(leagueUser) : null;
+    const parsedLeague = passedLeague ? JSON.parse(passedLeague) : null;
 
     // Use either the passed user/league or fallback to the global context
     const [user, setUserState] = useState(parsedLeagueUser || globalUser);
-    const [league, setLeagueState] = useState(globalLeague);
+    const [league, setLeagueState] = useState(passedLeague || globalLeague);
 
 
     const [leagueName, setLeagueName] = useState("No League Yet");

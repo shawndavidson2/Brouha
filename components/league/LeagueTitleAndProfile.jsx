@@ -1,16 +1,27 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import React from 'react';
 import { icons } from '../../constants';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router'; // Import useRouter for back navigation
 
-const LeagueTitleAndProfile = ({ currentUser, leagueTitle, weekNum }) => {
+const LeagueTitleAndProfile = ({ currentUser, leagueTitle, weekNum, hideProfile }) => {
+    const router = useRouter();
+
     const profile = () => {
         router.push({ pathname: "../../profile" });
+    };
+
+    const goBack = () => {
+        router.back(); // Navigate back
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.row}>
+                {hideProfile && (
+                    <TouchableOpacity onPress={goBack} style={styles.backButton}>
+                        <Text style={styles.backText}>Back</Text>
+                    </TouchableOpacity>
+                )}
                 <View style={styles.titleContainer}>
                     <Text style={styles.leagueTitle} numberOfLines={1}>
                         {leagueTitle}
@@ -19,13 +30,15 @@ const LeagueTitleAndProfile = ({ currentUser, leagueTitle, weekNum }) => {
                         Week {weekNum}
                     </Text>
                 </View>
-                <TouchableOpacity onPress={profile} style={styles.profileButton}>
-                    <Image
-                        source={icons.profile}
-                        resizeMode="contain"
-                        style={styles.profileImage}
-                    />
-                </TouchableOpacity>
+                {!hideProfile && (
+                    <TouchableOpacity onPress={profile} style={styles.profileButton}>
+                        <Image
+                            source={icons.profile}
+                            resizeMode="contain"
+                            style={styles.profileImage}
+                        />
+                    </TouchableOpacity>
+                )}
             </View>
         </View>
     );
@@ -51,14 +64,23 @@ const styles = StyleSheet.create({
         color: '#8b2326',
         textAlign: 'center',
         marginBottom: 5,
-        fontFamily: 'RobotoSlab-Bold'
+        fontFamily: 'RobotoSlab-Bold',
     },
     weekText: {
         fontSize: 20,
         fontWeight: 'medium',
         marginTop: 2,
         textAlign: 'center',
-        fontFamily: 'RobotoSlab-Regular'
+        fontFamily: 'RobotoSlab-Regular',
+    },
+    backButton: {
+        position: 'absolute',
+        left: 25,
+        top: 10, // Align to the top
+    },
+    backText: {
+        fontSize: 18,
+        fontFamily: 'RobotoSlab-Regular',
     },
     profileButton: {
         position: 'absolute',

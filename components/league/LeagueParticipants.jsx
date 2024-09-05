@@ -3,8 +3,8 @@ import React from 'react';
 import { useGlobalContext } from '../../context/GlobalProvider';
 import { useRouter } from 'expo-router';
 
-const LeagueParticipants = () => {
-    const { league, user } = useGlobalContext();
+const LeagueParticipants = ({ league }) => {
+    const { user } = useGlobalContext();
 
     const router = useRouter();
 

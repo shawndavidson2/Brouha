@@ -19,6 +19,7 @@ const RootLayout = () => {
                     <Stack.Screen name="profile" options={{ headerShown: false }} />
                     <Stack.Screen name="join-league" options={{ headerShown: false }} />
                     <Stack.Screen name="gameDetail" options={{ headerShown: false }} />
+                    <Stack.Screen name="LeagueScreen" options={{ headerShown: false }} />
                 </Stack>
             </LineupProvider>
         </GlobalProvider>
