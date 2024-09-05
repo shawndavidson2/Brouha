@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCurrentUser, checkAndUpdateWeekNum, resetWeek, checkOrCreateWeeklyLineup, getAllUsersForLeaderboard, getAllLeaguesForLeaderboard, updateLeagueAttributes } from "../lib/appwrite";
+import Loading from "../components/Loading";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -110,6 +111,10 @@ const GlobalProvider = ({ children }) => {
         });
 
     }, []);
+
+    if (isLoading) {
+        return <Loading />;
+    }
 
     return (
         <GlobalContext.Provider

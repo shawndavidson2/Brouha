@@ -9,7 +9,6 @@ import LeagueStats from '../../components/league/LeagueStats';
 import LeagueTitleAndProfile from '../../components/league/LeagueTitleAndProfile';
 import JoinLeagueButton from '../../components/league/JoinLeagueButton';
 import { useGlobalContext } from '../../context/GlobalProvider';
-import { useLineupCache } from '../../context/lineupContext';
 import { useRefresh } from '../../context/RefreshContext';
 import Loading from '../../components/Loading';
 import { StatusBar } from 'expo-status-bar';
@@ -18,7 +17,6 @@ const League = () => {
     const { user, setUser, league, setLeague, weekNum, isInitialized: isGlobalInitialized } = useGlobalContext();
     const [loading, setLoading] = useState(false);
     const { triggerRefresh } = useRefresh();
-    const lineupCache = useLineupCache();
     const [refreshKey, setRefreshKey] = useState(0); // Add a refresh key state
 
     const joinLeague = () => {

@@ -10,10 +10,11 @@ export const LineupProvider = ({ children }) => {
     const [isInitialized, setIsInitialized] = useState(false);
     const [error, setError] = useState(null);
 
-    const { weekNum } = useGlobalContext();
+    const { user, weekNum } = useGlobalContext();
 
     useEffect(() => {
         const fetchLineupsIfNeeded = async () => {
+            setIsInitialized(false)
             console.log("FETCHING LINEUPS")
             if (lineupCache[weekNum]) {
                 setIsInitialized(true);
@@ -21,20 +22,22 @@ export const LineupProvider = ({ children }) => {
             }
 
             try {
-                const allLineups = await getAllWeeklyLineups();
-                if (allLineups) {
-                    const newCache = { ...lineupCache };
-
-                    for (const lineup of allLineups) {
-                        if (!newCache[lineup.weekNumber]) {
-                            const picks = await getPicksByIds(lineup.picks);
-                            newCache[lineup.weekNumber] = picks;
+                if (user) {
+                    const allLineups = await getAllWeeklyLineups(user.$id);
+                    if (allLineups) {
+                        const newCache = { ...lineupCache };
+                        for (const lineup of allLineups) {
+                            if (!newCache[lineup.weekNumber]) {
+                                //if (lineup.picks.length === 0) return
+                                const picks = await getPicksByIds(lineup.picks);
+                                newCache[lineup.weekNumber] = picks;
+                            }
                         }
-                    }
 
-                    setLineupCache(newCache);
-                } else {
-                    console.log("no lineups")
+                        setLineupCache(newCache);
+                    } else {
+                        console.log("no lineups")
+                    }
                 }
             } catch (error) {
                 console.error('Failed to fetch all weekly lineups:', error);
@@ -45,11 +48,8 @@ export const LineupProvider = ({ children }) => {
         };
 
         fetchLineupsIfNeeded();
-    }, [weekNum]);
+    }, [user]);
 
-    if (!isInitialized) {
-        return <Loading />;
-    }
 
     return (
         <LineupContext.Provider value={lineupCache}>
