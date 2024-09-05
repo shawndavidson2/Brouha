@@ -63,29 +63,45 @@ const GlobalProvider = ({ children }) => {
         const getLeaderboardData = async (week) => {
             setIsLoading(false);
 
-            // Fetch and sort leagues by cumulative-total-points
-            const leagues = await getAllLeaguesForLeaderboard();
+            // Fetch leagues and users in parallel
+            const [leagues, users] = await Promise.all([getAllLeaguesForLeaderboard(), getAllUsersForLeaderboard()]);
+
+            // Sort leagues by 'cumulative-total-points'
             const sortedLeagues = leagues.sort((a, b) => b['cumulative-total-points'] - a['cumulative-total-points']);
 
             // Assign ranks based on points
             let rank = 1;
+            const leaguesToUpdate = [];
+
             sortedLeagues.forEach((league, index) => {
                 if (index > 0 && sortedLeagues[index]['cumulative-total-points'] === sortedLeagues[index - 1]['cumulative-total-points']) {
-                    league.rank = sortedLeagues[index - 1].rank; // Same rank as the previous league
+                    league.rank = sortedLeagues[index - 1].rank; // Same rank as previous league
                 } else {
                     league.rank = rank;
                 }
-                rank++;
-                updateLeagueAttributes(league, { rank: league.rank }); // Update the league rank in the database
-            });
-            setLeagues(sortedLeagues);
 
-            // Fetch and set users
-            const users = await getAllUsersForLeaderboard();
+                // Only update the league if its rank has changed
+                if (league.rank !== sortedLeagues[index].rank) {
+                    leaguesToUpdate.push({
+                        id: league.id,
+                        rank: league.rank
+                    });
+                }
+
+                rank++;
+            });
+
+            // Batch update the leagues' ranks to reduce the number of database calls
+            if (leaguesToUpdate.length > 0) {
+                await updateLeaguesBatch(leaguesToUpdate); // Assume this function updates leagues in bulk
+            }
+
+            setLeagues(sortedLeagues);
             setUsers(users);
 
             setLeaderboardLoading(false);
         };
+
 
         initialize().then((user) => {
             updateWeekNum().then((week) => {
