@@ -18,7 +18,6 @@ const usePickLineup = (initialWeekNum = 0, userId = null) => {
     const fetchLineups = async () => {
         try {
             // Fetch all weekly lineups
-            console.log("1")
             const allLineups = await getAllWeeklyLineups(userId);
 
             if (allLineups) {
@@ -32,7 +31,6 @@ const usePickLineup = (initialWeekNum = 0, userId = null) => {
                         picks,
                     });
                 }
-                console.log("2")
                 return lineupsWithPicks;
             } else {
                 console.log("No lineups available");
