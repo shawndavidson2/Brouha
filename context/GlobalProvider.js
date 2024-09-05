@@ -37,56 +37,61 @@ const GlobalProvider = ({ children }) => {
             } catch (error) {
                 console.log(error);
             } finally {
-                //setIsLoading(false);
                 setIsInitialized(true);
             }
         };
 
         const updateWeekNum = async () => {
-
             // Hardcoded start date for Week 1 (September 3, 2024 at midnight)
             const startWeek1 = new Date('2024-09-03T00:00:00');
-
-            // Get the current date and time
             const currentDate = new Date();
-
-            // Calculate the number of weeks since the start of Week 1
             const millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
             const weeksSinceStart = Math.floor((currentDate - startWeek1) / millisecondsPerWeek);
-
-            // Calculate the current week number
             let currentWeekNum = 1 + weeksSinceStart;
             if (currentWeekNum < 1) currentWeekNum = 1;
 
             console.log('Current Week Number:', currentWeekNum);
-            setWeekNum(currentWeekNum)
+            setWeekNum(currentWeekNum);
 
-            const needsWeekClearing = await checkAndUpdateWeekNum(currentWeekNum)
+            const needsWeekClearing = await checkAndUpdateWeekNum(currentWeekNum);
             if (needsWeekClearing) {
                 //await resetWeek(currentWeekNum);
             }
-            console.log(currentWeekNum)
             return currentWeekNum;
-
         };
 
         const getLeaderboardData = async (week) => {
             setIsLoading(false);
 
+            // Fetch and sort leagues by cumulative-total-points
             const leagues = await getAllLeaguesForLeaderboard();
             const sortedLeagues = leagues.sort((a, b) => b['cumulative-total-points'] - a['cumulative-total-points']);
+
+            // Assign ranks based on points
+            let rank = 1;
             sortedLeagues.forEach((league, index) => {
-                updateLeagueAttributes(league, { rank: index + 1 });
+                if (index > 0 && sortedLeagues[index]['cumulative-total-points'] === sortedLeagues[index - 1]['cumulative-total-points']) {
+                    league.rank = sortedLeagues[index - 1].rank; // Same rank as the previous league
+                } else {
+                    league.rank = rank;
+                }
+                rank++;
+                updateLeagueAttributes(league, { rank: league.rank }); // Update the league rank in the database
             });
             setLeagues(sortedLeagues);
 
+            // Fetch and set users
             const users = await getAllUsersForLeaderboard();
             setUsers(users);
 
             setLeaderboardLoading(false);
         };
 
-        initialize().then((user) => { updateWeekNum().then((week) => { getLeaderboardData(week) }) })
+        initialize().then((user) => {
+            updateWeekNum().then((week) => {
+                getLeaderboardData(week);
+            });
+        });
 
     }, []);
 

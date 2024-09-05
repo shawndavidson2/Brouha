@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import styles from '../styles';
-import { getAllUsers, getAllLeagues, updateLeagueAttributes } from '../../lib/appwrite';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../../context/GlobalProvider';
 import { StatusBar } from 'expo-status-bar';
@@ -17,29 +16,44 @@ const Leaderboards = () => {
     useEffect(() => {
         // Load all users
         const fetchUsers = async () => {
-            //const users = await getAllUsersForLeaderboard();
             const sortedUsers = users.sort((a, b) => b.totalPoints - a.totalPoints);
-            setUserLeaders(sortedUsers);
+            setUserLeaders(assignRanks(sortedUsers, 'totalPoints'));
         };
 
         // Load all leagues
         const fetchLeagues = async () => {
-            //const leagues = await getAllLeaguesForLeaderboard();
+            //const sortedLeagues = leagues.sort((a, b) => b['cumulative-total-points'] - a['cumulative-total-points']);
             setLeagueLeaders(leagues);
         };
+
         if (!leaderboardLoading) {
             fetchUsers();
             fetchLeagues();
         }
     }, [leaderboardLoading]);
 
-    const renderLeaderboardItem = (item, index) => {
+    // Function to assign ranks based on point values
+    const assignRanks = (items, pointsField) => {
+        let rank = 1;
+        return items.map((item, index) => {
+            // If it's not the first item and has the same points as the previous, assign the same rank
+            if (index > 0 && item[pointsField] === items[index - 1][pointsField]) {
+                item.rank = items[index - 1].rank;
+            } else {
+                item.rank = rank;
+            }
+            rank = rank + 1;
+            return item;
+        });
+    };
+
+    const renderLeaderboardItem = (item) => {
         let isCurrentUser = item.username === user?.username;
         let isCurrentLeague = item.name === league?.name;
 
         return (
             <View key={item.$id} style={[styles.leaderboardItem, (isCurrentUser || isCurrentLeague) && styles.current]}>
-                <Text style={styles.rank}>{index + 1}</Text>
+                <Text style={styles.rank}>{item.rank}</Text>
                 <Text style={styles.name}>{item.username || item.name}</Text>
                 <Text style={styles.points}>{item['cumulative-total-points'] != null ? item['cumulative-total-points'] : item.totalPoints}</Text>
             </View>
