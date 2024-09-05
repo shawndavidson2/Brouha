@@ -1,7 +1,10 @@
-import { View, Text, Image } from 'react-native'
-import React from 'react'
-import { Tabs } from 'expo-router'
-import { icons } from '../../constants'
+import { View, Text, Image } from 'react-native';
+import React from 'react';
+import { Tabs } from 'expo-router';
+import { StatusBar } from 'expo-status-bar'; // Import StatusBar
+import { icons } from '../../constants';
+import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
+import { useState } from 'react'; // Import useState
 
 const TabIcon = ({ icon, color, name, focused }) => {
     return (
@@ -14,12 +17,24 @@ const TabIcon = ({ icon, color, name, focused }) => {
             />
             <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{ color }}> {name}</Text>
         </View>
-    )
-}
+    );
+};
 
 const TabsLayout = () => {
+    const [isLeagueTabFocused, setIsLeagueTabFocused] = useState(false);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            setIsLeagueTabFocused(true);
+            return () => setIsLeagueTabFocused(false); // Reset when tab loses focus
+        }, [])
+    );
+
     return (
         <View style={{ flex: 1, backgroundColor: "#343434" }}>
+            {/* Render StatusBar only when League tab is focused */}
+            {isLeagueTabFocused && <StatusBar style="dark" />}
+
             <Tabs
                 screenOptions={{
                     tabBarShowLabel: false,
@@ -29,7 +44,7 @@ const TabsLayout = () => {
                         backgroundColor: "#202020",
                         height: 110,
                         borderRadius: 10,
-                    }
+                    },
                 }}
             >
                 <Tabs.Screen
@@ -44,9 +59,12 @@ const TabsLayout = () => {
                                 name="League"
                                 focused={focused}
                             />
-                        )
-
+                        ),
                     }}
+                    listeners={({ navigation }) => ({
+                        focus: () => setIsLeagueTabFocused(true),
+                        blur: () => setIsLeagueTabFocused(false),
+                    })}
                 />
                 <Tabs.Screen
                     name="pick-lineup"
@@ -59,10 +77,8 @@ const TabsLayout = () => {
                                 color={color}
                                 name="Pick Lineup"
                                 focused={focused}
-
                             />
-                        )
-
+                        ),
                     }}
                 />
                 <Tabs.Screen
@@ -77,8 +93,7 @@ const TabsLayout = () => {
                                 name="All Picks"
                                 focused={focused}
                             />
-                        )
-
+                        ),
                     }}
                 />
                 <Tabs.Screen
@@ -93,13 +108,12 @@ const TabsLayout = () => {
                                 name="Leaderboards"
                                 focused={focused}
                             />
-                        )
-
+                        ),
                     }}
                 />
-            </Tabs >
+            </Tabs>
         </View>
-    )
-}
+    );
+};
 
-export default TabsLayout
+export default TabsLayout;
