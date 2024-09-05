@@ -29,7 +29,7 @@ const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder, fileUrl }
             </View>
             <View style={styles.spreadContainer}>
                 <Text style={styles.spreadText}>{spread}</Text>
-                <Text style={styles.overUnderText}>O/U {overUnder}</Text>
+                <Text style={styles.overUnderText}>O/U {overUnder.replace(/^[OU]\s/, '')}</Text>
             </View>
             <TouchableOpacity style={styles.button} onPress={handlePress}>
                 <Text style={styles.buttonText}>See Picks</Text>
