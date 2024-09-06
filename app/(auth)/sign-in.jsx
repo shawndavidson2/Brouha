@@ -47,7 +47,7 @@ const SignIn = () => {
         <SafeAreaView style={styles.safeArea}>
             <ScrollView>
                 <View className="w-full  h-full px-5 my-0 color-white">
-                    <Text style={{ color: '#DBB978' }} className="text-5xl mt-12 text-bold font-bold text-center color-white">
+                    <Text style={{ color: '#DBB978' }} className="text-5xl mt-8 text-bold font-bold text-center color-white">
                         Brouha
                     </Text>
                     <Text style={{ color: '#DBB978' }} className="text-2xl text-bold mt-10 font-bold text-center color-white">
@@ -89,7 +89,7 @@ const SignIn = () => {
                     </View>
                 </View>
             </ScrollView>
-            <StatusBar style='dark' />
+            <StatusBar style='light' />
         </SafeAreaView>
 
     )

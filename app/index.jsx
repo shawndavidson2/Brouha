@@ -41,11 +41,9 @@ const Index = () => {
     }
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <ScrollView contentContainerStyle={{ height: '100%' }}>
-                <SignIn />
-            </ScrollView>
-        </SafeAreaView>
+        <ScrollView contentContainerStyle={{ height: '100%' }}>
+            <SignIn />
+        </ScrollView>
     );
 };
 
