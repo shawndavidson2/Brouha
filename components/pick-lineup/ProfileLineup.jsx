@@ -5,10 +5,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import usePickLineup from '../../components/pick-lineup/usePickLineup';
 import { useGlobalContext } from '../../context/GlobalProvider';
 
-const ProfileLineup = (userId) => {
+const ProfileLineup = ({ userId, leagueId }) => {
     const [expandedWeek, setExpandedWeek] = useState(null);
 
-    const { weekNum } = useGlobalContext();
+    const { user, league, weekNum } = useGlobalContext();
 
     const userWeeks = weekNum;
     const weeks = Array.from({ length: weekNum }, (_, i) => i + 1);
@@ -27,15 +27,18 @@ const ProfileLineup = (userId) => {
             <ScrollView>
                 <View style={styles.container}>
                     {weeks.map((week) => (
-                        <View key={week}>
-                            <TouchableOpacity onPress={() => toggleWeek(week)} style={styles.weekSummary}>
-                                <Text style={styles.weekText}>Week {week} Pick Lineup</Text>
-                                <FontAwesome name={expandedWeek === week ? "angle-up" : "angle-down"} size={24} />
-                            </TouchableOpacity>
-                            {expandedWeek === week && (
-                                <WeekDetails week={week} userId={userId} />
-                            )}
-                        </View>
+                        // Only show lineup if user.$id matches userId or it's not the current weekNum
+                        (league.$id === leagueId || user.$id === userId || week !== weekNum) && (
+                            <View key={week}>
+                                <TouchableOpacity onPress={() => toggleWeek(week)} style={styles.weekSummary}>
+                                    <Text style={styles.weekText}>Week {week} Pick Lineup</Text>
+                                    <FontAwesome name={expandedWeek === week ? "angle-up" : "angle-down"} size={24} />
+                                </TouchableOpacity>
+                                {expandedWeek === week && (
+                                    <WeekDetails week={week} userId={userId} />
+                                )}
+                            </View>
+                        )
                     ))}
                 </View>
             </ScrollView>

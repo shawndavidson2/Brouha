@@ -72,7 +72,7 @@ const Profile = () => {
                             <Text style={styless.statText}>{user?.totalPoints >= 0 ? user.totalPoints : 0} Points</Text>
                         </View>
                     </View>
-                    <ProfileLineup user={user.$id} />
+                    <ProfileLineup userId={user.$id} leagueId={league.$id} />
                 </ScrollView>
             </View>
             <StatusBar style="light" />
