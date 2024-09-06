@@ -21,7 +21,7 @@ const Profile = () => {
 
     // Use either the passed user/league or fallback to the global context
     const [user, setUserState] = useState(parsedLeagueUser || globalUser);
-    const [league, setLeagueState] = useState(passedLeague || globalLeague);
+    const [league, setLeagueState] = useState(parsedLeague || globalLeague);
 
 
     const [leagueName, setLeagueName] = useState("No League Yet");

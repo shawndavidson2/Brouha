@@ -26,7 +26,7 @@ const LeagueParticipants = ({ league }) => {
     const handleUserPress = (leagueUser) => {
         router.push({
             pathname: '../profile',
-            params: { leagueUser: JSON.stringify(leagueUser) },  // Convert to a string
+            params: { leagueUser: JSON.stringify(leagueUser), passedLeague: JSON.stringify(league) },  // Convert to a string
         });
     };
 
