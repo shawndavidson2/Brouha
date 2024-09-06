@@ -11,6 +11,7 @@ import { StatusBar } from 'expo-status-bar';
 
 const PickLineup = () => {
     const { user, weekNum, refreshPicks, setRefreshPicks } = useGlobalContext();
+    if (!user) return;
     const {
         cycleWeekNum,
         picks,
