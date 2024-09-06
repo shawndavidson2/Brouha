@@ -47,7 +47,7 @@ const ProfileLineup = ({ userId, leagueId }) => {
 };
 
 const WeekDetails = ({ week, userId }) => {
-    const { picks, totalPointsEarned, totalPotentialPoints, renderStatusIcon } = usePickLineup(week, userId.user);
+    const { picks, totalPointsEarned, totalPotentialPoints, renderStatusIcon } = usePickLineup(week, userId);
 
     return (
         <View style={styles.weekDetails}>
