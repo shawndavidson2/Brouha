@@ -62,7 +62,7 @@ const GlobalProvider = ({ children }) => {
         };
 
         const getLeaderboardData = async (week) => {
-            setIsLoading(true); // Set loading to true when starting
+            setIsLoading(false); // Set loading to true when starting
 
             try {
                 // Fetch leagues and users in parallel
@@ -97,7 +97,7 @@ const GlobalProvider = ({ children }) => {
                 console.error("Error fetching leaderboard data: ", error);
             } finally {
                 setLeaderboardLoading(false); // Stop loading when done
-                setIsLoading(false); // Stop loading after fetching
+
             }
         };
 
