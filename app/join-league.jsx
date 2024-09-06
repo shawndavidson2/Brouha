@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './styles';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useRefresh } from '../context/RefreshContext';
+import Loading from '../components/Loading';
 
 const JoinLeague = () => {
     const { user, setUser, setLeague, setIsLoggedIn } = useGlobalContext();
@@ -101,13 +102,17 @@ const JoinLeague = () => {
         return 'Join or Create a League';
     };
 
+    if (loading) { return <Loading /> }
+
     return (
         <GestureHandlerRootView>
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.container}>
-                    <TouchableOpacity onPress={goBack}>
-                        <Text style={styles.backButtonText}>Back</Text>
-                    </TouchableOpacity>
+                    {/*
+                        <TouchableOpacity onPress={goBack}>
+                            <Text style={styles.backButtonText}>Back</Text>
+                        </TouchableOpacity>
+                    */}
 
                     <Text style={[styles.header, { marginTop: 40 }]}>{getHeaderText()}</Text>
                     <Text style={styles.description}>Choose to either join an existing league or create a new one</Text>

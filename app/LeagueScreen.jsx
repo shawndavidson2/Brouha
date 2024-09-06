@@ -28,6 +28,7 @@ const LeagueScreen = () => {
     const [refreshKey, setRefreshKey] = useState(0); // Add a refresh key state
 
     useEffect(() => {
+        if (!league) router.replace('../join-league')
     }, [league]);
 
     const joinLeague = () => {
