@@ -246,7 +246,7 @@ const GameDetail = () => {
                                 )
                             ))
                         ) : (
-                            <Loading />
+                            <Loading color={true} />
                         )}
                     </ScrollView>
                 </View>

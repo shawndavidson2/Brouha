@@ -173,6 +173,13 @@ export default styles = StyleSheet.create({
         backgroundColor: '#343434',
         fontFamily: 'RobotoSlab-Regular'
     },
+    loadingScreenWhite: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FFFFF',
+        fontFamily: 'RobotoSlab-Regular'
+    },
     input: {
         height: 40,
         width: '100%',

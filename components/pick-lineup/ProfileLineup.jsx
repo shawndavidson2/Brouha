@@ -4,6 +4,7 @@ import { FontAwesome } from '@expo/vector-icons'; // Import icon library
 import { SafeAreaView } from 'react-native-safe-area-context';
 import usePickLineup from '../../components/pick-lineup/usePickLineup';
 import { useGlobalContext } from '../../context/GlobalProvider';
+import Loading from '../Loading';
 
 const ProfileLineup = ({ userId, leagueId }) => {
     const [expandedWeek, setExpandedWeek] = useState(null);
@@ -48,6 +49,23 @@ const ProfileLineup = ({ userId, leagueId }) => {
 
 const WeekDetails = ({ week, userId }) => {
     const { picks, totalPointsEarned, totalPotentialPoints, renderStatusIcon } = usePickLineup(week, userId);
+
+    if (picks.length === 0) return (
+        <View style={styles.weekDetails}>
+            <ScrollView style={styles.scrollView}>
+                <Loading color={true} />
+            </ScrollView>
+            <View style={styles.totalContainer}>
+                <Text style={styles.totalText}>Total Potential Points</Text>
+                <Text style={styles.totalPointsText}> pts</Text>
+            </View>
+            <View style={styles.totalContainer}>
+                <Text style={styles.totalText}>Total Points Earned</Text>
+                <Text style={styles.earnedPointsText}> pts</Text>
+            </View>
+        </View>
+
+    );
 
     return (
         <View style={styles.weekDetails}>
