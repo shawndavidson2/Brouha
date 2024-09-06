@@ -48,7 +48,10 @@ const SignUp = () => {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <ScrollView>
+            <ScrollView
+                contentContainerStyle={{ paddingBottom: 240 }} // Enable scrolling and centering
+                showsVerticalScrollIndicator={false} // Hide the vertical scroll indicator (optional)
+            >
                 <View className="w-full  h-full px-5 my-6 color-white">
                     <Text style={{ color: '#DBB978' }} className="text-5xl mt-2 text-bold font-bold text-center color-white">
                         Brouha

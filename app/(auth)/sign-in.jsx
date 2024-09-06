@@ -9,6 +9,7 @@ import { getCurrentUser, signIn } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/GlobalProvider'
 import { StatusBar } from 'expo-status-bar'
 import { useRefresh } from '../../context/RefreshContext'
+import styles from '../styles'
 
 const SignIn = () => {
     const { setUser, setIsLoggedIn, setLeague } = useGlobalContext();
@@ -45,7 +46,7 @@ const SignIn = () => {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <ScrollView>
+            <ScrollView contentContainerStyle={{ paddingBottom: 260 }} showsVerticalScrollIndicator={false}>
                 <View className="w-full  h-full px-5 my-0 color-white">
                     <Text style={{ color: '#DBB978' }} className="text-5xl mt-8 text-bold font-bold text-center color-white">
                         Brouha
