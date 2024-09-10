@@ -24,11 +24,75 @@ client
 
 const databases = new Databases(client);
 
+export const getAllUsers = async () => {
+    try {
+        let allUsers = [];
+        let lastUserId = null; // Used for cursor-based pagination
+        const limit = 1000;
+
+        while (true) {
+            const response = await databases.listDocuments(
+                appwriteConfig.databaseId,
+                appwriteConfig.userCollectionId,
+                lastUserId ? [Query.cursorAfter(lastUserId), Query.limit(limit)] : [Query.limit(limit)]
+            );
+
+            allUsers = allUsers.concat(response.documents);
+
+            if (response.documents.length < limit) {
+                break; // No more documents to fetch
+            }
+
+            lastUserId = response.documents[response.documents.length - 1].$id; // Update for next iteration
+        }
+
+        return allUsers;
+    } catch (e) {
+        console.error("Error fetching user details: " + e);
+        throw new Error(e);
+    }
+};
+
+
+export const getAllLeagues = async () => {
+    try {
+        let allLeagues = [];
+        let lastLeagueId = null; // Used for cursor-based pagination
+        const limit = 1000; // Increase this if the backend supports higher limits
+
+        // Fetch leagues using pagination
+        while (true) {
+            const response = await databases.listDocuments(
+                appwriteConfig.databaseId,
+                appwriteConfig.leagueCollectionId,
+                lastLeagueId ? [Query.cursorAfter(lastLeagueId), Query.limit(limit)] : [Query.limit(limit)]
+            );
+
+            // Map and collect only needed fields directly in the loop
+            const mappedLeagues = response.documents;
+
+            allLeagues = allLeagues.concat(mappedLeagues);
+
+            // Break if no more documents to fetch
+            if (response.documents.length < limit) {
+                break;
+            }
+
+            lastLeagueId = response.documents[response.documents.length - 1].$id; // Update cursor for next iteration
+        }
+
+        return allLeagues;
+    } catch (error) {
+        console.error("Error fetching league details: " + error);
+        throw new Error(error);
+    }
+};
+
 export const resetWeek = async (weekNum, error) => {
     let usersArray = [], leaguesArray = []
     try {
         // Reset weekPoints for each user
-        const users = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.userCollectionId);
+        const users = await getAllUsers();
         for (const user of users.documents) {
             //log(user.username + " reseting from " + user.weekPoints)
             await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.userCollectionId, user.$id, {
@@ -41,7 +105,7 @@ export const resetWeek = async (weekNum, error) => {
         }
 
         // Reset weekly-total-points for each league
-        const leagues = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.leagueCollectionId);
+        const leagues = await getAllLeagues();
         for (const league of leagues.documents) {
             //log(league.name + " reseting from " + league["weekly-total-points"])
             const leagueTotalPoints = league["cumulative-total-points"]
@@ -56,9 +120,9 @@ export const resetWeek = async (weekNum, error) => {
         return [usersArray, leaguesArray]
 
         //log("Week points for users and leagues have been reset.");
-    } catch (error) {
-        //error("Error resetting week points:", e);
-        return error;
+    } catch (e) {
+        console.error("Error resetting week points: " + e);
+        throw new Error(e);
     }
 };
 
@@ -112,7 +176,7 @@ export const checkOrCreateWeeklyLineup = async (weekNumber, error, userId = null
         );
         return newLineup;
     } catch (e) {
-        error("Error in checkOrCreateWeeklyLineup: " + e);
-        return;
+        console.error("Error in checkOrCreateWeeklyLineup: " + e);
+        throw new Error(e);
     }
 };
