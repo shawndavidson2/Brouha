@@ -99,7 +99,7 @@ const Leaderboards = () => {
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
                 <View style={styles.leaderboard}>
-                    <Text style={styles.leaderboardTitle}>{selectedTab === 'users' ? 'User Leaderboards' : 'Leagues Leaderboard'}</Text>
+                    <Text style={styles.leaderboardTitle}>{selectedTab === 'users' ? 'User Leaderboards' : 'League Leaderboards'}</Text>
                     <ScrollView>
                         {selectedTab === 'users' ? userLeaders.map(renderLeaderboardItem) : leagueLeaders.map(renderLeaderboardItem)}
                     </ScrollView>
