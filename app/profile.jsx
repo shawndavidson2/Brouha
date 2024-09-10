@@ -83,7 +83,7 @@ const Profile = () => {
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styless.container}>
-                <ScrollView contentContainerStyle={{ height: '100%' }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                     <View style={styless.headerContainer}>
                         <TouchableOpacity onPress={goBack}>
                             <Text style={styless.backText}>Back</Text>
