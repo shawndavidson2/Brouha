@@ -60,7 +60,7 @@ const usePickLineup = (initialWeekNum = 0, userId = null) => {
         };
 
         loadPicks();
-    }, [cycleWeekNum, userId, user, lineupCache]);
+    }, [cycleWeekNum, userId, user, lineupCache, refreshPicks]);
 
     const totalPointsEarned = useMemo(() => {
         return picks.reduce((total, pick) => {
