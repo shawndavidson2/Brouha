@@ -93,7 +93,7 @@ export const resetWeek = async (weekNum, error) => {
     try {
         // Reset weekPoints for each user
         const users = await getAllUsers();
-        for (const user of users.documents) {
+        for (const user of users) {
             //log(user.username + " reseting from " + user.weekPoints)
             await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.userCollectionId, user.$id, {
                 weekPoints: 0
@@ -106,7 +106,7 @@ export const resetWeek = async (weekNum, error) => {
 
         // Reset weekly-total-points for each league
         const leagues = await getAllLeagues();
-        for (const league of leagues.documents) {
+        for (const league of leagues) {
             //log(league.name + " reseting from " + league["weekly-total-points"])
             const leagueTotalPoints = league["cumulative-total-points"]
             await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.leagueCollectionId, league.$id, {
