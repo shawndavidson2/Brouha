@@ -44,7 +44,7 @@ export default styles = StyleSheet.create({
     name: {
         flex: 1,
         textAlign: 'left',
-        fontFamily: 'RobotoSlab-Regular'
+        fontFamily: 'RobotoSlab-Bold'
     },
     points: {
         width: 80,
