@@ -38,7 +38,8 @@ export default styles = StyleSheet.create({
         width: 40,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontFamily: 'RobotoSlab-Regular'
+        color: '#8b2326',
+        fontFamily: 'RobotoSlab-SemiBold'
     },
     name: {
         flex: 1,
@@ -50,7 +51,8 @@ export default styles = StyleSheet.create({
         textAlign: 'right',
         fontWeight: 'bold',
         marginRight: 10,
-        fontFamily: 'RobotoSlab-Regular'
+        color: '#8b2326',
+        fontFamily: 'RobotoSlab-SemiBold'
     },
     tabContainer: {
         flexDirection: 'row',
@@ -208,12 +210,13 @@ export default styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 20
     },
-    title: {
+    leaderboardTitle: {
         textAlign: 'center',
-        fontSize: 30,
+        fontSize: 29,
         fontWeight: 'bold',
         marginBottom: 20,
-        fontFamily: 'RobotoSlab-Regular'
+        color: '#8b2326',
+        fontFamily: 'RobotoSlab-SemiBold'
     },
     sectionTitle: {
         fontSize: 24,
