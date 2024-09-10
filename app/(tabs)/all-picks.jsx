@@ -62,7 +62,6 @@ const excelDateToJSDate = (serial) => {
 };
 
 export const isTimePassed = (date, time) => {
-    return true;
     if (!date || !time) {
         console.error('Invalid date or time:', row['Game-Date']);
         return false;
