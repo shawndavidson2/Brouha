@@ -11,7 +11,8 @@ const appwriteConfig = {
     weeklyLineupCollectionId: '66849fe200344a0e6da9',
     gameCollectionId: '66ad3e97000d65a8be9b',
     pickCollectionId: '6684a04a000e85542756',
-    lockCollectionId: '66c91b6e003d1bd13aa5', // Added lock collection ID
+    lockCollectionId: '66c91b6e003d1bd13aa5',
+    weekCollectionId: '66b0de5400218e0d26c8',
     storageId: '667edd29003dd0cf6445'
 };
 
