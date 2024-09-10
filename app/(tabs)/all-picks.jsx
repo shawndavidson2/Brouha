@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     noDataText: {
-        color: '#fff',
+        color: '#DBB978',
         fontSize: 23,
         textAlign: 'center',
         marginTop: 190,
