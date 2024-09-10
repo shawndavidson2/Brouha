@@ -55,9 +55,6 @@ const GlobalProvider = ({ children }) => {
             setWeekNum(currentWeekNum);
 
             const needsWeekClearing = await checkAndUpdateWeekNum(currentWeekNum);
-            if (needsWeekClearing) {
-                //await resetWeek(currentWeekNum);
-            }
             return currentWeekNum;
         };
 

@@ -180,3 +180,28 @@ export const checkOrCreateWeeklyLineup = async (weekNumber, error, userId = null
         throw new Error(e);
     }
 };
+
+export const checkAndUpdateWeekNum = async (weekNum) => {
+    try {
+        // Assuming there is only one document in the weekCollection
+        const result = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.weekCollectionId);
+
+        if (result.documents.length > 0) {
+            const currentWeekDocument = result.documents[0];
+            if (currentWeekDocument.weekNum === weekNum) {
+                return false; // Week number is the same, no update needed
+            } else {
+                // Update the week number
+                await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.weekCollectionId, currentWeekDocument.$id, {
+                    weekNum: weekNum
+                });
+                return true; // Week number updated
+            }
+        } else {
+            throw new Error("No week number document found.");
+        }
+    } catch (error) {
+        console.error("Error accessing the week number document:", error);
+        throw error;
+    }
+};
