@@ -14,6 +14,10 @@ const Leaderboards = () => {
 
     const { user, league, users, leagues, leaderboardLoading } = useGlobalContext();
 
+    const formatNumberWithComma = (num) => {
+        return num ? num.toLocaleString() : 0;
+    };
+
     useEffect(() => {
         // Load all users
         const fetchUsers = async () => {
@@ -71,7 +75,7 @@ const Leaderboards = () => {
                     <View style={[styles.leaderboardItem, isCurrentLeague && styles.current]}>
                         <Text style={styles.rank}>{item.rank}</Text>
                         <Text style={styles.name}>{item.name}</Text>
-                        <Text style={styles.points}>{item['cumulative-total-points']}</Text>
+                        <Text style={styles.points}>{formatNumberWithComma(item['cumulative-total-points'])}</Text>
                     </View>
                 </TouchableOpacity>
             );
@@ -82,7 +86,7 @@ const Leaderboards = () => {
             <View key={item.$id} style={[styles.leaderboardItem, isCurrentUser && styles.current]}>
                 <Text style={styles.rank}>{item.rank}</Text>
                 <Text style={styles.name}>{item.username}</Text>
-                <Text style={styles.points}>{item.totalPoints}</Text>
+                <Text style={styles.points}>{formatNumberWithComma(item.totalPoints)}</Text>
             </View>
         );
     };
