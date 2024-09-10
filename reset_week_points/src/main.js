@@ -1,4 +1,3 @@
-import { Client } from 'node-appwrite';
 import { resetWeek, checkAndUpdateWeekNum } from './db.js'
 
 const calculateCurrentWeekNum = async () => {
@@ -10,8 +9,6 @@ const calculateCurrentWeekNum = async () => {
   let currentWeekNum = 1 + weeksSinceStart;
   if (currentWeekNum < 1) currentWeekNum = 1;
 
-  console.log('Current Week Number:', currentWeekNum);
-
   return currentWeekNum;
 };
 
@@ -21,6 +18,7 @@ export default async ({ req, res, log, error }) => {
   try {
     //const weekNum = req.body.weekNum;
     const weekNum = parseInt(await calculateCurrentWeekNum(), 10);
+    log('Current Week Number:', weekNum);
     const needsWeekClearing = await checkAndUpdateWeekNum(weekNum);
 
     if (needsWeekClearing) {
@@ -28,6 +26,8 @@ export default async ({ req, res, log, error }) => {
       const [usersArray, leaguesArray] = await resetWeek(weekNum, error)
       log("Users: " + usersArray)
       log("Leagues: " + leaguesArray)
+    } else {
+      log("Week Clearing NOT needed!")
     }
   } catch (e) {
     error(e);
@@ -41,3 +41,28 @@ export default async ({ req, res, log, error }) => {
     getInspired: 'https://builtwith.appwrite.io',
   });
 };
+
+
+// const test = async () => {
+//   try {
+//     //const weekNum = req.body.weekNum;
+//     const weekNum = parseInt(await calculateCurrentWeekNum(), 10);
+//     const needsWeekClearing = await checkAndUpdateWeekNum(weekNum);
+
+//     console.log(needsWeekClearing)
+
+//     if (needsWeekClearing) {
+//       console.log("Updated to weekNum: " + weekNum)
+//       const [usersArray, leaguesArray] = await resetWeek(weekNum, error)
+//       console.log("Users: " + usersArray)
+//       console.log("Leagues: " + leaguesArray)
+//     }
+//   } catch (e) {
+//     console.error(e);
+//   }
+
+//   // `res.json()` is a handy helper for sending JSON
+
+// };
+
+// test();
