@@ -146,13 +146,13 @@ export default styles = StyleSheet.create({
     totalPointsText: {
         fontSize: 16,
         fontWeight: 'bold',
-        fontFamily: 'RobotoSlab-Regular'
+        fontFamily: 'RobotoSlab-Bold'
     },
     earnedPointsText: {
         fontSize: 16,
         fontWeight: 'bold',
         color: 'green',
-        fontFamily: 'RobotoSlab-Regular'
+        fontFamily: 'RobotoSlab-Bold'
     },
     deleteButton: {
         backgroundColor: 'red',
