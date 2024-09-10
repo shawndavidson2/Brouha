@@ -170,26 +170,46 @@ const AllPicks = () => {
                 >
                     {
                         data.length > 0 ? (
+                            // Filter and check if any games are left after filtering
                             data
                                 .filter((row) => {
                                     const [date, time] = row['Game-Date'].split(' ');
 
-                                    return isTimePassed(date, time)
+                                    return isTimePassed(date, time);
                                 })
-                                .map((row, index) => (
-                                    <GameCard
-                                        key={index}
-                                        date={row['Game-Date'].split(' ')[0]}
-                                        time={row['Game-Date'].split(' ')[1]}
-                                        homeTeam={row['Matchup'].split('vs')[1]}
-                                        awayTeam={row['Matchup'].split('vs')[0]}
-                                        spread={row['HomeTeam (Spread)']}
-                                        overUnder={row['Matchup Over']}
-                                        fileUrl={fileUrl}
-                                    />
-                                ))
+                                .length > 0 ? (
+                                data
+                                    .filter((row) => {
+                                        const [date, time] = row['Game-Date'].split(' ');
+                                        return isTimePassed(date, time);
+                                    })
+                                    .map((row, index) => (
+                                        <GameCard
+                                            key={index}
+                                            date={row['Game-Date'].split(' ')[0]}
+                                            time={row['Game-Date'].split(' ')[1]}
+                                            homeTeam={row['Matchup'].split('vs')[1]}
+                                            awayTeam={row['Matchup'].split('vs')[0]}
+                                            spread={row['HomeTeam (Spread)']}
+                                            overUnder={row['Matchup Over']}
+                                            fileUrl={fileUrl}
+                                        />
+                                    ))
+                            ) : (
+                                // If all games are filtered out, show this message
+                                <Text style={styles.noDataText}>
+                                    Exciting games are on the way!
+                                    {"\n\n"}
+                                    Stay tuned for upcoming matchups and check back soon to make your picks!
+                                </Text>
+                            )
                         ) : (
-                            <Text style={styles.noDataText}>No upcoming games available.</Text>
+                            // If there's no data at all, show this message
+                            <Text style={styles.noDataText}>
+                                Exciting games are on the way!
+                                {"\n\n"}
+                                Stay tuned for upcoming matchups and check back soon to make your picks!
+                            </Text>
                         )
                     }
                 </ScrollView>
@@ -197,6 +217,7 @@ const AllPicks = () => {
             <StatusBar style="light" />
         </SafeAreaView>
     );
+
 };
 
 const styles = StyleSheet.create({
@@ -216,10 +237,11 @@ const styles = StyleSheet.create({
     },
     noDataText: {
         color: '#fff',
-        fontSize: 18,
+        fontSize: 23,
         textAlign: 'center',
-        marginTop: 20,
-        fontFamily: 'RobotoSlab-Regular'
+        marginTop: 190,
+        lineHeight: 30,
+        fontFamily: 'RobotoSlab-Bold'
     }
 });
 
