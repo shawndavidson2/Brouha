@@ -8,6 +8,7 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 import { useEffect } from 'react';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { isTimePassed } from './all-picks';
 
 const PickLineup = () => {
     const { user, weekNum, refreshPicks, setRefreshPicks } = useGlobalContext();
@@ -34,7 +35,7 @@ const PickLineup = () => {
 
 
     const renderRightActions = (pick, progress, dragX, onDelete) => {
-        if (cycleWeekNum === weekNum && pick.status === "pending") {
+        if (cycleWeekNum === weekNum && pick.status === "pending" && !isTimePassed(pick.date, pick.time)) {
             return (
                 <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
                     <Text style={styles.deleteButtonText}>Remove from PL</Text>

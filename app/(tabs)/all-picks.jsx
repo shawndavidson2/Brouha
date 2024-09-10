@@ -61,6 +61,20 @@ const excelDateToJSDate = (serial) => {
     return formattedDate;
 };
 
+export const isTimePassed = (date, time) => {
+    return true;
+    if (!date || !time) {
+        console.error('Invalid date or time:', row['Game-Date']);
+        return false;
+    }
+
+    const gameDateTime = parseDateTime(date, time);
+    const currentTime = new Date();
+
+    return gameDateTime && gameDateTime > currentTime;
+
+};
+
 const AllPicks = () => {
     const { weekNum } = useGlobalContext();
     const [data, setData] = useState([]);
@@ -160,15 +174,8 @@ const AllPicks = () => {
                             data
                                 .filter((row) => {
                                     const [date, time] = row['Game-Date'].split(' ');
-                                    if (!date || !time) {
-                                        console.error('Invalid date or time:', row['Game-Date']);
-                                        return false;
-                                    }
 
-                                    const gameDateTime = parseDateTime(date, time);
-                                    const currentTime = new Date();
-
-                                    return gameDateTime && gameDateTime > currentTime;
+                                    return isTimePassed(date, time)
                                 })
                                 .map((row, index) => (
                                     <GameCard

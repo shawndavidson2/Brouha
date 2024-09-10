@@ -13,6 +13,7 @@ import { useRouter } from 'expo-router';
 import Loading from '../components/Loading';
 import { useRefresh } from '../context/RefreshContext';
 import usePickLineup from '../components/pick-lineup/usePickLineup'
+import { isTimePassed } from './(tabs)/all-picks';
 
 const GameDetail = () => {
     const { sheetName1, sheetName2, date, time, fileUrl } = useLocalSearchParams();
@@ -189,12 +190,14 @@ const GameDetail = () => {
     const deleteExistingPick = async (pickTitle) => {
         try {
             const pick = picks.find(pickA => pickTitle == pickA['pick-title']);
-            deletePickFromPL(pick, pick.$id, sheetName, date, false)
-            lineupCache[weekNum] = picks.filter(pickA => pickA.$id !== pick.$id)
-            setDeletion(!deletion)
-            setRefreshPicks(true);
-            //router.back();
-            //router.replace("./gameDetail")
+            if (!isTimePassed(pick.date, pick.time)) {
+                deletePickFromPL(pick, pick.$id, sheetName, date, false)
+                lineupCache[weekNum] = picks.filter(pickA => pickA.$id !== pick.$id)
+                setDeletion(!deletion)
+                setRefreshPicks(true);
+                //router.back();
+                //router.replace("./gameDetail")
+            }
         } catch (error) {
             console.error('Error deleting pick:', error, pick);
         }
