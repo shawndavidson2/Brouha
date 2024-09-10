@@ -16,8 +16,14 @@ const LeagueParticipants = ({ league }) => {
         member.username === user.username ? user : member
     );
 
-    // Sort league members by weekPoints in descending order
-    const sortedMembers = [...leagueMembers].sort((a, b) => b.weekPoints - a.weekPoints);
+    // Sort league members by weekPoints in descending order, breaking ties with totalPoints
+    const sortedMembers = [...leagueMembers].sort((a, b) => {
+        if (b.weekPoints === a.weekPoints) {
+            return b.totalPoints - a.totalPoints; // Break ties using totalPoints
+        }
+        return b.weekPoints - a.weekPoints; // Primary sorting by weekPoints
+    });
+
 
     // Split the sorted members into contributors and participants
     const contributors = sortedMembers.slice(0, 5);
