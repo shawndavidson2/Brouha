@@ -72,7 +72,11 @@ const WeekDetails = ({ week, userId }) => {
             <ScrollView style={styles.scrollView}>
                 {picks.map((pick) => (
                     <View key={pick.$id} style={styles.pickItem}>
-                        <Text style={styles.pickText}>{pick["pick-title"]}</Text>
+                        <Text style={styles.pickText}>
+                            {pick["pick-title"].startsWith("O") || pick["pick-title"].startsWith("U")
+                                ? `${pick["pick-title"]} (${pick.game})`
+                                : pick["pick-title"]}
+                        </Text>
                         <Text style={styles.pointsText}>{pick["potential-points"]} pts</Text>
                         <View style={styles.statusIcon}>{renderStatusIcon(pick.status)}</View>
                     </View>
