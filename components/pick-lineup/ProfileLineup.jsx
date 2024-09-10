@@ -48,9 +48,9 @@ const ProfileLineup = ({ userId, leagueId }) => {
 };
 
 const WeekDetails = ({ week, userId }) => {
-    const { picks, totalPointsEarned, totalPotentialPoints, renderStatusIcon } = usePickLineup(week, userId);
+    const { picks, totalPointsEarned, totalPotentialPoints, renderStatusIcon, picksLoaded } = usePickLineup(week, userId);
 
-    if (picks.length === 0) return (
+    if (!picksLoaded) return (
         <View style={styles.weekDetails}>
             <ScrollView style={styles.scrollView}>
                 <Loading color={true} />

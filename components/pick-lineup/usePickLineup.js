@@ -13,6 +13,7 @@ const usePickLineup = (initialWeekNum = 0, userId = null) => {
     const lineupCache = useLineupCache();
     const [totalPotentialPoints, setTotalPotentialPoints] = useState(0);
     const [picks, setPicks] = useState([]); // Initialize state for picks
+    const [picksLoaded, setPicksLoaded] = useState(false)
 
     // Function to fetch lineups if needed
     const fetchLineups = async () => {
@@ -55,6 +56,7 @@ const usePickLineup = (initialWeekNum = 0, userId = null) => {
                 const currentWeekLineup = fetchedLineups.find(lineup => lineup.weekNumber === cycleWeekNum);
                 setPicks(currentWeekLineup ? currentWeekLineup.picks : []);
             }
+            setPicksLoaded(true);
         };
 
         loadPicks();
@@ -128,6 +130,7 @@ const usePickLineup = (initialWeekNum = 0, userId = null) => {
         goToPreviousWeek,
         goToNextWeek,
         deletePickFromPL,
+        picksLoaded,
     };
 };
 
