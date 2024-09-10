@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { isTimePassed } from './all-picks';
+import styles from '../styles';
 
 const PickLineup = () => {
     const { user, weekNum, refreshPicks, setRefreshPicks } = useGlobalContext();

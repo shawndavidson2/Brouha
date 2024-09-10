@@ -88,6 +88,7 @@ export default styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
+        color: '#8b2326',
         fontFamily: 'RobotoSlab-Bold',
     },
     weekNavigation: {
@@ -139,7 +140,8 @@ export default styles = StyleSheet.create({
     totalText: {
         fontSize: 16,
         fontWeight: 'bold',
-        fontFamily: 'RobotoSlab-Regular'
+        color: '#8b2326',
+        fontFamily: 'RobotoSlab-SemiBold'
     },
     totalPointsText: {
         fontSize: 16,
