@@ -2,7 +2,7 @@
   "expo": {
     "name": "Brouha Sports",
     "slug": "Brouha",
-    "version": "1.0.12",
+    "version": "1.0.13",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
