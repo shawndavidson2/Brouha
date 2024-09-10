@@ -192,6 +192,7 @@ const GameDetail = () => {
             deletePickFromPL(pick, pick.$id, sheetName, date, false)
             lineupCache[weekNum] = picks.filter(pickA => pickA.$id !== pick.$id)
             setDeletion(!deletion)
+            setRefreshPicks(true);
             //router.back();
             //router.replace("./gameDetail")
         } catch (error) {

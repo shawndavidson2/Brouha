@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 
 const usePickLineup = (initialWeekNum = 0, userId = null) => {
-    const { user, setUser, league, setLeague, weekNum, refreshPicks } = useGlobalContext();
+    const { user, setUser, league, setLeague, weekNum, refreshPicks, setRefreshPicks } = useGlobalContext();
     const [cycleWeekNum, setCycleWeekNum] = useState(initialWeekNum);
     const lineupCache = useLineupCache();
     const [totalPotentialPoints, setTotalPotentialPoints] = useState(0);
@@ -114,6 +114,7 @@ const usePickLineup = (initialWeekNum = 0, userId = null) => {
 
             await AsyncStorage.setItem(`selectedPicks_${user.$id}_${sheetName}_${date}`, JSON.stringify(newSelectedPicks));
             if (swiped) router.replace('./pick-lineup');
+            setRefreshPicks(true);
             await removePickFromWeeklyLineup(pickId, user.$id, weekNum, pick["potential-points"]);
 
         } catch (error) {
