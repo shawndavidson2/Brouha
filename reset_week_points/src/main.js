@@ -20,7 +20,7 @@ const calculateCurrentWeekNum = async () => {
 export default async ({ req, res, log, error }) => {
   try {
     //const weekNum = req.body.weekNum;
-    const weekNum = calculateCurrentWeekNum();
+    const weekNum = parseInt(await calculateCurrentWeekNum(), 10);
     const needsWeekClearing = await checkAndUpdateWeekNum(weekNum);
 
     if (needsWeekClearing) {
