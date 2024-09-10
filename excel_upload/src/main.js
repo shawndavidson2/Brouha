@@ -29,7 +29,7 @@ export default async ({ req, res, log, error }) => {
       const response = await fetch(fileUrl);
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`);
+        error(`Failed to fetch file: ${response.status} ${response.statusText}`);
       }
 
       // Convert the response to an ArrayBuffer
@@ -69,8 +69,8 @@ export default async ({ req, res, log, error }) => {
         }
       }
     }
-  } catch (error) {
-    error('Error fetching game details:', error);
+  } catch (e) {
+    error('Error fetching game details:', e);
   }
   return res.json({
     motto: 'Build like a team of hundreds_',
