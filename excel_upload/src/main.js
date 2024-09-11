@@ -21,6 +21,9 @@ const fetchFileData = async (fileUrl, error) => {
 
 // Function to process Excel sheets
 const processExcelSheet = async (workbook, picks, log, error) => {
+
+  // Go through each sheetname with "vs" in it
+
   for (const sheetName of workbook.SheetNames) {
     if (sheetName.toLowerCase().includes("vs")) {
       const worksheet = workbook.Sheets[sheetName];
@@ -32,13 +35,19 @@ const processExcelSheet = async (workbook, picks, log, error) => {
       const json = XLSX.utils.sheet_to_json(worksheet);
       log(sheetName);
 
+      // Go through each pick on the current sheet
+
       for (const jsonPick of json) {
+        // If the current pick is W or L, and its correspondant in the DB is still pending, update that pick in DB
         const jsonPickStatus = jsonPick[sheetName] === "L" ? "lost" : jsonPick[sheetName] === "W" ? "won" : "pending";
         if (jsonPick[sheetName] === "W" || jsonPick[sheetName] === "L") {
           const matchedPick = picks.find(pick => pick["pick-title"] === jsonPick["__EMPTY"]);
           if (matchedPick && jsonPickStatus !== matchedPick["status"]) {
             log("Changed pick: " + matchedPick["pick-title"] + " from " + matchedPick["status"] + " to " + jsonPick[sheetName]);
-            await delay(5000);
+
+            // Delay (3 seconds) and retry to prevent rate limit
+
+            await delay(3000);
             await retryUpdatePickStatus(jsonPick[sheetName], matchedPick.$id);
           }
         }
