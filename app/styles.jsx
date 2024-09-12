@@ -348,6 +348,18 @@ export default styles = StyleSheet.create({
         fontSize: 16,
         color: '#666',
     },
+    timer: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#8b2326',
+        textAlign: 'center',
+        padding: 10,
+        borderRadius: 5,
+        borderWidth: 2,
+        borderColor: '#DBB978',
+        marginTop: 15,
+        fontFamily: 'RobotoSlab-Regular'
+    },
 
 });
 // <Text style={styles.title}>{`${sheetName}`}</Text>

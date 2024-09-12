@@ -15,6 +15,8 @@ import { useRefresh } from '../context/RefreshContext';
 import usePickLineup from '../components/pick-lineup/usePickLineup'
 import { StatusBar } from 'expo-status-bar';
 import { isFutureGameTime } from './(tabs)/all-picks';
+import { parseDateTime } from './(tabs)/all-picks';
+import styles from './styles';
 
 const GameDetail = () => {
     const { sheetName1, sheetName2, date, time, fileUrl } = useLocalSearchParams();
@@ -26,6 +28,7 @@ const GameDetail = () => {
     const [loadingScreen, setLoadingScreen] = useState(false); // Global loading state
     const [deletion, setDeletion] = useState(false);
     const { triggerRefresh } = useRefresh();
+    const [timeRemaining, setTimeRemaining] = useState('');
 
     const lineupCache = useLineupCache();
     const picks = lineupCache[weekNum] || [];
@@ -40,6 +43,26 @@ const GameDetail = () => {
     const {
         deletePickFromPL
     } = usePickLineup(weekNum);
+
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         const gameDateTime = parseDateTime(date, time);
+    //         const now = new Date();
+    //         const diff = gameDateTime - now;
+
+    //         if (diff <= 0) {
+    //             setTimeRemaining('Game Started');
+    //             clearInterval(interval);
+    //         } else {
+    //             const hours = Math.floor(diff / (1000 * 60 * 60));
+    //             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    //             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    //             setTimeRemaining(`${hours}h ${minutes}m ${seconds}s`);
+    //         }
+    //     }, 1000);
+
+    //     return () => clearInterval(interval);
+    // }, [date, time]);
 
     useEffect(() => {
         fetchGameDetails();
@@ -214,6 +237,7 @@ const GameDetail = () => {
                         <Text onPress={goBack} style={styles.backButtonText}>Back</Text>
                     </TouchableOpacity>
                     <Text style={styles.header}>{`${sheetName}`}</Text>
+                    {/* <Text style={styles.timer}>{`${timeRemaining}`}</Text> */}
                     <View style={{ flexDirection: 'row' }}>
                         <View style={styles.headerContainer}>
                             <Text style={styles.headerTextPick}>Pick</Text>
