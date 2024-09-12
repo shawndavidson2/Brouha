@@ -1,21 +1,75 @@
-import { View, Text, Image } from 'react-native';
-import React from 'react';
+import { View, Text, Image, Animated, Easing } from 'react-native';
+import React, { useRef, useEffect } from 'react';
 import { Tabs } from 'expo-router';
-import { StatusBar } from 'expo-status-bar'; // Import StatusBar
+import { StatusBar } from 'expo-status-bar';
 import { icons } from '../../constants';
-import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
-import { useState } from 'react'; // Import useState
+import { useFocusEffect } from '@react-navigation/native';
+import { useState } from 'react';
 
 const TabIcon = ({ icon, color, name, focused }) => {
+    const scaleAnim = useRef(new Animated.Value(1)).current;
+    const glowAnim = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        if (focused) {
+            // Scale and soft glow effect when tab is focused
+            Animated.parallel([
+                Animated.timing(scaleAnim, {
+                    toValue: 1.2,
+                    duration: 300,
+                    easing: Easing.out(Easing.ease),
+                    useNativeDriver: true,
+                }),
+                Animated.timing(glowAnim, {
+                    toValue: 1,
+                    duration: 300,
+                    useNativeDriver: true,
+                })
+            ]).start();
+        } else {
+            // Reset animations when not focused
+            Animated.parallel([
+                Animated.timing(scaleAnim, {
+                    toValue: 1,
+                    duration: 300,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(glowAnim, {
+                    toValue: 0,
+                    duration: 300,
+                    useNativeDriver: true,
+                })
+            ]).start();
+        }
+    }, [focused]);
+
     return (
-        <View className="items-center justify-center gap-2">
-            <Image
-                source={icon}
-                resizeMode="contain"
-                tintColor={color}
-                className="w-6 h-6"
-            />
-            <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`} style={{ color }}> {name}</Text>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Animated.View
+                style={{
+                    transform: [{ scale: scaleAnim }],
+                    shadowColor: focused ? '#DBB978' : 'transparent',
+                    shadowOpacity: focused ? 1.0 : 0,
+                    shadowRadius: focused ? 15 : 0,
+                    shadowOffset: { width: 0, height: 0 },
+                }}
+            >
+                <Image
+                    source={icon}
+                    resizeMode="contain"
+                    style={{ width: 30, height: 30, tintColor: color }}
+                />
+            </Animated.View>
+            <Text
+                style={{
+                    color,
+                    fontSize: 12,
+                    marginTop: 5,
+                    fontWeight: focused ? 'bold' : 'normal',
+                }}
+            >
+                {name}
+            </Text>
         </View>
     );
 };
@@ -27,13 +81,12 @@ const TabsLayout = () => {
     useFocusEffect(
         React.useCallback(() => {
             setIsLeagueTabFocused(true);
-            return () => setIsLeagueTabFocused(false); // Reset when tab loses focus
+            return () => setIsLeagueTabFocused(false);
         }, [])
     );
 
     return (
         <View style={{ flex: 1, backgroundColor: "#343434" }}>
-            {/* Render StatusBar only when League tab is focused */}
             {isLeagueTabFocused && <StatusBar style="dark" />}
             {isNotLeagueTabFocused && <StatusBar style="light" />}
 
@@ -44,8 +97,9 @@ const TabsLayout = () => {
                     tabBarInactiveTintColor: "#FEFCF9",
                     tabBarStyle: {
                         backgroundColor: "#202020",
-                        height: 110,
+                        height: 104,
                         borderRadius: 10,
+                        paddingVertical: 0,
                     },
                 }}
             >
