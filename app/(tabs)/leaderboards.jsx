@@ -92,7 +92,7 @@ const Leaderboards = () => {
     };
 
     if (leaderboardLoading) {
-        return <Loading />
+        return <Loading leaderboard={true} />
     }
 
     return (
