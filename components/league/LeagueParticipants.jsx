@@ -30,10 +30,14 @@ const LeagueParticipants = ({ league }) => {
     const participants = sortedMembers.slice(5);
 
     const handleUserPress = (leagueUser) => {
-        router.push({
-            pathname: '../profile',
-            params: { leagueUser: JSON.stringify(leagueUser), passedLeague: JSON.stringify(league) },  // Convert to a string
-        });
+        if (leagueUser.username === user.username) {
+            router.push('/profile')
+        } else {
+            router.push({
+                pathname: '../profile',
+                params: { leagueUser: JSON.stringify(leagueUser), passedLeague: JSON.stringify(league) },  // Convert to a string
+            });
+        }
     };
 
     return (
