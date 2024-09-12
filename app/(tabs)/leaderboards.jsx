@@ -64,6 +64,20 @@ const Leaderboards = () => {
 
     };
 
+    // Function to handle pressing a league item
+    const handleUserPress = (clickedUser) => {
+        if (clickedUser.username === user.username) {
+            router.push('/profile')
+        } else {
+            //leagueUser, passedLeague
+            router.push({
+                pathname: '/profile',
+                params: { passedLeague: JSON.stringify(clickedUser.league), leagueUser: JSON.stringify(clickedUser) },  // Convert to a string
+            });
+        }
+
+    };
+
     const renderLeaderboardItem = (item) => {
         let isCurrentUser = item.username === user?.username;
         let isCurrentLeague = item.name === league?.name;
@@ -83,11 +97,13 @@ const Leaderboards = () => {
 
         // Otherwise, just render the user leaderboard item
         return (
-            <View key={item.$id} style={[styles.leaderboardItem, isCurrentUser && styles.current]}>
-                <Text style={styles.rank}>{item.rank}</Text>
-                <Text style={styles.name}>{item.username}</Text>
-                <Text style={styles.points}>{formatNumberWithComma(item.totalPoints)}</Text>
-            </View>
+            <TouchableOpacity key={item.$id} onPress={() => handleUserPress(item)}>
+                <View key={item.$id} style={[styles.leaderboardItem, isCurrentUser && styles.current]}>
+                    <Text style={styles.rank}>{item.rank}</Text>
+                    <Text style={styles.name}>{item.username}</Text>
+                    <Text style={styles.points}>{formatNumberWithComma(item.totalPoints)}</Text>
+                </View>
+            </TouchableOpacity>
         );
     };
 
