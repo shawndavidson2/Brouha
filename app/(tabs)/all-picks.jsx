@@ -193,6 +193,7 @@ const AllPicks = () => {
 
 const styles = StyleSheet.create({
     container: {
+        flexGrow: 1,
         flex: 1,
         padding: 10,
         backgroundColor: '#343434',
