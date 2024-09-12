@@ -17,6 +17,7 @@ import { StatusBar } from 'expo-status-bar';
 import { isFutureGameTime } from './(tabs)/all-picks';
 import { parseDateTime } from './(tabs)/all-picks';
 import styles from './styles';
+import { ActivityIndicator } from 'react-native';
 
 const GameDetail = () => {
     const { sheetName1, sheetName2, date, time, fileUrl } = useLocalSearchParams();
@@ -227,62 +228,63 @@ const GameDetail = () => {
         }
     };
 
-    if (loadingScreen) {
-        return <Loading />
-    } else {
-        return (
-            <SafeAreaView style={styles.safeArea}>
-                <View style={styles.container}>
-                    <TouchableOpacity style={styles.backButton}>
-                        <Text onPress={goBack} style={styles.backButtonText}>Back</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.header}>{`${sheetName}`}</Text>
-                    {/* <Text style={styles.timer}>{`${timeRemaining}`}</Text> */}
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={styles.headerContainer}>
-                            <Text style={styles.headerTextPick}>Pick</Text>
-                            <Text style={styles.headerTextPts}>Pts</Text>
-                        </View>
-                        <View style={styles.headerPick} />
+    return (
+        <SafeAreaView style={styles.safeArea}>
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.backButton}>
+                    <Text onPress={goBack} style={styles.backButtonText}>Back</Text>
+                </TouchableOpacity>
+                <Text style={styles.header}>{`${sheetName}`}</Text>
+                {/* <Text style={styles.timer}>{`${timeRemaining}`}</Text> */}
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.headerContainer}>
+                        <Text style={styles.headerTextPick}>Pick</Text>
+                        <Text style={styles.headerTextPts}>Pts</Text>
                     </View>
-                    <ScrollView
-                        bounces={false}
-                    >
-                        {details.length ? (
-                            details.map((detail, index) => (
-                                index > 1 && (
-                                    <View key={index} style={styles.detailContainer}>
-                                        <Text style={[styles.detailText, styles.pickColumn, { fontSize: calculateFontSize(detail, detail[title], 150) }]}>
-                                            {detail[title]}
-                                        </Text>
-                                        <Text style={[styles.detailText, styles.ptsColumn, { fontSize: calculateFontSize(detail, String(detail[points]), 100) }]}>
-                                            {Math.round(detail[points])}
-                                        </Text>
-                                        <TouchableOpacity
-                                            style={styles.addButton}
-                                            onPress={() => handleAddToPL(index, detail[title], Math.round(detail[points]), detail[status])}
-                                            disabled={loading} // Disable button based on global loading state
-                                        >
-                                            <View style={styles.buttonContent}>
-                                                {selectedPicks[index] ? (
-                                                    <AntDesign name="checkcircle" size={24} color="green" />
-                                                ) : (
-                                                    <Text style={styles.addButtonText}>Add to PL</Text>
-                                                )}
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
-                                )
-                            ))
-                        ) : (
-                            <Loading color={true} />
-                        )}
-                    </ScrollView>
+                    <View style={styles.headerPick} />
                 </View>
-                <StatusBar style="light" />
-            </SafeAreaView>
-        );
-    };
-}
+                <ScrollView
+                    bounces={false}
+                >
+                    {details.length ? (
+                        details.map((detail, index) => (
+                            index > 1 && (
+                                <View key={index} style={styles.detailContainer}>
+                                    <Text style={[styles.detailText, styles.pickColumn, { fontSize: calculateFontSize(detail, detail[title], 150) }]}>
+                                        {detail[title]}
+                                    </Text>
+                                    <Text style={[styles.detailText, styles.ptsColumn, { fontSize: calculateFontSize(detail, String(detail[points]), 100) }]}>
+                                        {Math.round(detail[points])}
+                                    </Text>
+                                    <TouchableOpacity
+                                        style={styles.addButton}
+                                        onPress={() => handleAddToPL(index, detail[title], Math.round(detail[points]), detail[status])}
+                                        disabled={loading || loadingScreen} // Disable button based on global loading state
+                                    >
+                                        <View style={styles.buttonContent}>
+                                            {selectedPicks[index] ? (
+                                                <AntDesign name="checkcircle" size={24} color="green" />
+                                            ) : (
+                                                <Text style={styles.addButtonText}>Add to PL</Text>
+                                            )}
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            )
+                        ))
+                    ) : (
+                        <Loading color={true} />
+                    )}
+                </ScrollView>
+            </View>
+            {loadingScreen && (
+                <View style={styles.overlay}>
+                    <ActivityIndicator size="large" color="#8b2326" />
+                </View>
+            )}
+            <StatusBar style="light" />
+        </SafeAreaView>
+    );
+};
 
 export default GameDetail;
