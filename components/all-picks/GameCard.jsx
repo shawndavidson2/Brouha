@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 8,
         marginVertical: 5,
-        backgroundColor: '#fff',
+        backgroundColor: '#f5f5f5',
         borderRadius: 10,
     },
     teamContainer: {
@@ -115,16 +115,22 @@ const styles = StyleSheet.create({
         fontFamily: 'RobotoSlab-Bold'
     },
     button: {
-        borderWidth: 2,
-        borderColor: '#000',
-        paddingVertical: 5,
-        paddingHorizontal: 7,
-        borderRadius: 5,
+        backgroundColor: '#8B2326', // Primary background color
+        paddingVertical: 8,
+        paddingHorizontal: 15,
+        borderRadius: 8,
+        shadowColor: '#8B2326',
+        shadowOpacity: 0.4,
+        shadowRadius: 5,
+        shadowOffset: { width: 0, height: 3 },
+        borderWidth: 1,
+        borderColor: '#64171A', // Darker border to match the button
     },
     buttonText: {
         fontSize: 14,
         fontWeight: 'bold',
-        fontFamily: 'RobotoSlab-Bold'
+        fontFamily: 'RobotoSlab-Bold',
+        color: '#FFFFFF', // White text for contrast
     },
 });
 
