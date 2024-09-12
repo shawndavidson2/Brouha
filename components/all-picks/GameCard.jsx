@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import getImageSource from './getImageSource';
 import { useRouter } from 'expo-router';
-import { parseDateTime } from '../../app/(tabs)/all-picks';
+import { parseDateTime } from './gameDateUtils'
 
 const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder, fileUrl }) => {
     const router = useRouter();

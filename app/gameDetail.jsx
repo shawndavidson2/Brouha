@@ -14,8 +14,7 @@ import Loading from '../components/Loading';
 import { useRefresh } from '../context/RefreshContext';
 import usePickLineup from '../components/pick-lineup/usePickLineup'
 import { StatusBar } from 'expo-status-bar';
-import { isFutureGameTime } from './(tabs)/all-picks';
-import { parseDateTime } from './(tabs)/all-picks';
+import { parseDateTime, isFutureGameTime } from '../components/all-picks/gameDateUtils';
 import styles from './styles';
 import { ActivityIndicator } from 'react-native';
 

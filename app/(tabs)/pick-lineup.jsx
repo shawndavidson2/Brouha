@@ -8,7 +8,7 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 import { useEffect } from 'react';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { isFutureGameTime } from './all-picks';
+import { isFutureGameTime } from '../../components/all-picks/gameDateUtils';
 import styles from '../styles';
 
 const PickLineup = () => {
