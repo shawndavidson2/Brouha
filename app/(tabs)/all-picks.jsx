@@ -160,7 +160,7 @@ const AllPicks = () => {
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'top']}>
             <View style={styles.picksContainer}>
                 <ScrollView
                     style={styles.container}

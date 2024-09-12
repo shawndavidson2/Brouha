@@ -46,7 +46,7 @@ const LeagueScreen = () => {
 
     if (league) {
         return (
-            <SafeAreaView key={refreshKey} style={styless.safeArea}>
+            <SafeAreaView key={refreshKey} style={styless.safeArea} edges={['left', 'right', 'top']}>
                 <View style={styless.leagueBackground}>
                     <FlatList
                         ListHeaderComponent={() => (
@@ -67,7 +67,7 @@ const LeagueScreen = () => {
                     />
                 </View>
                 <StatusBar style="dark" />
-            </SafeAreaView>
+            </SafeAreaView >
         );
     } else {
         return (
