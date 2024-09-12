@@ -19,9 +19,9 @@ const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder, fileUrl }
     return (
         <View style={styles.card}>
             <View style={styles.teamContainer}>
-                <Image source={getImageSource(homeTeam)} style={styles.teamImage} />
-                <Text style={styles.vsText}>-vs-</Text>
                 <Image source={getImageSource(awayTeam)} style={styles.teamImage} />
+                <Text style={styles.vsText}>- @ -</Text>
+                <Image source={getImageSource(homeTeam)} style={styles.teamImage} />
             </View>
             <View style={styles.dateTimeContainer}>
                 <Text style={styles.dateText}>{date}</Text>
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     vsText: {
-        fontSize: 18,
-        fontFamily: 'RobotoSlab-Regular'
+        fontSize: 20,
+        fontFamily: 'RobotoSlab-Bold'
     },
     dateTimeContainer: {
         flexDirection: 'column',
