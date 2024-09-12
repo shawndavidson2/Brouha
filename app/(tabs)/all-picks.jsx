@@ -61,7 +61,7 @@ const excelDateToJSDate = (serial) => {
     return formattedDate;
 };
 
-export const isTimePassed = (date, time) => {
+export const isFutureGameTime = (date, time) => {
     if (!date || !time) {
         console.error('Invalid date or time:', row['Game-Date']);
         return false;
@@ -175,13 +175,13 @@ const AllPicks = () => {
                                 .filter((row) => {
                                     const [date, time] = row['Game-Date'].split(' ');
 
-                                    return isTimePassed(date, time);
+                                    return isFutureGameTime(date, time);
                                 })
                                 .length > 0 ? (
                                 data
                                     .filter((row) => {
                                         const [date, time] = row['Game-Date'].split(' ');
-                                        return isTimePassed(date, time);
+                                        return isFutureGameTime(date, time);
                                     })
                                     .map((row, index) => (
                                         <GameCard

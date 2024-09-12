@@ -22,6 +22,7 @@ const TabIcon = ({ icon, color, name, focused }) => {
 
 const TabsLayout = () => {
     const [isLeagueTabFocused, setIsLeagueTabFocused] = useState(false);
+    const [isNotLeagueTabFocused, setIsNotLeagueTabFocused] = useState(false);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -34,6 +35,7 @@ const TabsLayout = () => {
         <View style={{ flex: 1, backgroundColor: "#343434" }}>
             {/* Render StatusBar only when League tab is focused */}
             {isLeagueTabFocused && <StatusBar style="dark" />}
+            {isNotLeagueTabFocused && <StatusBar style="light" />}
 
             <Tabs
                 screenOptions={{
@@ -80,6 +82,10 @@ const TabsLayout = () => {
                             />
                         ),
                     }}
+                    listeners={({ navigation }) => ({
+                        focus: () => setIsNotLeagueTabFocused(true),
+                        blur: () => setIsNotLeagueTabFocused(false),
+                    })}
                 />
                 <Tabs.Screen
                     name="all-picks"
@@ -95,6 +101,10 @@ const TabsLayout = () => {
                             />
                         ),
                     }}
+                    listeners={({ navigation }) => ({
+                        focus: () => setIsNotLeagueTabFocused(true),
+                        blur: () => setIsNotLeagueTabFocused(false),
+                    })}
                 />
                 <Tabs.Screen
                     name="leaderboards"
@@ -110,6 +120,10 @@ const TabsLayout = () => {
                             />
                         ),
                     }}
+                    listeners={({ navigation }) => ({
+                        focus: () => setIsNotLeagueTabFocused(true),
+                        blur: () => setIsNotLeagueTabFocused(false),
+                    })}
                 />
             </Tabs>
         </View>
