@@ -3,9 +3,35 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import getImageSource from './getImageSource';
 import { useRouter } from 'expo-router';
+import { parseDateTime } from '../../app/(tabs)/all-picks';
 
 const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder, fileUrl }) => {
     const router = useRouter();
+
+    const convertDateToDay = (date, time) => {
+        if (!date || !time) {
+            console.error('Invalid date or time:', date, time);
+            return false;
+        }
+
+        const gameDateTime = parseDateTime(date, time);
+        const currentTime = new Date();
+
+        // Create date objects for comparison (without time)
+        const gameDate = new Date(gameDateTime.toDateString());
+        const today = new Date(currentTime.toDateString());
+
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+
+        if (gameDate.getTime() === today.getTime()) {
+            return "Today";
+        } else if (gameDate.getTime() === tomorrow.getTime()) {
+            return "Tomorrow";
+        } else {
+            return date; // Return the original date if neither today nor tomorrow
+        }
+    };
 
     const handlePress = () => {
         const sheetName1 = `${awayTeam}vs${homeTeam}`;
@@ -24,7 +50,7 @@ const GameCard = ({ homeTeam, awayTeam, date, time, spread, overUnder, fileUrl }
                 <Image source={getImageSource(homeTeam)} style={styles.teamImage} />
             </View>
             <View style={styles.dateTimeContainer}>
-                <Text style={styles.dateText}>{date}</Text>
+                <Text style={styles.dateText}>{convertDateToDay(date, time)}</Text>
                 <Text style={styles.timeText}>{time}</Text>
             </View>
             <View style={styles.spreadContainer}>

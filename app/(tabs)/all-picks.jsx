@@ -14,7 +14,7 @@ client.setEndpoint('https://cloud.appwrite.io/v1').setProject('667edab40004ed425
 
 const storage = new Storage(client);
 
-const parseDateTime = (date, time) => {
+export const parseDateTime = (date, time) => {
     try {
         const [month, day, year] = date.trim().split('/');
         let [hour, minute] = time.trim().split(':');
