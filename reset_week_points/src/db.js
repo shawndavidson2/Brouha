@@ -189,7 +189,8 @@ export const checkAndUpdateWeekNum = async (weekNum) => {
 
         if (result.documents.length > 0) {
             const currentWeekDocument = result.documents[0];
-            if (currentWeekDocument.weekNum === weekNum) {
+            const currentWeekNum = parseInt(currentWeekDocument.weekNum, 10); // Ensure it's a number
+            if (currentWeekNum === weekNum) {
                 return false; // Week number is the same, no update needed
             } else {
                 // Update the week number

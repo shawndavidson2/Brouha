@@ -9,7 +9,7 @@ const calculateCurrentWeekNum = async () => {
   let currentWeekNum = 1 + weeksSinceStart;
   if (currentWeekNum < 1) currentWeekNum = 1;
 
-  return currentWeekNum;
+  return parseInt(currentWeekNum, 10);
 };
 
 // This is your Appwrite function
@@ -17,7 +17,7 @@ const calculateCurrentWeekNum = async () => {
 export default async ({ req, res, log, error }) => {
   try {
     //const weekNum = req.body.weekNum;
-    const weekNum = parseInt(await calculateCurrentWeekNum(), 10);
+    const weekNum = await calculateCurrentWeekNum();
     log('Current Week Number:', weekNum);
     const needsWeekClearing = await checkAndUpdateWeekNum(weekNum);
 
