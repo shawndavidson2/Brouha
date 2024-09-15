@@ -228,19 +228,19 @@ const GameDetail = () => {
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <View style={styles.container}>
-                <TouchableOpacity style={styles.backButton}>
-                    <Text onPress={goBack} style={styles.backButtonText}>Back</Text>
+        <SafeAreaView style={styless.safeArea}>
+            <View style={styless.container}>
+                <TouchableOpacity style={styless.backButton}>
+                    <Text onPress={goBack} style={styless.backButtonText}>Back</Text>
                 </TouchableOpacity>
-                <Text style={styles.header}>{`${sheetName}`}</Text>
+                <Text style={styless.header}>{`${sheetName}`}</Text>
                 {/* <Text style={styles.timer}>{`${timeRemaining}`}</Text> */}
                 <View style={{ flexDirection: 'row' }}>
-                    <View style={styles.headerContainer}>
-                        <Text style={styles.headerTextPick}>Pick</Text>
-                        <Text style={styles.headerTextPts}>Pts</Text>
+                    <View style={styless.headerContainer}>
+                        <Text style={styless.headerTextPick}>Pick</Text>
+                        <Text style={styless.headerTextPts}>Pts</Text>
                     </View>
-                    <View style={styles.headerPick} />
+                    <View style={styless.headerPick} />
                 </View>
                 <ScrollView
                     bounces={false}
@@ -248,23 +248,23 @@ const GameDetail = () => {
                     {details.length ? (
                         details.map((detail, index) => (
                             index > 1 && (
-                                <View key={index} style={styles.detailContainer}>
-                                    <Text style={[styles.detailText, styles.pickColumn, { fontSize: calculateFontSize(detail, detail[title], 150) }]}>
+                                <View key={index} style={styless.detailContainer}>
+                                    <Text style={[styless.detailText, styless.pickColumn, { fontSize: calculateFontSize(detail, detail[title], 150) }]}>
                                         {detail[title]}
                                     </Text>
-                                    <Text style={[styles.detailText, styles.ptsColumn, { fontSize: calculateFontSize(detail, String(detail[points]), 100) }]}>
+                                    <Text style={[styless.detailText, styless.ptsColumn, { fontSize: calculateFontSize(detail, String(detail[points]), 100) }]}>
                                         {Math.round(detail[points])}
                                     </Text>
                                     <TouchableOpacity
-                                        style={styles.addButton}
+                                        style={styless.addButton}
                                         onPress={() => handleAddToPL(index, detail[title], Math.round(detail[points]), detail[status])}
                                         disabled={loading || loadingScreen} // Disable button based on global loading state
                                     >
-                                        <View style={styles.buttonContent}>
+                                        <View style={styless.buttonContent}>
                                             {selectedPicks[index] ? (
                                                 <AntDesign name="checkcircle" size={24} color="green" />
                                             ) : (
-                                                <Text style={styles.addButtonText}>Add to PL</Text>
+                                                <Text style={styless.addButtonText}>Add to PL</Text>
                                             )}
                                         </View>
                                     </TouchableOpacity>
@@ -277,7 +277,7 @@ const GameDetail = () => {
                 </ScrollView>
             </View>
             {loadingScreen && (
-                <View style={styles.overlay}>
+                <View style={styless.overlay}>
                     <ActivityIndicator size="large" color="#8b2326" />
                 </View>
             )}
@@ -287,3 +287,129 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
+
+const styless = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#343434',
+    },
+    container: {
+        flex: 1,
+        padding: 10,
+        margin: 20,
+        backgroundColor: '#fefcf9',
+        borderRadius: 10,
+        borderTopColor: '#8b2326',
+        borderTopWidth: 20,
+    },
+    backButton: {
+        marginBottom: 10,
+        fontFamily: 'RobotoSlab-Regular'
+    },
+    backButtonText: {
+        fontSize: 18,
+        marginBottom: 10,
+        fontFamily: 'RobotoSlab-Regular',
+        color: 'black', // Adjust color to match design
+        textAlign: 'left'
+    },
+    header: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#8b2326',
+        fontFamily: 'RobotoSlab-Bold',
+    },
+    headerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '58%',
+        backgroundColor: '#8b2326',
+        padding: 10,
+        paddingHorizontal: 30,
+        borderTopStartRadius: 10,
+        borderTopEndRadius: 10,
+        marginTop: 30,
+        marginLeft: 10,
+        justifyContent: 'space-between'
+    },
+    headerTextPick: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
+    },
+    headerTextPts: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+        fontFamily: 'RobotoSlab-Regular'
+    },
+    headerPick: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '32%',
+        backgroundColor: '#DBB978',
+        padding: 10,
+        paddingHorizontal: 30,
+        borderTopStartRadius: 10,
+        borderTopEndRadius: 10,
+        marginTop: 30,
+        marginLeft: 10,
+        justifyContent: 'space-between'
+    },
+    detailContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+    },
+    detailText: {
+        fontSize: 16,
+        textAlign: 'center',
+        flex: 1,
+        fontFamily: 'RobotoSlab-Regular'
+    },
+    pickColumn: {
+        flex: 3,
+        textAlign: 'center',
+        marginRight: 20
+    },
+    ptsColumn: {
+        flex: 1,
+        textAlign: 'center',
+        marginRight: 20,
+        fontFamily: 'RobotoSlab-Regular'
+    },
+    addButton: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 5,
+        borderWidth: 3,
+        marginLeft: 10,
+    },
+    buttonContent: {
+        width: 70, // Fixed width to avoid layout shift
+        alignItems: 'center',
+    },
+    addButtonText: {
+        fontSize: 14,
+        fontFamily: 'RobotoSlab-Regular'
+    },
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        zIndex: 10,
+    },
+});
