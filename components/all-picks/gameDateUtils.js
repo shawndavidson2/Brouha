@@ -29,3 +29,25 @@ export const parseDateTime = (date, time) => {
         return null;
     }
 };
+
+export const getDayAbbreviation = (dateString) => {
+    try {
+        // Split the date string into its components (month/day/year)
+        const [month, day, year] = dateString.split('/');
+
+        // Create a new Date object
+        const date = new Date(year, month - 1, day);
+
+        // Create an array for the days of the week
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        // Get the day of the week using the getDay() method
+        const dayOfWeek = date.getDay();
+
+        // Return the abbreviated day of the week
+        return days[dayOfWeek];
+    } catch (error) {
+        console.error('Error parsing date:', dateString, error);
+        return null;
+    }
+};
