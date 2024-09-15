@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
     },
     picksMade: {
-        fontSize: 20,
+        fontSize: 18,
         marginBottom: 10,
         fontFamily: 'RobotoSlab-Regular',
         color: '#DBB978',
