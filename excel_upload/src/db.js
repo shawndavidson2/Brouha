@@ -58,7 +58,7 @@ export const getPicksByWeek = async (week) => {
 };
 
 
-export const updatePickStatus = async (statusLetter, pickId) => {
+export const updatePickStatus = async (statusLetter, pickId, previousStatus) => {
     try {
         const status = statusLetter === "W" ? "won" : "lost"
         // Update the pick's status
@@ -66,7 +66,10 @@ export const updatePickStatus = async (statusLetter, pickId) => {
             appwriteConfig.databaseId,
             appwriteConfig.pickCollectionId,
             pickId,
-            { status: status }
+            {
+                status: status,
+                previousStatus: previousStatus
+            }
         );
         return true;
     } catch (error) {
@@ -75,7 +78,7 @@ export const updatePickStatus = async (statusLetter, pickId) => {
     }
 };
 
-export const retryUpdatePickStatus = async (statusLetter, pickId) => {
+export const retryUpdatePickStatus = async (statusLetter, pickId, previousStatus) => {
     const maxRetries = 5; // Maximum number of retries
     let attempt = 0;
 
@@ -84,7 +87,7 @@ export const retryUpdatePickStatus = async (statusLetter, pickId) => {
     while (attempt < maxRetries) {
         try {
             // Call the original updatePickStatus function
-            await updatePickStatus(statusLetter, pickId);
+            await updatePickStatus(statusLetter, pickId, previousStatus);
             return true; // If successful, exit the loop
         } catch (error) {
             attempt++;
