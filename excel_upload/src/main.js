@@ -45,9 +45,9 @@ const processExcelSheet = async (workbook, picks, log, error) => {
           if (matchedPick && jsonPickStatus !== matchedPick["status"]) {
             log("Changed pick: " + matchedPick["pick-title"] + " from " + matchedPick["status"] + " to " + jsonPick[sheetName]);
 
-            // Delay (3 seconds) and retry to prevent rate limit
+            // Delay (1.5 seconds) and retry to prevent rate limit
 
-            await delay(3000);
+            await delay(1500);
             await retryUpdatePickStatus(jsonPick[sheetName], matchedPick.$id);
           }
         }
