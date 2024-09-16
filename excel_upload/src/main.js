@@ -76,7 +76,7 @@ export default async ({ req, res, log, error }) => {
     if (!isValidWeek(fileName, weekNum, log)) return;
 
     //delay for 2.5 minutes
-    delay(150000)
+    await delay(150000)
 
     const picks = await getPicksByWeek(weekNum);
     const fileUrl = getFileUrl(bucketId, fileId);
