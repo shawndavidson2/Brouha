@@ -1,6 +1,6 @@
 import { Client } from 'node-appwrite';
 import * as XLSX from 'xlsx';
-import { getPicksByWeek, retryUpdatePickStatus, getWeekNum } from './db.js';
+import { getPicksByWeek, retryUpdatePickStatus, getWeekNum, acquireLockWithRetry, releaseLock } from './db.js';
 
 // Helper function for delay
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -73,10 +73,10 @@ export default async ({ req, res, log, error }) => {
     const week = await getWeekNum();
     const weekNum = week["weekNum"];
 
-    if (!isValidWeek(fileName, weekNum, log)) return;
+    await acquireLockWithRetry(weekNum);
+    log(`Lock acquired for week ${weekNum}`);
 
-    //delay for 2.5 minutes
-    await delay(150000)
+    if (!isValidWeek(fileName, weekNum, log)) return;
 
     const picks = await getPicksByWeek(weekNum);
     const fileUrl = getFileUrl(bucketId, fileId);
@@ -87,6 +87,9 @@ export default async ({ req, res, log, error }) => {
 
   } catch (e) {
     error('Error fetching game details:', e);
+  } finally {
+    await releaseLock(weekNum);
+    log(`Lock released for weekNum ${weekNum}`);
   }
 
   return res.json({

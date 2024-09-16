@@ -125,3 +125,41 @@ export const getWeekNum = async () => {
         throw error;
     }
 };
+
+export const acquireLockWithRetry = async (lockId, initialRetryInterval = 3000, maxRetries = 8) => {
+    let attempts = 0;
+    let retryInterval = initialRetryInterval;
+
+    while (attempts < maxRetries) {
+        try {
+            // Attempt to acquire the lock
+            const lock = await databases.createDocument(
+                appwriteConfig.databaseId,
+                appwriteConfig.lockCollectionId,
+                lockId,
+                {
+                    acquiredAt: new Date().toISOString(),
+                }
+            );
+            return lock; // Lock acquired successfully
+        } catch (error) {
+            console.log(`Lock ${lockId} already acquired. Retrying in ${retryInterval}ms...`);
+            await new Promise(resolve => setTimeout(resolve, retryInterval)); // Wait before retrying
+            attempts++;
+            retryInterval *= 2; // Double the retry interval after each attempt
+        }
+    }
+
+    throw new Error(`Failed to acquire lock after ${maxRetries} attempts.`);
+};
+
+
+// Function to release a lock
+export const releaseLock = async (lockId) => {
+    try {
+        await databases.deleteDocument(appwriteConfig.databaseId, appwriteConfig.lockCollectionId, lockId);
+    } catch (error) {
+        console.error('Failed to release lock:', error);
+        throw new Error('Failed to release lock: ' + error.message);
+    }
+};
