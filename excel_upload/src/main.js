@@ -41,7 +41,7 @@ const processExcelSheet = async (workbook, picks, log, error) => {
         // If the current pick is W or L, and its correspondant in the DB is still pending, update that pick in DB
         const jsonPickStatus = jsonPick[sheetName] === "L" ? "lost" : jsonPick[sheetName] === "W" ? "won" : "pending";
         if (jsonPick[sheetName] === "W" || jsonPick[sheetName] === "L") {
-          const matchedPick = picks.find(pick => pick["pick-title"] === jsonPick["__EMPTY"]);
+          const matchedPick = picks.find(pick => pick["pick-title"] === jsonPick["__EMPTY"] && pick["game"] === sheetName);
           if (matchedPick && jsonPickStatus !== matchedPick["status"]) {
             log("Changed pick: " + matchedPick["pick-title"] + " from " + matchedPick["status"] + " to " + jsonPick[sheetName]);
 
@@ -68,13 +68,13 @@ const isValidWeek = (fileName, weekNum, log) => {
 
 // Main Appwrite function
 export default async ({ req, res, log, error }) => {
+  const { $id: fileId, name: fileName, bucketId } = req.body;
+  const week = await getWeekNum();
+  const weekNum = week["weekNum"];
+  const lockId = "Week" + weekNum;
   try {
-    const { $id: fileId, name: fileName, bucketId } = req.body;
-    const week = await getWeekNum();
-    const weekNum = week["weekNum"];
-
-    await acquireLockWithRetry(weekNum);
-    log(`Lock acquired for week ${weekNum}`);
+    await acquireLockWithRetry(lockId);
+    log(`Lock acquired for ${lockId}`);
 
     if (!isValidWeek(fileName, weekNum, log)) return;
 
@@ -88,8 +88,8 @@ export default async ({ req, res, log, error }) => {
   } catch (e) {
     error('Error fetching game details:', e);
   } finally {
-    await releaseLock(weekNum);
-    log(`Lock released for weekNum ${weekNum}`);
+    await releaseLock(lockId);
+    log(`Lock released for ${lockId}`);
   }
 
   return res.json({
