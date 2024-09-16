@@ -12,6 +12,7 @@ const appwriteConfig = {
     gameCollectionId: '66ad3e97000d65a8be9b',
     pickCollectionId: '6684a04a000e85542756',
     weekCollectionId: '66b0de5400218e0d26c8',
+    lockCollectionId: '66c91b6e003d1bd13aa5',
     storageId: '667edd29003dd0cf6445'
 };
 
