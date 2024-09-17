@@ -3,6 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCurrentUser, checkAndUpdateWeekNum, resetWeek, checkOrCreateWeeklyLineup, getAllUsersForLeaderboard, getAllLeaguesForLeaderboard, updateLeagueAttributes } from "../lib/appwrite";
 import Loading from "../components/Loading";
 
+import Constants from 'expo-constants';
+
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
 
@@ -21,6 +23,7 @@ const GlobalProvider = ({ children }) => {
     useEffect(() => {
         const initialize = async () => {
             setIsLoading(true);
+            const appVersion = Constants.expoConfig?.version || 'Unknown Version';  // Safely access version or provide fallback
             try {
                 const currentUser = await getCurrentUser();
                 if (currentUser) {
