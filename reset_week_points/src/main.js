@@ -1,7 +1,7 @@
 import { resetWeek, checkAndUpdateWeekNum } from './db.js'
 
 const calculateCurrentWeekNum = async () => {
-  // Hardcoded start date for Week 1 (September 3, 2024 at midnight)
+  // Hardcoded start date for Week 1 (September 4, 2024 at 8 PM EDT)
   const startWeek1 = new Date('2024-09-04T20:00:00-04:00');  // 8 PM EDT
   const currentDate = new Date();
   const millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7;

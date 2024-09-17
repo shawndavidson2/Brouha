@@ -29,7 +29,7 @@ const ProfileLineup = ({ userId, leagueId }) => {
                 <View style={styles.container}>
                     {weeks.map((week) => (
                         // Only show lineup if user.$id matches userId or it's not the current weekNum
-                        (user.$id === "66d07b4b001c5ebb2446" || league.$id === leagueId || user.$id === userId || week !== weekNum) && (
+                        (league.$id === leagueId || user.$id === userId || week !== weekNum) && (
                             <View key={week}>
                                 <TouchableOpacity onPress={() => toggleWeek(week)} style={styles.weekSummary}>
                                     <Text style={styles.weekText}>Week {week} Pick Lineup</Text>

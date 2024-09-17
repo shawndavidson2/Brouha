@@ -43,8 +43,8 @@ const GlobalProvider = ({ children }) => {
         };
 
         const updateWeekNum = async () => {
-            // Hardcoded start date for Week 1 (September 3, 2024 at midnight)
-            const startWeek1 = new Date('2024-09-03T00:00:00');
+            // Hardcoded start date for Week 1 (September 4, 2024 at 8 PM EDT)
+            const startWeek1 = new Date('2024-09-04T20:00:00-04:00');  // 8 PM EDT
             const currentDate = new Date();
             const millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
             const weeksSinceStart = Math.floor((currentDate - startWeek1) / millisecondsPerWeek);
@@ -54,7 +54,7 @@ const GlobalProvider = ({ children }) => {
             console.log('Current Week Number:', currentWeekNum);
             setWeekNum(currentWeekNum);
 
-            const needsWeekClearing = await checkAndUpdateWeekNum(currentWeekNum);
+            //const needsWeekClearing = await checkAndUpdateWeekNum(currentWeekNum);
             return currentWeekNum;
         };
 
