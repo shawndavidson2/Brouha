@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getCurrentUser, checkAndUpdateWeekNum, resetWeek, checkOrCreateWeeklyLineup, getAllUsersForLeaderboard, getAllLeaguesForLeaderboard, updateLeagueAttributes } from "../lib/appwrite";
+import { getCurrentUser, getCurrentWeekNum, resetWeek, checkOrCreateWeeklyLineup, getAllUsersForLeaderboard, getAllLeaguesForLeaderboard, updateLeagueAttributes } from "../lib/appwrite";
 import Loading from "../components/Loading";
 
 import Constants from 'expo-constants';
@@ -45,19 +45,13 @@ const GlobalProvider = ({ children }) => {
             }
         };
 
-        const updateWeekNum = async () => {
-            // Hardcoded start date for Week 1 (September 4, 2024 at 8 PM EDT)
-            const startWeek1 = new Date('2024-09-04T20:00:00-04:00');  // 8 PM EDT
-            const currentDate = new Date();
-            const millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
-            const weeksSinceStart = Math.floor((currentDate - startWeek1) / millisecondsPerWeek);
-            let currentWeekNum = 1 + weeksSinceStart;
-            if (currentWeekNum < 1) currentWeekNum = 1;
+        const fetchWeekNum = async () => {
+            const currentWeekNum = await getCurrentWeekNum();
 
             console.log('Current Week Number:', currentWeekNum);
+
             setWeekNum(currentWeekNum);
 
-            //const needsWeekClearing = await checkAndUpdateWeekNum(currentWeekNum);
             return currentWeekNum;
         };
 
@@ -103,7 +97,7 @@ const GlobalProvider = ({ children }) => {
 
 
         initialize().then((user) => {
-            updateWeekNum().then((week) => {
+            fetchWeekNum().then((week) => {
                 getLeaderboardData(week);
             });
         });
