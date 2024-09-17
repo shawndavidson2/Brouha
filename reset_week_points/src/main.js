@@ -43,16 +43,16 @@ export default async ({ req, res, log, error }) => {
 };
 
 
-const test = async () => {
-  try {
-    const weekNum = await calculateCurrentWeekNum();
-    console.log('Current Week Number:', weekNum);
-  } catch (e) {
-    console.error(e);
-  }
+// const test = async () => {
+//   try {
+//     const weekNum = await calculateCurrentWeekNum();
+//     console.log('Current Week Number:', weekNum);
+//   } catch (e) {
+//     console.error(e);
+//   }
 
-  // `res.json()` is a handy helper for sending JSON
+//   // `res.json()` is a handy helper for sending JSON
 
-};
+// };
 
-test();
+// test();
