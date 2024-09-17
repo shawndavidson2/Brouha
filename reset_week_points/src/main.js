@@ -2,7 +2,7 @@ import { resetWeek, checkAndUpdateWeekNum } from './db.js'
 
 const calculateCurrentWeekNum = async () => {
   // Hardcoded start date for Week 1 (September 3, 2024 at midnight)
-  const startWeek1 = new Date('2024-09-03T00:00:00');
+  const startWeek1 = new Date('2024-09-04T20:00:00-04:00');  // 8 PM EDT
   const currentDate = new Date();
   const millisecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
   const weeksSinceStart = Math.floor((currentDate - startWeek1) / millisecondsPerWeek);
@@ -43,26 +43,16 @@ export default async ({ req, res, log, error }) => {
 };
 
 
-// const test = async () => {
-//   try {
-//     //const weekNum = req.body.weekNum;
-//     const weekNum = parseInt(await calculateCurrentWeekNum(), 10);
-//     const needsWeekClearing = await checkAndUpdateWeekNum(weekNum);
+const test = async () => {
+  try {
+    const weekNum = await calculateCurrentWeekNum();
+    console.log('Current Week Number:', weekNum);
+  } catch (e) {
+    console.error(e);
+  }
 
-//     console.log(needsWeekClearing)
+  // `res.json()` is a handy helper for sending JSON
 
-//     if (needsWeekClearing) {
-//       console.log("Updated to weekNum: " + weekNum)
-//       const [usersArray, leaguesArray] = await resetWeek(weekNum, error)
-//       console.log("Users: " + usersArray)
-//       console.log("Leagues: " + leaguesArray)
-//     }
-//   } catch (e) {
-//     console.error(e);
-//   }
+};
 
-//   // `res.json()` is a handy helper for sending JSON
-
-// };
-
-// test();
+test();
