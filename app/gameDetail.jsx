@@ -7,7 +7,7 @@ import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createPick, updatePick } from '../lib/appwrite';
 import { useGlobalContext } from '../context/GlobalProvider';
-import { updateWeeklyLineup, createGame } from '../lib/appwrite';
+import { updateWeeklyLineup, createGame, createWeeklyLineup } from '../lib/appwrite';
 import { useLineupCache } from '../context/lineupContext';
 import { useRouter } from 'expo-router';
 import Loading from '../components/Loading';

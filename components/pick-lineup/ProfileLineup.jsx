@@ -25,8 +25,8 @@ const ProfileLineup = ({ userId, leagueId }) => {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <ScrollView>
-                <View style={styles.container}>
+            <View style={styles.container}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                     {weeks.map((week) => (
                         // Only show lineup if user.$id matches userId or it's not the current weekNum
                         (league.$id === leagueId || user.$id === userId || week !== weekNum) && (
@@ -41,9 +41,9 @@ const ProfileLineup = ({ userId, leagueId }) => {
                             </View>
                         )
                     ))}
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+                </ScrollView>
+            </View>
+        </SafeAreaView >
     );
 };
 

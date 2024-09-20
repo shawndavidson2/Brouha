@@ -12,12 +12,14 @@ import { StatusBar } from 'expo-status-bar';
 import { Alert } from 'react-native';
 import { useRefresh } from '../context/RefreshContext';
 import Loading from '../components/Loading';
+import { formatNumberWithComma } from '../components/utils';
+import { AntDesign } from '@expo/vector-icons';
 
 const Profile = () => {
     const { triggerRefresh } = useRefresh();
     const router = useRouter();
 
-    const { user: globalUser, setUser, setIsLoggedIn, league: globalLeague, setLeague } = useGlobalContext();
+    const { user: globalUser, setUser, setIsLoggedIn, league: globalLeague, setLeague, weekNum } = useGlobalContext();
     const { leagueUser, passedLeague } = useLocalSearchParams();
 
     const parsedLeagueUser = leagueUser ? JSON.parse(leagueUser) : null;
@@ -45,6 +47,45 @@ const Profile = () => {
         await signOut();
         setUser(null);
         setIsLoggedIn(false);
+    };
+
+    const rankInfo = () => {
+        const rank = user.rankCategory
+
+        let rankDescriptions = "";
+
+        if (parsedLeagueUser) {
+            rankDescriptions = {
+                "Legend": "This user is among the elite with over 75,000 points. A true legend!",
+                "HOF": "This user has earned over 60,000 points and is recognized in the Hall of Fame.",
+                "All-Pro": "With over 40,000 points, this user is considered All-Pro, showcasing top skills.",
+                "Pro": "This user has surpassed 30,000 points and achieved the Pro rank. Great job!",
+                "Varsity": "This user has reached Varsity status with over 20,000 points. Keep an eye on them!",
+                "JV": "This user is in the Junior Varsity category with over 10,000 points. They're on their way!",
+                "Freshman": "This user is starting off strong as a Freshman. Keep watching as they rank up!"
+            };
+        } else {
+            rankDescriptions = {
+                "Legend": "You are among the elite with over 75,000 points. A true legend!",
+                "HOF": "You've earned over 60,000 points and are recognized in the Hall of Fame.",
+                "All-Pro": "With over 40,000 points, you're considered All-Pro, showcasing top skills.",
+                "Pro": "A Pro rank means you’ve surpassed 30,000 points. Great job!",
+                "Varsity": "Varsity status is achieved with over 20,000 points. Keep pushing!",
+                "JV": "With over 10,000 points, you're in the Junior Varsity category. You're on your way!",
+                "Freshman": "You’re starting off strong as a Freshman. Keep playing to rank up!"
+            };
+        }
+
+
+
+        Alert.alert(
+            "Rank Meaning",
+            rankDescriptions[rank] || "No rank information available.",
+            [
+                { text: "Got it" }
+            ],
+            { cancelable: true }
+        );
     };
 
     const leaveLeagueButton = () => {
@@ -81,59 +122,100 @@ const Profile = () => {
     if (loading) { return <Loading /> }
 
     return (
-        <SafeAreaView style={styles.safeArea}>
+        <SafeAreaView style={styless.safeArea} edges={['left', 'right', 'top']} >
+            <View style={styless.headerRow}>
+
+                <TouchableOpacity style={styless.headerButtons}>
+                    <Text onPress={goBack} style={styless.backButtonText}>{"< Back"}</Text>
+                </TouchableOpacity>
+                {!parsedLeagueUser && (
+                    <TouchableOpacity onPress={logout}>
+                        <Text style={styless.logoutText}>Logout</Text>
+                    </TouchableOpacity>
+                )}
+            </View>
             <View style={styless.container}>
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                    <View style={styless.headerContainer}>
-                        <TouchableOpacity onPress={goBack}>
-                            <Text style={styless.backText}>Back</Text>
-                        </TouchableOpacity>
-                        {!parsedLeagueUser && (
-                            <TouchableOpacity onPress={logout}>
-                                <Text style={styless.logoutText}>Logout</Text>
-                            </TouchableOpacity>
-                        )}
-                    </View>
+                <View style={styless.margin}>
 
                     <View style={styless.profileInfo}>
                         <Text style={styless.usernameText}>{user?.username ? user.username : "Unknown User"}</Text>
-                        <Text style={styless.leagueText}>League: {leagueName}</Text>
+                        {/* <Text style={styless.leagueText}>League: {leagueName}</Text> */}
 
                         {/* Leave League Button, displayed only if the Logout button is visible */}
-                        {!parsedLeagueUser && (
+                        {/* {!parsedLeagueUser && (
                             <TouchableOpacity onPress={leaveLeagueButton}>
                                 <Text style={styless.leaveLeagueText}>Leave League</Text>
                             </TouchableOpacity>
-                        )}
+                        )} */}
                     </View>
 
-                    <View style={styless.statsContainer}>
+                    <View style={styless.statItem}>
+                        <Text style={styless.totalPointsText}>{user?.totalPoints >= 0 ? formatNumberWithComma(user.totalPoints) : 0}pts</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <View style={styless.statItem}>
-                            <Text style={styless.statText}>{user?.rankCategory ? user.rankCategory : "No Rank"}</Text>
+                            <Text style={styless.rankText}>Rank: {user?.rankCategory ? user.rankCategory : "No Rank"}</Text>
                         </View>
-                        <View style={styless.divider} />
-                        <View style={styless.statItem}>
-                            <Text style={styless.statText}>{user?.totalPoints >= 0 ? user.totalPoints : 0} Points</Text>
+                        <TouchableOpacity style={styless.infoCircle} onPress={() => { rankInfo() }}>
+                            <AntDesign name="infocirlceo" size={15} color="#8b2326" />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styless.userStats}>
+                        <View style={styless.stat}>
+                            <Text style={styless.label}>Picks W-L</Text>
+                            <Text style={styless.value}>{user.numPicksWon ?? 0}-{user.numPicksLost ?? 0}</Text>
+                        </View>
+                        <View style={styless.stat}>
+                            <Text style={styless.label}>Avg Weekly Pts</Text>
+                            <Text style={styless.value}>{(user.totalPoints / weekNum).toFixed(2)}</Text>
+                        </View>
+                        <View style={styless.stat}>
+                            <Text style={styless.label}>Best Week</Text>
+                            <Text style={styless.value}>{user.bestWeek ?? 0}</Text>
                         </View>
                     </View>
-                    <ProfileLineup userId={user.$id} leagueId={league.$id} />
-                </ScrollView>
+                    <View style={{ flexGrow: 1 }}>
+                        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                            <ProfileLineup userId={user.$id} leagueId={league.$id} />
+                        </ScrollView>
+                    </View>
+                </View>
             </View>
             <StatusBar style="light" />
-        </SafeAreaView>
+        </SafeAreaView >
     );
 }
 
 const styless = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#343434',
+    },
+    headerRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#343434',
+        marginTop: 10,
+        marginBottom: 12,
+        paddingHorizontal: 20,
+    },
+    headerButtons: {
+        marginBottom: 10,
+        fontFamily: 'RobotoSlab-Regular',
+    },
+    backButtonText: {
+        fontSize: 22,
+        fontFamily: 'RobotoSlab-Regular',
+        color: '#DBB978',
+        textAlign: 'left',
+    },
     container: {
         flex: 1,
-        padding: 10,
-        margin: 20,
-        backgroundColor: '#fefcf9',
-        borderRadius: 10,
-        borderTopColor: '#8b2326',
-        borderTopWidth: 20,
-        justifyContent: 'center',
+        backgroundColor: 'white',
+    },
+    margin: {
+        marginHorizontal: 12,
     },
     headerContainer: {
         width: '100%',
@@ -149,9 +231,11 @@ const styless = StyleSheet.create({
         fontFamily: 'RobotoSlab-Regular'
     },
     logoutText: {
-        fontSize: 16,
-        color: 'red',
-        fontFamily: 'RobotoSlab-Regular'
+        fontSize: 18,
+        marginBottom: 10,
+        fontFamily: 'RobotoSlab-Regular',
+        color: '#DBB978',
+        textAlign: 'right',
     },
     leaveLeagueText: {
         fontSize: 16,
@@ -164,7 +248,12 @@ const styless = StyleSheet.create({
         alignItems: 'center',
         fontFamily: 'RobotoSlab-Regular'
     },
+    infoCircle: {
+        paddingLeft: 6,
+        marginTop: 10
+    },
     usernameText: {
+        marginTop: 16,
         fontSize: 35,
         fontFamily: 'RobotoSlab-ExtraBold'
     },
@@ -174,27 +263,42 @@ const styless = StyleSheet.create({
         marginTop: 2,
         fontFamily: 'RobotoSlab-Regular'
     },
-    statsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
-        marginTop: 25,
-    },
     statItem: {
         alignItems: 'center',
-        fontFamily: 'RobotoSlab-Regular'
+        fontFamily: 'RobotoSlab-Regular',
     },
-    statText: {
-        fontSize: 26,
-        marginTop: 5,
-        fontFamily: 'RobotoSlab-Regular'
+    totalPointsText: {
+        fontSize: 25,
+        marginTop: 0,
+        fontFamily: 'RobotoSlab-Bold',
+        color: '#8b2326',
     },
-    divider: {
+    rankText: {
+        fontSize: 16,
+        marginTop: 10,
+        fontFamily: 'RobotoSlab-Regular',
+    },
+    userStats: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
         alignItems: 'center',
-        borderLeftWidth: 1,
-        borderLeftColor: 'black',
-        height: '100%',
+        marginTop: 25,
     },
+    stat: {
+        alignItems: 'center',
+    },
+    label: {
+        fontSize: 16,
+        textDecorationLine: 1,
+        fontFamily: 'RobotoSlab-Bold',
+    },
+    value: {
+        fontSize: 17,
+        marginTop: 2,
+        fontFamily: 'RobotoSlab-Regular',
+    },
+
 });
 
 export default Profile;

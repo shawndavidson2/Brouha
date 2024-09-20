@@ -6,6 +6,7 @@ import { useGlobalContext } from '../../context/GlobalProvider';
 import { StatusBar } from 'expo-status-bar';
 import Loading from '../../components/Loading';
 import { router } from 'expo-router';
+import { formatNumberWithComma } from '../../components/utils';
 
 const Leaderboards = () => {
     const [selectedTab, setSelectedTab] = useState('users');
@@ -13,10 +14,6 @@ const Leaderboards = () => {
     const [leagueLeaders, setLeagueLeaders] = useState([]);
 
     const { user, league, users, leagues, leaderboardLoading } = useGlobalContext();
-
-    const formatNumberWithComma = (num) => {
-        return num ? num.toLocaleString() : 0;
-    };
 
     useEffect(() => {
         // Load all users
