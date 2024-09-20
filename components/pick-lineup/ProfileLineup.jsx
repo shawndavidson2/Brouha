@@ -24,26 +24,22 @@ const ProfileLineup = ({ userId, leagueId }) => {
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <View style={styles.container}>
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                    {weeks.map((week) => (
-                        // Only show lineup if user.$id matches userId or it's not the current weekNum
-                        (league.$id === leagueId || user.$id === userId || week !== weekNum) && (
-                            <View key={week}>
-                                <TouchableOpacity onPress={() => toggleWeek(week)} style={styles.weekSummary}>
-                                    <Text style={styles.weekText}>Week {week} Pick Lineup</Text>
-                                    <FontAwesome name={expandedWeek === week ? "angle-up" : "angle-down"} size={24} />
-                                </TouchableOpacity>
-                                {expandedWeek === week && (
-                                    <WeekDetails week={week} userId={userId} />
-                                )}
-                            </View>
-                        )
-                    ))}
-                </ScrollView>
-            </View>
-        </SafeAreaView >
+        <View style={styles.container}>
+            {weeks.map((week) => (
+                // Only show lineup if user.$id matches userId or it's not the current weekNum
+                (league.$id === leagueId || user.$id === userId || week !== weekNum) && (
+                    <View key={week}>
+                        <TouchableOpacity onPress={() => toggleWeek(week)} style={styles.weekSummary}>
+                            <Text style={styles.weekText}>Week {week} Pick Lineup</Text>
+                            <FontAwesome name={expandedWeek === week ? "angle-up" : "angle-down"} size={24} />
+                        </TouchableOpacity>
+                        {expandedWeek === week && (
+                            <WeekDetails week={week} userId={userId} />
+                        )}
+                    </View>
+                )
+            ))}
+        </View>
     );
 };
 
@@ -69,28 +65,28 @@ const WeekDetails = ({ week, userId }) => {
 
     return (
         <View style={styles.weekDetails}>
-            <ScrollView style={styles.scrollView}>
-                {picks.map((pick) => (
-                    <View key={pick.$id} style={styles.pickItem}>
-                        <Text style={styles.pickText}>
-                            {pick["pick-title"].startsWith("O") || pick["pick-title"].startsWith("U")
-                                ? `${pick["pick-title"]} (${pick.game})`
-                                : pick["pick-title"]}
-                        </Text>
-                        <Text style={styles.pointsText}>{pick["potential-points"]} pts</Text>
-                        <View style={styles.statusIcon}>{renderStatusIcon(pick.status)}</View>
-                    </View>
-                ))}
-            </ScrollView>
-            <View style={styles.totalContainer}>
-                <Text style={styles.totalText}>Total Potential Points</Text>
-                <Text style={styles.totalPointsText}>{totalPotentialPoints} pts</Text>
+            {picks.map((pick) => (
+                <View key={pick.$id} style={styles.pickItem}>
+                    <Text style={styles.pickText}>
+                        {pick["pick-title"].startsWith("O") || pick["pick-title"].startsWith("U")
+                            ? `${pick["pick-title"]} (${pick.game})`
+                            : pick["pick-title"]}
+                    </Text>
+                    <Text style={styles.pointsText}>{pick["potential-points"]} pts</Text>
+                    <View style={styles.statusIcon}>{renderStatusIcon(pick.status)}</View>
+                </View>
+            ))}
+            <View style={{ marginTop: 15 }}>
+                <View style={styles.totalContainer}>
+                    <Text style={styles.totalText}>Total Potential Points</Text>
+                    <Text style={styles.totalPointsText}>{totalPotentialPoints} pts</Text>
+                </View>
+                <View style={styles.totalContainer}>
+                    <Text style={styles.totalText}>Total Points Earned</Text>
+                    <Text style={styles.earnedPointsText}>{totalPointsEarned} pts</Text>
+                </View>
             </View>
-            <View style={styles.totalContainer}>
-                <Text style={styles.totalText}>Total Points Earned</Text>
-                <Text style={styles.earnedPointsText}>{totalPointsEarned} pts</Text>
-            </View>
-        </View>
+        </View >
     );
 };
 

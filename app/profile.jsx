@@ -136,49 +136,50 @@ const Profile = () => {
             </View>
             <View style={styless.container}>
                 <View style={styless.margin}>
+                    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                        <View style={styless.profileInfo}>
+                            <Text style={styless.usernameText}>{user?.username ? user.username : "Unknown User"}</Text>
+                            {/* <Text style={styless.leagueText}>League: {leagueName}</Text> */}
 
-                    <View style={styless.profileInfo}>
-                        <Text style={styless.usernameText}>{user?.username ? user.username : "Unknown User"}</Text>
-                        {/* <Text style={styless.leagueText}>League: {leagueName}</Text> */}
-
-                        {/* Leave League Button, displayed only if the Logout button is visible */}
-                        {/* {!parsedLeagueUser && (
+                            {/* Leave League Button, displayed only if the Logout button is visible */}
+                            {/* {!parsedLeagueUser && (
                             <TouchableOpacity onPress={leaveLeagueButton}>
                                 <Text style={styless.leaveLeagueText}>Leave League</Text>
                             </TouchableOpacity>
                         )} */}
-                    </View>
+                        </View>
 
-                    <View style={styless.statItem}>
-                        <Text style={styless.totalPointsText}>{user?.totalPoints >= 0 ? formatNumberWithComma(user.totalPoints) : 0}pts</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <View style={styless.statItem}>
-                            <Text style={styless.rankText}>Rank: {user?.rankCategory ? user.rankCategory : "No Rank"}</Text>
+                            <Text style={styless.totalPointsText}>{user?.totalPoints >= 0 ? formatNumberWithComma(user.totalPoints) : 0}pts</Text>
                         </View>
-                        <TouchableOpacity style={styless.infoCircle} onPress={() => { rankInfo() }}>
-                            <AntDesign name="infocirlceo" size={15} color="#8b2326" />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styless.userStats}>
-                        <View style={styless.stat}>
-                            <Text style={styless.label}>Picks W-L</Text>
-                            <Text style={styless.value}>{user.numPicksWon ?? 0}-{user.numPicksLost ?? 0}</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                            <View style={styless.statItem}>
+                                <Text style={styless.rankText}>Rank: {user?.rankCategory ? user.rankCategory : "No Rank"}</Text>
+                            </View>
+                            <TouchableOpacity style={styless.infoCircle} onPress={() => { rankInfo() }}>
+                                <AntDesign name="infocirlceo" size={15} color="#8b2326" />
+                            </TouchableOpacity>
                         </View>
-                        <View style={styless.stat}>
-                            <Text style={styless.label}>Avg Weekly Pts</Text>
-                            <Text style={styless.value}>{(user.totalPoints / weekNum).toFixed(2)}</Text>
+                        <View style={styless.userStats}>
+                            <View style={styless.stat}>
+                                <Text style={styless.label}>Picks W-L</Text>
+                                <Text style={styless.value}>{user.numPicksWon ?? 0}-{user.numPicksLost ?? 0}</Text>
+                            </View>
+                            <View style={styless.stat}>
+                                <Text style={styless.label}>Avg Weekly Pts</Text>
+                                <Text style={styless.value}>{(user.totalPoints / weekNum).toFixed(2)}</Text>
+                            </View>
+                            <View style={styless.stat}>
+                                <Text style={styless.label}>Best Week</Text>
+                                <Text style={styless.value}>{user.bestWeek ?? 0}</Text>
+                            </View>
                         </View>
-                        <View style={styless.stat}>
-                            <Text style={styless.label}>Best Week</Text>
-                            <Text style={styless.value}>{user.bestWeek ?? 0}</Text>
-                        </View>
-                    </View>
-                    <View style={{ flexGrow: 1 }}>
-                        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                        <View style={{ marginTop: 20 }}>
+
                             <ProfileLineup userId={user.$id} leagueId={league.$id} />
-                        </ScrollView>
-                    </View>
+
+                        </View>
+                    </ScrollView>
                 </View>
             </View>
             <StatusBar style="light" />
