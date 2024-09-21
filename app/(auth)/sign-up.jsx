@@ -6,14 +6,14 @@ import { useState } from 'react'
 import CustomButton from '../../components/CustomButton'
 import { Link, router } from 'expo-router'
 import Checkbox from 'expo-checkbox';
-import { createUser } from '../../lib/appwrite'
+import { createUser, createWeeklyLineup } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/GlobalProvider'
 import { useRefresh } from '../../context/RefreshContext'
 import styles from '../styles'
 import { StatusBar } from 'expo-status-bar'
 
 const SignUp = () => {
-    const { setUser, setIsLoggedIn, setLeague } = useGlobalContext();
+    const { setUser, setIsLoggedIn, setLeague, weekNum } = useGlobalContext();
     const [form, setForm] = useState({
         username: '',
         email: '',
@@ -36,6 +36,8 @@ const SignUp = () => {
             setUser(result);
             setLeague(null)
             setIsLoggedIn(true);
+
+            await createWeeklyLineup(result, [], weekNum)
 
             router.replace("../league")
             triggerRefresh();

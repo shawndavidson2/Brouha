@@ -62,7 +62,7 @@ const Profile = () => {
                 "Pro": "This user has surpassed 30,000 points and achieved the Pro rank. Great job!",
                 "Varsity": "This user has reached Varsity status with over 20,000 points. Keep an eye on them!",
                 "JV": "This user is in the Junior Varsity category with over 10,000 points. They're on their way!",
-                "Freshman": "This user is starting off strong as a Freshman. Keep watching as they rank up!"
+                "Freshman": "This user is starting off strong as a Freshman. They need 10,000+ points to rank up!"
             };
         } else {
             rankDescriptions = {
@@ -72,7 +72,7 @@ const Profile = () => {
                 "Pro": "A Pro rank means you’ve surpassed 30,000 points. Great job!",
                 "Varsity": "Varsity status is achieved with over 20,000 points. Keep pushing!",
                 "JV": "With over 10,000 points, you're in the Junior Varsity category. You're on your way!",
-                "Freshman": "You’re starting off strong as a Freshman. Keep playing to rank up!"
+                "Freshman": "You’re starting off strong as a Freshman. You need 10,000+ points to rank up!"
             };
         }
 
