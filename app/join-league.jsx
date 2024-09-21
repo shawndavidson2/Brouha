@@ -108,11 +108,12 @@ const JoinLeague = () => {
         <GestureHandlerRootView>
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.container}>
-                    {/*
+
+                    {viewMode !== null && (
                         <TouchableOpacity onPress={goBack}>
-                            <Text style={styles.backButtonText}>Back</Text>
+                            <Text style={styles.backButtonText}>{"< "}Back</Text>
                         </TouchableOpacity>
-                    */}
+                    )}
 
                     <Text style={[styles.header, { marginTop: 40 }]}>{getHeaderText()}</Text>
                     <Text style={styles.description}>Choose to either join an existing league or create a new one</Text>

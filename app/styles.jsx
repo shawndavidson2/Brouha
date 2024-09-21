@@ -201,7 +201,6 @@ export default styles = StyleSheet.create({
     },
     backButtonText: {
         fontSize: 18,
-        marginBottom: 10,
         fontFamily: 'RobotoSlab-Regular',
         color: 'black', // Adjust color to match design
         textAlign: 'left'
