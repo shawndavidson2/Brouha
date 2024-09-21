@@ -73,7 +73,7 @@ const WeekDetails = ({ week, userId }) => {
                             : pick["pick-title"]}
                     </Text>
                     <Text style={styles.pointsText}>{pick["potential-points"]} pts</Text>
-                    <View style={styles.statusIcon}>{renderStatusIcon(pick.status)}</View>
+                    <View style={styles.statusIcon}>{renderStatusIcon(pick.status, pick.date, pick.time)}</View>
                 </View>
             ))}
             <View style={{ marginTop: 15 }}>

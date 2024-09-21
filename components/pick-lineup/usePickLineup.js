@@ -6,6 +6,7 @@ import { useLineupCache } from '../../context/lineupContext';
 import { removePickFromWeeklyLineup, getAllWeeklyLineups, getPicksByIds } from '../../lib/appwrite';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
+import { isFutureGameTime } from '../all-picks/gameDateUtils';
 
 const usePickLineup = (initialWeekNum = 0, userId = null) => {
     const { user, setUser, league, setLeague, weekNum, refreshPicks, setRefreshPicks } = useGlobalContext();
@@ -75,11 +76,13 @@ const usePickLineup = (initialWeekNum = 0, userId = null) => {
         setTotalPotentialPoints(picks.reduce((total, pick) => total + pick["potential-points"], 0));
     }, [picks, totalPointsEarned, refreshPicks]);
 
-    const renderStatusIcon = (status) => {
+    const renderStatusIcon = (status, date, time) => {
         if (status === 'won') {
             return <FontAwesome name="check-circle" size={24} color="green" />;
         } else if (status === 'lost') {
             return <FontAwesome name="times-circle" size={24} color="red" />;
+        } else if (!isFutureGameTime(date, time)) {
+            return <FontAwesome name="hourglass-half" size={22} color="#8b2326" />;
         } else {
             return <FontAwesome name="circle-o" size={24} color="black" />;
         }

@@ -74,7 +74,7 @@ const PickLineup = () => {
                                         <Text style={styles.gameText}>{pick.date} {pick.time}</Text>
                                     </View>
                                     <Text style={styles.pointsText}>{pick["potential-points"]} pts</Text>
-                                    <View style={styles.statusIcon}>{renderStatusIcon(pick.status)}</View>
+                                    <View style={styles.statusIcon}>{renderStatusIcon(pick.status, pick.date, pick.time)}</View>
                                 </View>
                             </Swipeable>
                         ))}
