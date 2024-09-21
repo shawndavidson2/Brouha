@@ -75,7 +75,7 @@ const LeagueScreen = () => {
         const { contentOffset, contentSize, layoutMeasurement } = nativeEvent;
 
         // Check if user scrolled far enough beyond the end of the list
-        if (contentOffset.y > contentSize.height - layoutMeasurement.height + 60 && !hasScrolledDown) {
+        if (contentOffset.y > contentSize.height - layoutMeasurement.height + 160 && !hasScrolledDown) {
             setShowLeaveButton(true);
             setHasScrolledDown(true); // Ensures the button stays visible
         }
@@ -103,7 +103,7 @@ const LeagueScreen = () => {
                                 <LeagueParticipants league={league} />
 
                                 {/* Conditional rendering for the Leave League button */}
-                                {showLeaveButton && (
+                                {showLeaveButton && !parsedLeague && (
                                     <TouchableOpacity style={styless.leaveLeagueButton} onPress={leaveLeagueButton}>
                                         <Text style={styless.leaveLeagueText}>Leave League</Text>
                                     </TouchableOpacity>
