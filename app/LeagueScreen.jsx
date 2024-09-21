@@ -1,34 +1,33 @@
-
-import { View, Text, TouchableOpacity, Image, StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, RefreshControl, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import styles from './styles';
 import LeagueParticipants from '../components/league/LeagueParticipants';
 import LeagueStats from '../components/league/LeagueStats';
 import LeagueTitleAndProfile from '../components/league/LeagueTitleAndProfile';
 import JoinLeagueButton from '../components/league/JoinLeagueButton';
 import { useGlobalContext } from '../context/GlobalProvider';
 import { useRefresh } from '../context/RefreshContext';
-import Loading from '../components/Loading';
 import { StatusBar } from 'expo-status-bar';
 import { useLocalSearchParams } from 'expo-router';
+import { leaveLeague } from '../lib/appwrite';
+import Loading from '../components/Loading';
 
 const LeagueScreen = () => {
     const router = useRouter();
 
-    const { user, setUser, league: globalLeague, setLeague, weekNum, isInitialized: isGlobalInitialized } = useGlobalContext();
-
+    const { user, setUser, league: globalLeague, setLeague, weekNum } = useGlobalContext();
     const { passedLeague } = useLocalSearchParams();
     const parsedLeague = passedLeague ? JSON.parse(passedLeague) : null;
     const [league, setLeagueState] = useState(parsedLeague || globalLeague);
-
     const [loading, setLoading] = useState(false);
     const { triggerRefresh } = useRefresh();
-    const [refreshKey, setRefreshKey] = useState(0); // Add a refresh key state
+    const [refreshKey, setRefreshKey] = useState(0);
+    const [showLeaveButton, setShowLeaveButton] = useState(false); // Button visibility
+    const [hasScrolledDown, setHasScrolledDown] = useState(false); // Ensures button remains visible after threshold is reached
 
     useEffect(() => {
-        if (!league) router.replace('../join-league')
+        if (!league) router.replace('../join-league');
     }, [league]);
 
     const joinLeague = () => {
@@ -36,12 +35,54 @@ const LeagueScreen = () => {
     };
 
     const onRefresh = async () => {
-        setRefreshKey(prevKey => prevKey + 1); // Change the refresh key to restart the component
-        triggerRefresh(); // Call the triggerRefresh function to refresh RootLayout
+        setRefreshKey(prevKey => prevKey + 1);
+        triggerRefresh();
     };
 
-    {
-        loading && <Loading key={refreshKey} />
+    const leaveLeagueButton = () => {
+        Alert.alert(
+            "Leave League",
+            "Are you sure you want to leave your league?",
+            [
+                {
+                    text: "No",
+                    onPress: () => {
+                        setShowLeaveButton(false);
+                        setHasScrolledDown(false)
+                        console.log("User canceled");
+                    },
+                    style: "cancel"
+                },
+                {
+                    text: "Yes", onPress: async () => {
+                        try {
+                            setLoading(true);
+                            await leaveLeague(user, league);
+                            triggerRefresh();
+                            router.replace("/join-league");
+                        } catch (error) {
+                            console.error("Failed to leave league:", error);
+                        } finally {
+                            setLoading(false);
+                        }
+                    }, style: "destructive"
+                }
+            ]
+        );
+    };
+
+    const handleScroll = ({ nativeEvent }) => {
+        const { contentOffset, contentSize, layoutMeasurement } = nativeEvent;
+
+        // Check if user scrolled far enough beyond the end of the list
+        if (contentOffset.y > contentSize.height - layoutMeasurement.height + 60 && !hasScrolledDown) {
+            setShowLeaveButton(true);
+            setHasScrolledDown(true); // Ensures the button stays visible
+        }
+    };
+
+    if (loading) {
+        return <Loading />
     }
 
     if (league) {
@@ -49,6 +90,7 @@ const LeagueScreen = () => {
             <SafeAreaView key={refreshKey} style={styless.safeArea} edges={['left', 'right', 'top']}>
                 <View style={styless.leagueBackground}>
                     <FlatList
+                        data={[]} // No data since you're using headers and footers
                         ListHeaderComponent={() => (
                             <>
                                 <LeagueTitleAndProfile
@@ -59,21 +101,31 @@ const LeagueScreen = () => {
                                 />
                                 <LeagueStats rank={league.rank} weekPoints={league["weekly-total-points"]} totalPoints={league["cumulative-total-points"]} weekNum={weekNum} />
                                 <LeagueParticipants league={league} />
+
+                                {/* Conditional rendering for the Leave League button */}
+                                {showLeaveButton && (
+                                    <TouchableOpacity style={styless.leaveLeagueButton} onPress={leaveLeagueButton}>
+                                        <Text style={styless.leaveLeagueText}>Leave League</Text>
+                                    </TouchableOpacity>
+                                )}
                             </>
                         )}
                         refreshControl={
                             <RefreshControl refreshing={loading} onRefresh={onRefresh} />
                         }
+                        onScroll={handleScroll} // Listen for scroll event
+                        scrollEventThrottle={16} // Improve performance
                     />
                 </View>
                 <StatusBar style="dark" />
-            </SafeAreaView >
+            </SafeAreaView>
         );
     } else {
         return (
             <SafeAreaView key={refreshKey} style={styless.safeArea}>
                 <View style={styless.leagueBackground}>
                     <FlatList
+                        data={[]} // No data here as well
                         ListHeaderComponent={() => (
                             <>
                                 <LeagueTitleAndProfile currentUser={user} leagueTitle={"NO LEAGUE YET"} weekNum={weekNum} />
@@ -104,5 +156,20 @@ const styless = StyleSheet.create({
     },
     leagueBackground: {
         flex: 1,
+    },
+    leaveLeagueButton: {
+        //position: 'absolute',
+        bottom: 20,
+        alignSelf: 'center',
+        backgroundColor: 'red',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        marginTop: 40,
+    },
+    leaveLeagueText: {
+        fontSize: 16,
+        color: 'white',
+        fontFamily: 'RobotoSlab-Regular',
     },
 });

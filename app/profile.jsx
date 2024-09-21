@@ -88,36 +88,7 @@ const Profile = () => {
         );
     };
 
-    const leaveLeagueButton = () => {
-        Alert.alert(
-            "Leave League",
-            "Are you sure you want to leave your league?",
-            [
-                {
-                    text: "No",
-                    onPress: () => console.log("User canceled"),
-                    style: "cancel" // This will make the button appear as a 'cancel' action
-                },
-                {
-                    text: "Yes",
-                    onPress: async () => {
-                        try {
-                            setLoading(true);
-                            // Logic for leaving the league
-                            await leaveLeague(user, league); // Assuming `leaveLeague` doesn't need `user` and `league` params as it gets them internally
-                            triggerRefresh(); // Refresh data after leaving league
-                            router.replace("/join-league"); // Navigate to join league screen
-                        } catch (error) {
-                            console.error("Failed to leave league:", error);
-                        } finally {
-                            setLoading(false);
-                        }
-                    },
-                    style: "destructive" // Optional, to indicate a destructive action like leaving
-                }
-            ]
-        );
-    };
+
 
     if (loading) { return <Loading /> }
 
@@ -139,14 +110,6 @@ const Profile = () => {
                     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                         <View style={styless.profileInfo}>
                             <Text style={styless.usernameText}>{user?.username ? user.username : "Unknown User"}</Text>
-                            {/* <Text style={styless.leagueText}>League: {leagueName}</Text> */}
-
-                            {/* Leave League Button, displayed only if the Logout button is visible */}
-                            {/* {!parsedLeagueUser && (
-                            <TouchableOpacity onPress={leaveLeagueButton}>
-                                <Text style={styless.leaveLeagueText}>Leave League</Text>
-                            </TouchableOpacity>
-                        )} */}
                         </View>
 
                         <View style={styless.statItem}>
