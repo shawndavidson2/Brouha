@@ -47,7 +47,7 @@ const processExcelSheet = async (workbook, picks, log, error) => {
 
             // Delay (3 seconds) and retry to prevent rate limit
 
-            await delay(3000);
+            await delay(6000);
             await retryUpdatePickStatus(jsonPick[sheetName], matchedPick.$id, matchedPick["status"]);
           }
         }
