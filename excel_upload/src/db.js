@@ -95,7 +95,7 @@ export const retryUpdatePickStatus = async (statusLetter, pickId, previousStatus
 
             const errorMessage = error.message || error.toString();
 
-            if (errorMessage.includes("Rate limit for the current endpoint has been exceeded")) {
+            if (errorMessage.includes("Rate limit for the current endpoint has been exceeded") || errorMessage.includes("fetch failed")) {
                 // If rate limit error, implement exponential backoff
                 const delay = Math.pow(2, attempt) * 1000; // 2^attempt seconds delay
                 console.error(`Rate limit hit. Retrying in ${delay / 1000} seconds...`);
