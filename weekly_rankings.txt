@@ -193,71 +193,71 @@ Week 3 Rankings
 
 User Rankings for Week 3:
 ------------------------
-1. Repo - 4860 points
-2. Burrowrk  - 3850 points
-3. Carterw11 - 3320 points
-4. Reid follmer  - 3320 points
-5. Meganm  - 2400 points
-6. Spewy_Griffin - 2380 points
-7. Brandon16 - 1917 points
-8. sdavidson - 1400 points
-9. squegocreamsaucecheddar - 1400 points
-10. CL3V - 1400 points
-11. RyanNin - 1400 points
-12. Szabonik - 1400 points
-13. kevinwb15 - 1400 points
-14. brodman - 1020 points
-15. jun - 1010 points
-16. kaylagreg12 - 1000 points
-17. sir dingleberry  - 926 points
-18. Joshkane88 - 917 points
-19. Landon - 917 points
-20. Tlayhew3 - 0 points
-21. GuacNChipss - 0 points
-22. Rileyknurek - 0 points
-23. SexyBingy - 0 points
-24. MaxPah - 0 points
-25. roryomalley29 - 0 points
-26. Maxsako - 0 points
-27. mobmilla - 0 points
-28. SirDebussy - 0 points
-29. nolanleverage  - 0 points
-30. Dbiagiotti  - 0 points
-31. danielo - 0 points
-32. kylemartin - 0 points
-33. AustinTalion - 0 points
-34. Blake - 0 points
-35. Joepro04 - 0 points
-36. Bernt - 0 points
-37. Pozsonyi88 - 0 points
-38. Austin.leverage - 0 points
-39. ryan_davidson - 0 points
-40. Matt.g_11 - 0 points
-41. Khoi Nguyen - 0 points
-42. matt_grimaldi - 0 points
-43. stickyPeter - 0 points
-44. Ryan_Gay_Nin - 0 points
-45. SpencerWilk - 0 points
-46. cowscows - 0 points
-47. kristaguerini - 0 points
-48. Jgregory33 - 0 points
-49. Maxc - 0 points
-50. Mothif123 - 0 points
-51. Iyefymenko - 0 points
-52. ShayC  - 0 points
-53. colozzamia - 0 points
-54. kattupchurch - 0 points
-55. Joepreston - 0 points
-56. Jacob - 0 points
-57. dkestranek - 0 points
-58. Bpacholski5 - 0 points
-59. Michaelpiazza - 0 points
-60. bkbrah - 0 points
-61. libtownnation69 - 0 points
-62. Tarn - 0 points
-63. Vastine1 - 0 points
-64. annaglodzik - 0 points
-65. StinkTank4 - 0 points
+1. Carterw11 - 7930 points
+2. Spewy_Griffin - 7320 points
+3. Repo - 5860 points
+4. Meganm  - 3960 points
+5. Burrowrk  - 3850 points
+6. sdavidson - 3580 points
+7. kevinwb15 - 3580 points
+8. GuacNChipss - 3520 points
+9. Reid follmer  - 3320 points
+10. Brandon16 - 3037 points
+11. brodman - 3000 points
+12. kristaguerini - 2960 points
+13. sir dingleberry  - 2486 points
+14. StinkTank4 - 2390 points
+15. kaylagreg12 - 2310 points
+16. Maxc - 2310 points
+17. dkestranek - 2200 points
+18. nolanleverage  - 1650 points
+19. annaglodzik - 1569 points
+20. squegocreamsaucecheddar - 1400 points
+21. CL3V - 1400 points
+22. RyanNin - 1400 points
+23. Szabonik - 1400 points
+24. kattupchurch - 1310 points
+25. Bernt - 1280 points
+26. jun - 1010 points
+27. Joshkane88 - 917 points
+28. Landon - 917 points
+29. Tlayhew3 - 781 points
+30. Rileyknurek - 0 points
+31. SexyBingy - 0 points
+32. MaxPah - 0 points
+33. roryomalley29 - 0 points
+34. Maxsako - 0 points
+35. mobmilla - 0 points
+36. SirDebussy - 0 points
+37. Dbiagiotti  - 0 points
+38. danielo - 0 points
+39. kylemartin - 0 points
+40. AustinTalion - 0 points
+41. Blake - 0 points
+42. Joepro04 - 0 points
+43. Pozsonyi88 - 0 points
+44. Austin.leverage - 0 points
+45. ryan_davidson - 0 points
+46. Matt.g_11 - 0 points
+47. Khoi Nguyen - 0 points
+48. matt_grimaldi - 0 points
+49. stickyPeter - 0 points
+50. Ryan_Gay_Nin - 0 points
+51. SpencerWilk - 0 points
+52. cowscows - 0 points
+53. Jgregory33 - 0 points
+54. Mothif123 - 0 points
+55. Iyefymenko - 0 points
+56. ShayC  - 0 points
+57. colozzamia - 0 points
+58. Joepreston - 0 points
+59. Jacob - 0 points
+60. Bpacholski5 - 0 points
+61. Michaelpiazza - 0 points
+62. bkbrah - 0 points
+63. libtownnation69 - 0 points
+64. Tarn - 0 points
+65. Vastine1 - 0 points
 66. ilayhew - 0 points
 67. QuadHayes - 0 points
 68. caseyyyf - 0 points
@@ -268,15 +268,15 @@ User Rankings for Week 3:
 
 League Rankings for Week 3:
 ------------------------
-1. 204rgy - 14300 points
-2. Dynasty Dudes - 4870 points
-3. Family Reunion - 3780 points
-4. sensory issues - 3400 points
-5. League of Shawn - 3317 points
-6. Jordy Nelson - 2410 points
-7. Year 6 NRFF - 1400 points
-8. n1ve - 926 points
-9. LebNation - 917 points
+1. 204rgy - 20820 points
+2. Family Reunion - 11680 points
+3. sensory issues - 9149 points
+4. Jordy Nelson - 9101 points
+5. League of Shawn - 8817 points
+6. Dynasty Dudes - 6850 points
+7. n1ve - 3766 points
+8. Year 6 NRFF - 3580 points
+9. LebNation - 2567 points
 10. Ostrich Sauce - 0 points
 11. friendly - 0 points
 12. Dirty dogs - 0 points
